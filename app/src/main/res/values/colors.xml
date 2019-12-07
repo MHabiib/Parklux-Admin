@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4c8cd2</color>
+    <color name="colorPrimaryDark">#005fa0</color>
+    <color name="colorPrimaryLight">#82bcff</color>
+    <color name="colorAccent">#914CD2</color>
+    <color name="colorSecondary">#914CD2</color>
+    <color name="white">#FCFCFC</color>
+    <color name="black">#000000</color>
+    <color name="red">#CE0000</color>
+    <color name="darkGrey">#7A7A7A</color>
+    <color name="lightGrey">#F7F7F7</color>
+    <color name="qr_code_reader_square">#914CD2</color>
+    <color name="baseWhite">#F2F2F2</color>
+</resources>
