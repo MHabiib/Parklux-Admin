@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">P M S Admin</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="email_password_incorect">The email or password is incorrect.</string>
+    <string name="park_is_booked">Park %d is Booked</string>
+    <string name="park_is_reserved">Park %d is Reserved</string>
+    <string name="qr_announce">Please be safety and park on your slot. Have a nice day !</string>
+    <string name="generate_qr">Generate QR</string>
+    <string name="scan">Scan</string>
+    <string name="me">Me …</string>
+    <string name="slot_name">Slot name</string>
+    <string name="edit_mode">Edit mode</string>
+    <string name="view_section">View section</string>
+    <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="price_hour">Price/hour</string>
+    <string name="open_hour">Open hour</string>
+    <string name="address">Address</string>
+    <string name="save">Save</string>
 </resources>
