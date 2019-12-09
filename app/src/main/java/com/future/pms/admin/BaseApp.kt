@@ -7,22 +7,23 @@ import com.future.pms.admin.di.module.ApplicationModule
 
 class BaseApp : Application() {
 
-    lateinit var component: ApplicationComponent
+  lateinit var component: ApplicationComponent
 
-    companion object {
-        lateinit var instance: BaseApp private set
-    }
+  companion object {
+    lateinit var instance: BaseApp private set
+  }
 
-    override fun onCreate() {
-        super.onCreate()
+  override fun onCreate() {
+    super.onCreate()
 
-        instance = this
-        setup()
-    }
+    instance = this
+    setup()
+  }
 
-    private fun setup() {
-        component =
-            DaggerApplicationComponent.builder().applicationModule(ApplicationModule(this)).build()
-        component.inject(this)
-    }
+  private fun setup() {
+    component = DaggerApplicationComponent.builder().applicationModule(
+      ApplicationModule(this)
+    ).build()
+    component.inject(this)
+  }
 }

@@ -6,11 +6,10 @@ import com.future.pms.admin.ui.home.HomeFragment
 import com.future.pms.admin.ui.profile.ProfileFragment
 import dagger.Component
 
-@Component(modules = [FragmentModule::class])
-interface FragmentComponent {
-    fun inject(homeFragment: HomeFragment)
+@Component(modules = [FragmentModule::class]) interface FragmentComponent {
+  fun inject(homeFragment: HomeFragment)
 
-    fun inject(barcodeFragment: BarcodeFragment)
+  fun inject(barcodeFragment: BarcodeFragment)
 
-    fun inject(profileFragment: ProfileFragment)
+  fun inject(profileFragment: ProfileFragment)
 }

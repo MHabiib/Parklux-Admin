@@ -12,30 +12,34 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class APICreator<out API>(
-    private val clazz: Class<API>, private var headers: HashMap<String, String> = HashMap()
+  private val clazz: Class<API>, private var headers: HashMap<String, String> = HashMap()
 ) {
-    private fun getOkHttpBuilder(): OkHttpClient.Builder {
-        return OkHttpClient.Builder().addInterceptor(
-            BasicAuthInterceptor(USERNAME, PASSWORD)
-        ).writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS).readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-    }
+  private fun getOkHttpBuilder(): OkHttpClient.Builder {
+    return OkHttpClient.Builder().addInterceptor(
+      BasicAuthInterceptor(USERNAME, PASSWORD)
+    ).writeTimeout(
+      WRITE_TIMEOUT, TimeUnit.SECONDS
+    ).readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+  }
 
-    fun generate(): API {
-        val okHttpClient = getOkHttpBuilder()
-        okHttpClient.addNetworkInterceptor { chain ->
-            val original = chain.request()
-            val requestBuilder = original.newBuilder()
-            headers.map {
-                requestBuilder.addHeader(it.key, it.value)
-            }
-            requestBuilder.method(original.method(), original.body())
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }
-        val client = okHttpClient.build()
-        val retrofit = Retrofit.Builder().baseUrl(BASE).client(client)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create()).build()
-        return retrofit.create(clazz)
+  fun generate(): API {
+    val okHttpClient = getOkHttpBuilder()
+    okHttpClient.addNetworkInterceptor { chain ->
+      val original = chain.request()
+      val requestBuilder = original.newBuilder()
+      headers.map {
+        requestBuilder.addHeader(it.key, it.value)
+      }
+      requestBuilder.method(original.method(), original.body())
+      val request = requestBuilder.build()
+      chain.proceed(request)
     }
+    val client = okHttpClient.build()
+    val retrofit = Retrofit.Builder().baseUrl(BASE).client(client).addCallAdapterFactory(
+      RxJava2CallAdapterFactory.create()
+    ).addConverterFactory(
+      GsonConverterFactory.create()
+    ).build()
+    return retrofit.create(clazz)
+  }
 }

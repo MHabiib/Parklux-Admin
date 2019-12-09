@@ -20,4 +20,9 @@
     <string name="open_hour">Open hour</string>
     <string name="address">Address</string>
     <string name="save">Save</string>
+    <string name="date_now">It\'s %s</string>
+    <string name="welcome_to_s">Welcome to %s</string>
+    <string name="two_value_comma">%s, %s</string>
+    <string name="two_value_newline">%s\nIDR %s0</string>
+    <string name="open_hour_nprice">Open hour\nPrice</string>
 </resources>

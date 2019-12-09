@@ -3,21 +3,21 @@ package com.future.pms.admin.ui.main
 import javax.inject.Inject
 
 class MainPresenter @Inject constructor() {
-    private lateinit var view: MainContract
+  private lateinit var view: MainContract
 
-    fun attach(view: MainContract) {
-        this.view = view
-    }
+  fun attach(view: MainContract) {
+    this.view = view
+  }
 
-    fun onHomeIconClick() {
-        view.showHomeFragment()
-    }
+  fun onHomeIconClick() {
+    view.showHomeFragment()
+  }
 
-    fun onBarcodeIconClick() {
-        view.showBarcodeFragment()
-    }
+  fun onBarcodeIconClick() {
+    view.showBarcodeFragment()
+  }
 
-    fun onProfileIconClick() {
-        view.showProfileFragment()
-    }
+  fun onProfileIconClick() {
+    view.showProfileFragment()
+  }
 }

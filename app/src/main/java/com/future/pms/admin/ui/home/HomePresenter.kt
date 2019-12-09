@@ -6,15 +6,15 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class HomePresenter @Inject constructor() {
-    private val subscriptions = CompositeDisposable()
-    private val api: ApiServiceInterface = RetrofitClient.create()
-    private lateinit var view: HomeContract
+  private val subscriptions = CompositeDisposable()
+  private val api: ApiServiceInterface = RetrofitClient.create()
+  private lateinit var view: HomeContract
 
-    fun attach(view: HomeContract) {
-        this.view = view
-    }
+  fun attach(view: HomeContract) {
+    this.view = view
+  }
 
-    fun subscribe() {
-        //No implement required
-    }
+  fun subscribe() {
+    //No implement required
+  }
 }

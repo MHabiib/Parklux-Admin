@@ -8,42 +8,6 @@
         android:layout_height="match_parent"
         android:background="@color/baseWhite">
 
-        <TextView
-            android:id="@+id/profile_name_display"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="@dimen/twelve_dp"
-            android:paddingBottom="@dimen/twelve_dp"
-            android:text="Parking Zone"
-            android:textAlignment="center"
-            android:textColor="@color/colorSecondary"
-            android:textSize="@dimen/h1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.40" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.42" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.86" />
-
         <ImageView
             android:id="@+id/iv_parking_zone_image"
             android:layout_width="200dp"
@@ -53,6 +17,20 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/profile_name_display" />
+
+        <TextView
+            android:id="@+id/profile_name_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/twelve_dp"
+            android:paddingBottom="@dimen/twelve_dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/h1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/zero_dp"
@@ -102,6 +80,23 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0">
+
+                        <Button
+                            android:id="@+id/btnSave"
+                            style="@style/NoCaps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_grey_gradient"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twenty_dp"
+                            android:paddingRight="@dimen/twenty_dp"
+                            android:text="@string/save"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/h2"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/password" />
 
                         <ProgressBar
                             android:id="@+id/progressBar"
@@ -167,6 +162,15 @@
                             android:text="@string/address"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintTop_toBottomOf="@id/open_hour" />
+
+                        <TextView
+                            android:id="@+id/password_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/four_dp"
+                            android:text="@string/password"
+                            android:textColor="@color/colorPrimary"
+                            app:layout_constraintTop_toBottomOf="@id/address" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/profile_name"
@@ -252,26 +256,44 @@
                             android:textSize="@dimen/h2"
                             app:layout_constraintTop_toBottomOf="@id/address_tag" />
 
-                        <Button
-                            android:id="@+id/btnSave"
-                            style="@style/NoCaps"
-                            android:layout_width="wrap_content"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/twelve_dp"
-                            android:background="@drawable/card_layout_grey_gradient"
-                            android:fontFamily="sans-serif-light"
-                            android:paddingLeft="@dimen/twenty_dp"
-                            android:paddingRight="@dimen/twenty_dp"
-                            android:text="@string/save"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
+                            android:background="@android:color/transparent"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/twelve_dp"
+                            android:singleLine="true"
+                            android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/address" />
+                            app:layout_constraintTop_toBottomOf="@id/password_tag" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.42" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

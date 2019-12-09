@@ -5,10 +5,8 @@ import com.future.pms.admin.network.RetrofitClient
 import dagger.Module
 import dagger.Provides
 
-@Module
-class FragmentModule {
-    @Provides
-    fun provideApiService(): ApiServiceInterface {
-        return RetrofitClient.create()
-    }
+@Module class FragmentModule {
+  @Provides fun provideApiService(): ApiServiceInterface {
+    return RetrofitClient.create()
+  }
 }

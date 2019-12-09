@@ -12,22 +12,22 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor() : BasePresenter<LoginContract>() {
-    private val subscriptions = CompositeDisposable()
+  private val subscriptions = CompositeDisposable()
 
-    fun subscribe() {}
+  fun subscribe() {}
 
-    fun attach(view: LoginContract) {
-        this.view = view
-    }
+  fun attach(view: LoginContract) {
+    this.view = view
+  }
 
-    fun login(username: String, password: String) {
-        val authFetcher = APICreator(AuthAPI::class.java).generate()
-        val subscribe = authFetcher.auth(username, password, GRANT_TYPE).subscribeOn(
-            Schedulers.io()
-        ).observeOn(AndroidSchedulers.mainThread()).subscribe({ token: Token ->
-            getContext()?.let { Authentication.save(it, token) }
-            view?.let { view -> call(view, view::onSuccess) }
-        }, { view?.onError() })
-        subscriptions.add(subscribe)
-    }
+  fun login(username: String, password: String) {
+    val authFetcher = APICreator(AuthAPI::class.java).generate()
+    val subscribe = authFetcher.auth(username, password, GRANT_TYPE).subscribeOn(
+      Schedulers.io()
+    ).observeOn(AndroidSchedulers.mainThread()).subscribe({ token: Token ->
+      getContext()?.let { Authentication.save(it, token) }
+      view?.let { view -> call(view, view::onSuccess) }
+    }, { view?.onError() })
+    subscriptions.add(subscribe)
+  }
 }

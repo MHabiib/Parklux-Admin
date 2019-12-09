@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -9,38 +10,23 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.40" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.42" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.86" />
-
-        <TextView
+        <Button
+            android:id="@+id/btn_generate_qr"
+            style="@style/NoCaps"
             android:layout_width="@dimen/zero_dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="It's on Sunday, 8 December 2019\n20 : 30"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h2"
-            app:layout_constraintBottom_toTopOf="@id/layout_qr"
-            app:layout_constraintLeft_toRightOf="@id/guideline2"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="@dimen/zero_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginBottom="@dimen/twenty_four_dp"
+            android:background="@drawable/card_layout_purple_button_generate"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/twenty_dp"
+            android:text="@string/generate_qr"
+            android:textColor="@color/white"
+            android:textSize="@dimen/h_medium"
+            app:layout_constraintBottom_toBottomOf="@id/guideline3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/layout_parking_zone" />
 
         <TextView
             android:layout_width="@dimen/zero_dp"
@@ -53,6 +39,40 @@
             app:layout_constraintLeft_toRightOf="@id/guideline2"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_qr" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/layout_qr"
+            app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Chronometer
+                android:id="@+id/current_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h2"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_now"
+                tools:text="00 : 00 : 02" />
+
+            <TextView
+                android:id="@+id/date_now"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="It's December" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_parking_zone"
@@ -69,38 +89,57 @@
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Welcome to Mall Centre Point (Medan)"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h2"
+                android:textSize="@dimen/h_medium2"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="Mall Centre Point"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tv_address_phone"
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Jl. Jawa No.8, Gg. Buntu, Kec. Medan Timur, Kota Medan, Sumatera Utara 20232"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/h4"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="Jl. Jawa No.8, Gg. Buntu, Kec. Medan Timur, Kota Medan, Sumatera Utara 20232"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_parking_zone_name" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/btn_generate_qr"
-            style="@style/NoCaps"
-            android:layout_width="@dimen/zero_dp"
-            android:layout_height="160dp"
-            android:background="@drawable/card_layout_purple_button_generate"
-            android:fontFamily="sans-serif-light"
-            android:padding="@dimen/twenty_dp"
-            android:text="@string/generate_qr"
-            android:textColor="@color/white"
-            android:textSize="@dimen/h_medium"
-            app:layout_constraintBottom_toBottomOf="@id/guideline3"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/layout_parking_zone" />
+            <TextView
+                android:id="@+id/tv_open_hour_price"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/six_dp"
+                android:gravity="right"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line1"
+                tools:text="Open hour : " />
+
+            <TextView
+                android:id="@+id/tv_open_hour_price_tag"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/six_dp"
+                android:text="@string/open_hour_nprice"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line1" />
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/six_dp"
+                android:background="@color/lightGrey"
+                app:layout_constraintTop_toBottomOf="@id/tv_address_phone" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_qr"
@@ -114,14 +153,15 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scan"
-                android:textSize="40sp"
+            <ImageView
+                android:id="@+id/iv_qrcode"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/qrcodescan_blue"
+                android:tint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/iv_qrcode"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -134,16 +174,36 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_qrcode"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/qrcodescan_blue"
-                android:tint="@color/colorPrimary"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan"
+                android:textSize="40sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/iv_qrcode"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.42" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
