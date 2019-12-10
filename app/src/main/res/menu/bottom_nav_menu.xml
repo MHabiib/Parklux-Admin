@@ -12,6 +12,11 @@
         android:title="QR" />
 
     <item
+        android:id="@+id/navigation_activity_list"
+        android:icon="@drawable/ic_activity_list"
+        android:title="Activity" />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/profile"
         android:title="Profile" />

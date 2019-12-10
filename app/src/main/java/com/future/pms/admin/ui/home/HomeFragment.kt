@@ -20,6 +20,8 @@ import com.future.pms.admin.di.component.DaggerFragmentComponent
 import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.oauth.Token
 import com.future.pms.admin.util.Constants
+import com.future.pms.admin.util.Constants.Companion.EDIT_MODE
+import com.future.pms.admin.util.Constants.Companion.EXIT_EDIT_MODE
 import com.future.pms.admin.util.Constants.Companion.HOME_FRAGMENT
 import com.google.gson.Gson
 import timber.log.Timber
@@ -30,6 +32,7 @@ class HomeFragment : Fragment(), HomeContract {
   @Inject lateinit var presenter: HomePresenter
   private lateinit var binding: FragmentHomeBinding
   private var parkViewList: MutableList<TextView> = ArrayList()
+  private var mode = EXIT_EDIT_MODE
   private var SLOTS =
     ("/\$_UUAAU_RR_UU_UU_/" + "___Z_____________/" + "_AARAU_UU_UU_UU_/" + "_UUARR_RR_UU_AR_/" + "________________/" + "_URAAU_RA_UU_UU_/" + "_RUUAU_RR_UU_UU_/" + "________________/" + "_UU_AU_RU_UR_UU_/" + "_UU_AU_RR_AR_UU_/" + "________________/" + "_UURAUARRAUUAUU_/" + "________________/" + "_URRAUARARUURUU_/" + "________________/")
 
@@ -52,6 +55,23 @@ class HomeFragment : Fragment(), HomeContract {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
     with(binding) {
       val layout = layoutPark
+      btnEditMode.setOnClickListener {
+        editMode()
+      }
+      btnViewSection.setOnClickListener {
+        parkingLayout.visibility = View.GONE
+        btnEditMode.visibility = View.GONE
+        btnViewSection.visibility = View.GONE
+        sectionLayout.visibility = View.VISIBLE
+        btnViewLevel.visibility = View.VISIBLE
+      }
+      btnViewLevel.setOnClickListener {
+        parkingLayout.visibility = View.VISIBLE
+        btnEditMode.visibility = View.VISIBLE
+        btnViewSection.visibility = View.VISIBLE
+        sectionLayout.visibility = View.GONE
+        btnViewLevel.visibility = View.GONE
+      }
       showParkingLayout(layout)
       return root
     }
@@ -159,23 +179,36 @@ class HomeFragment : Fragment(), HomeContract {
   }
 
   private fun onClick(view: View) {
-    if (view.tag as Int == Constants.STATUS_AVAILABLE) {
-      if (Constants.selectedIds.contains(view.id.toString() + ",")) {
-        Constants.selectedIds = Constants.selectedIds.replace((+view.id).toString() + ",", "")
-        view.setBackgroundResource(R.drawable.ic_park)
-      } else {
-        Constants.selectedIds = Constants.selectedIds + view.id + ","
-        view.setBackgroundResource(R.drawable.ic_my_location)
-      }
-    } else if (view.tag as Int == Constants.STATUS_BOOKED) {
-      Toast.makeText(
-        context, String.format(getString(R.string.park_is_booked), view.id), Toast.LENGTH_SHORT
-      ).show()
-    } else if (view.tag as Int == Constants.STATUS_RESERVED) {
-      Toast.makeText(
-        context, String.format(getString(R.string.park_is_reserved), view.id), Toast.LENGTH_SHORT
-      ).show()
+    if (mode == EDIT_MODE) {
+      binding.tvSelectSlot.visibility = View.GONE
+      binding.exitEditMode.visibility = View.GONE
+      binding.editMode.visibility = View.VISIBLE
+      Toast.makeText(context, view.id.toString(), Toast.LENGTH_SHORT).show()
     }
+  }
+
+  private fun editMode() {
+    if (mode == EDIT_MODE) {
+      mode = EXIT_EDIT_MODE
+      binding.btnEditMode.text = "Edit mode"
+      binding.btnViewSection.text = "View section"
+      binding.btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
+      binding.editMode.visibility = View.GONE
+      binding.exitEditMode.visibility = View.VISIBLE
+      binding.btnEditMode.visibility = View.VISIBLE
+      binding.tvSelectSlot.visibility = View.GONE
+    } else {
+      mode = EDIT_MODE
+      binding.btnEditMode.text = "Exit edit mode"
+      binding.btnViewSection.text = "Save"
+      binding.btnEditMode.setTextColor(resources.getColor(R.color.red))
+      binding.tvSelectSlot.visibility = View.VISIBLE
+      binding.exitEditMode.visibility = View.INVISIBLE
+    }
+  }
+
+  private fun viewSection() {
+
   }
 
   override fun showErrorMessage(error: String) {

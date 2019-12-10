@@ -37,20 +37,21 @@
                     android:id="@+id/sv_parking_slot"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
                     android:clipChildren="false"
                     android:clipToPadding="false"
+                    android:overScrollMode="never"
                     android:scrollbars="none">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/twelve_dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:layout_marginLeft="@dimen/twelve_dp"
                         android:paddingBottom="@dimen/fourty_eight_dp">
 
                         <Button
+                            android:id="@+id/btn_edit_mode"
                             style="@style/NoCaps"
                             android:layout_width="@dimen/zero_dp"
                             android:layout_height="wrap_content"
@@ -67,6 +68,7 @@
                             app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
 
                         <Button
+                            android:id="@+id/btn_view_section"
                             style="@style/NoCaps"
                             android:layout_width="@dimen/zero_dp"
                             android:layout_height="wrap_content"
@@ -83,6 +85,26 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
 
+                        <Button
+                            android:id="@+id/btn_view_level"
+                            style="@style/NoCaps"
+                            android:layout_width="@dimen/zero_dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twelve_dp"
+                            android:paddingRight="@dimen/twelve_dp"
+                            android:text="View level layout"
+                            android:textColor="@color/colorSecondary"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
+
+
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_slot_detail"
                             android:layout_width="match_parent"
@@ -91,103 +113,253 @@
                             android:padding="@dimen/twelve_dp"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageButton
-                                android:id="@+id/status_road"
-                                android:layout_width="@dimen/zero_dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/six_dp"
-                                android:layout_marginTop="@dimen/twelve_dp"
-                                android:background="@drawable/card_layout_purple"
-                                android:padding="@dimen/four_dp"
-                                android:src="@drawable/ic_road"
-                                android:tint="@color/white"
-                                app:layout_constraintLeft_toRightOf="@id/guideline4"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/status_car" />
-
-                            <ImageButton
-                                android:id="@+id/status_disable"
-                                android:layout_width="@dimen/zero_dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/twelve_dp"
-                                android:layout_marginRight="@dimen/six_dp"
-                                android:background="@drawable/card_layout_purple"
-                                android:padding="@dimen/four_dp"
-                                android:src="@drawable/ic_disable"
-                                android:tint="@color/white"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toLeftOf="@id/guideline4"
-                                app:layout_constraintTop_toBottomOf="@id/status_park" />
-
-                            <ImageButton
-                                android:id="@+id/status_car"
-                                android:layout_width="@dimen/zero_dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/six_dp"
-                                android:layout_marginTop="@dimen/twelve_dp"
-                                android:background="@drawable/card_layout_purple"
-                                android:padding="@dimen/four_dp"
-                                android:src="@drawable/ic_car"
-                                android:tint="@color/white"
-                                app:layout_constraintLeft_toRightOf="@id/guideline4"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/set_status" />
-
-                            <ImageButton
-                                android:id="@+id/status_park"
-                                android:layout_width="@dimen/zero_dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/twelve_dp"
-                                android:layout_marginRight="@dimen/six_dp"
-                                android:background="@drawable/card_layout_grey_gradient"
-                                android:padding="@dimen/four_dp"
-                                android:src="@drawable/ic_park"
-                                android:tint="@color/white"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toLeftOf="@id/guideline4"
-                                app:layout_constraintTop_toBottomOf="@id/set_status" />
-
                             <TextView
-                                android:id="@+id/slot_name_tag"
+                                android:id="@+id/tv_select_slot"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="@string/slot_name"
-                                android:textColor="@color/colorPrimary"
+                                android:text="Select slot"
+                                android:textSize="@dimen/h_medium2"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <TextView
-                                android:id="@+id/set_status"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/edit_mode"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/twelve_dp"
-                                android:gravity="center"
-                                android:text="Set slot status"
-                                android:textColor="@color/colorPrimary"
-                                app:layout_constraintTop_toBottomOf="@id/slot_name" />
+                                android:layout_height="match_parent"
+                                android:visibility="gone">
 
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.5" />
+                                <ImageButton
+                                    android:id="@+id/status_road"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_road"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline7"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/slot_name"
+                                <ImageButton
+                                    android:id="@+id/status_disable"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_disable"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline4"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline7"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <ImageButton
+                                    android:id="@+id/status_car"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_car"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline6"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline4"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <ImageButton
+                                    android:id="@+id/status_park"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_grey_gradient"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_park"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline6"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <TextView
+                                    android:id="@+id/slot_name_tag"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="@string/slot_name"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/set_status"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:gravity="center"
+                                    android:text="Set slot status"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintTop_toBottomOf="@id/slot_name" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.5" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.25" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.75" />
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/slot_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:imeOptions="flagNoExtractUi"
+                                    android:inputType="textEmailAddress"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:text="LG - 1"
+                                    android:textColor="@color/darkGrey"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintTop_toBottomOf="@id/slot_name_tag" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/exit_edit_mode"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:imeOptions="flagNoExtractUi"
-                                android:inputType="textEmailAddress"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:text="LG - 1"
-                                android:textColor="@color/darkGrey"
-                                android:textSize="@dimen/h2"
-                                app:layout_constraintTop_toBottomOf="@id/slot_name_tag" />
+                                android:layout_height="match_parent"
+                                android:padding="@dimen/twelve_dp">
 
+                                <ImageView
+                                    android:id="@+id/empty_slot_iv"
+                                    android:layout_width="@dimen/twenty_dp"
+                                    android:layout_height="@dimen/twenty_dp"
+                                    android:src="@drawable/ic_park"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/taken_slot_iv"
+                                    android:layout_width="@dimen/twenty_dp"
+                                    android:layout_height="@dimen/twenty_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:src="@drawable/ic_car"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/line1" />
+
+                                <ImageView
+                                    android:id="@+id/disable_slot_iv"
+                                    android:layout_width="@dimen/twenty_dp"
+                                    android:layout_height="@dimen/twenty_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:src="@drawable/ic_disable"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/line2" />
+
+                                <TextView
+                                    android:id="@+id/empty_slot_tag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/four_dp"
+                                    android:text="Empty slot"
+                                    android:textColor="@color/darkGrey"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintLeft_toRightOf="@id/empty_slot_iv"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/empty_slot_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/four_dp"
+                                    android:text="20"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/taken_slot_tag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/four_dp"
+                                    android:text="Taken slot"
+                                    android:textColor="@color/darkGrey"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintLeft_toRightOf="@id/empty_slot_iv"
+                                    app:layout_constraintTop_toTopOf="@id/taken_slot_iv" />
+
+                                <TextView
+                                    android:id="@+id/taken_slot_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/four_dp"
+                                    android:text="7"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/taken_slot_iv" />
+
+                                <TextView
+                                    android:id="@+id/disable_slot_tag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/four_dp"
+                                    android:text="Disable slot"
+                                    android:textColor="@color/darkGrey"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintLeft_toRightOf="@id/empty_slot_iv"
+                                    app:layout_constraintTop_toTopOf="@id/disable_slot_iv" />
+
+                                <TextView
+                                    android:id="@+id/disable_slot_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/four_dp"
+                                    android:text="10"
+                                    android:textColor="@color/red"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/disable_slot_iv" />
+
+                                <View
+                                    android:id="@+id/line1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:background="@color/lightGrey"
+                                    app:layout_constraintTop_toBottomOf="@id/empty_slot_value" />
+
+                                <View
+                                    android:id="@+id/line2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:background="@color/lightGrey"
+                                    app:layout_constraintTop_toBottomOf="@id/taken_slot_value" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.Guideline
@@ -203,6 +375,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parking_layout"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="match_parent"
             android:background="@drawable/card_layout_parking_layout"
@@ -240,12 +413,153 @@
             </androidx.core.widget.NestedScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.96" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/section_layout"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/zero_dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/six_dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline9"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guideline8"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/section_one_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_one_tag"></androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/six_dp"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline9"
+                app:layout_constraintLeft_toRightOf="@id/guideline8"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/section_two_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 2"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_two_tag"></androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/six_dp"
+                android:layout_marginBottom="@dimen/twelve_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/guideline8"
+                app:layout_constraintTop_toBottomOf="@id/guideline9">
+
+                <TextView
+                    android:id="@+id/section_three_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 3"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_three_tag"></androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/six_dp"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                android:layout_marginBottom="@dimen/twelve_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/guideline8"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guideline9">
+
+                <TextView
+                    android:id="@+id/section_four_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 4"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_four_tag"></androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -260,5 +574,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.42" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.96" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

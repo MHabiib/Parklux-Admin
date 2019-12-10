@@ -36,5 +36,8 @@ class Constants {
     const val SPACING = '_'
     const val SLOT = "Slot "
     var selectedIds = ""
+
+    const val EDIT_MODE = 0
+    const val EXIT_EDIT_MODE = 1
   }
 }
