@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.future.pms.admin.R
 import com.future.pms.admin.di.component.DaggerActivityComponent
 import com.future.pms.admin.di.module.ActivityModule
-import com.future.pms.admin.model.oauth.Token
+import com.future.pms.admin.model.Token
 import com.future.pms.admin.network.APICreator
 import com.future.pms.admin.network.AuthAPI
 import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE

@@ -14,8 +14,8 @@ import com.future.pms.admin.R
 import com.future.pms.admin.databinding.FragmentProfileBinding
 import com.future.pms.admin.di.component.DaggerFragmentComponent
 import com.future.pms.admin.di.module.FragmentModule
-import com.future.pms.admin.model.oauth.Token
-import com.future.pms.admin.model.oauth.profile.ParkingZone
+import com.future.pms.admin.model.Token
+import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT

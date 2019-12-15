@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.barcode
 
-import com.future.pms.admin.model.oauth.profile.ParkingZone
+import com.future.pms.admin.model.profile.ParkingZone
 
 interface BarcodeContract {
   fun getDateNow()

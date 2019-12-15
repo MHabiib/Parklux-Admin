@@ -1,6 +1,6 @@
 package com.future.pms.admin.network
 
-import com.future.pms.admin.model.oauth.Token
+import com.future.pms.admin.model.Token
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

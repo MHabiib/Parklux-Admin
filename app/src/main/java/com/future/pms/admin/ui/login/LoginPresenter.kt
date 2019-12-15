@@ -1,7 +1,7 @@
 package com.future.pms.admin.ui.login
 
 import com.future.pms.admin.di.base.BasePresenter
-import com.future.pms.admin.model.oauth.Token
+import com.future.pms.admin.model.Token
 import com.future.pms.admin.network.APICreator
 import com.future.pms.admin.network.AuthAPI
 import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE

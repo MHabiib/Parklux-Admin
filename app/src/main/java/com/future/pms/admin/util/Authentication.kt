@@ -1,7 +1,7 @@
 package com.future.pms.admin.util
 
 import android.content.Context
-import com.future.pms.admin.model.oauth.Token
+import com.future.pms.admin.model.Token
 import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.google.gson.Gson

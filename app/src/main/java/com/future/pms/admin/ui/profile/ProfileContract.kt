@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.profile
 
-import com.future.pms.admin.model.oauth.profile.ParkingZone
+import com.future.pms.admin.model.profile.ParkingZone
 
 interface ProfileContract {
   fun onSuccess()

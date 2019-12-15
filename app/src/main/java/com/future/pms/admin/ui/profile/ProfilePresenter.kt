@@ -3,7 +3,7 @@ package com.future.pms.admin.ui.profile
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.future.pms.admin.model.oauth.profile.ParkingZone
+import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.network.ApiServiceInterface
 import com.future.pms.admin.network.RetrofitClient
 import com.future.pms.admin.util.Authentication

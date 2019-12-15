@@ -23,6 +23,9 @@
     <string name="date_now">It\'s %s</string>
     <string name="welcome_to_s">Welcome to %s</string>
     <string name="two_value_comma">%s, %s</string>
-    <string name="two_value_newline">%s\nIDR %s0</string>
+    <string name="two_value_newline">%s\nIDR %s0/hour</string>
     <string name="open_hour_nprice">Open hour\nPrice</string>
+    <string name="deactivate">D\ne\na\nc\nt\ni\nv\na\nt\ne</string>
+    <string name="activate">A\nc\nt\ni\nv\na\nt\ne</string>
+    <string name="exit_edit_mode">Exit edit mode</string>
 </resources>

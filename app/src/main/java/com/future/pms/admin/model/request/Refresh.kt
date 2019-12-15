@@ -1,4 +1,4 @@
-package com.future.pms.admin.model.oauth.request
+package com.future.pms.admin.model.request
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
