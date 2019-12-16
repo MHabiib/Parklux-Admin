@@ -76,6 +76,22 @@ class HomePresenter @Inject constructor() {
     subscriptions.add(subscribe)
   }
 
+  fun updateLevel(idLevel: String, slotsLayout: String, accessToken: String) {
+    view.showProgress(true)
+    val subscribe = api.updateLevel(idLevel, slotsLayout, accessToken).subscribeOn(
+        Schedulers.io()
+    ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+      if (null != it) {
+        view.showProgress(false)
+        view.updateParkingLayoutSuccess(it)
+      }
+    }, {
+      it.message?.let { itl -> view.showErrorMessage(itl) }
+    })
+    view.showProgress(false)
+    subscriptions.add(subscribe)
+  }
+
   fun attach(view: HomeContract) {
     this.view = view
   }

@@ -9,6 +9,7 @@ interface HomeContract {
   fun getLayoutSuccess(slotsLayout: String)
   fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>)
   fun updateParkingSectionSuccess(response: String)
+  fun updateParkingLayoutSuccess(response: String)
   fun getLevelsSuccess(listLevel: List<ListLevel>)
   fun getLayoutFailed(error: String)
 }

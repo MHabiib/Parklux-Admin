@@ -46,6 +46,7 @@ import com.future.pms.admin.util.CustomAdapter
 import com.future.pms.admin.util.SpinnerItem
 import com.google.gson.Gson
 import timber.log.Timber
+import java.lang.StringBuilder
 import java.util.*
 import javax.inject.Inject
 
@@ -57,6 +58,7 @@ class HomeFragment : Fragment(), HomeContract {
   private lateinit var layout: HorizontalScrollView
   private lateinit var accessToken: String
   private lateinit var idLevel: String
+  private lateinit var levelLayout: String
   private var mode = EXIT_EDIT_MODE
 
   companion object {
@@ -72,9 +74,8 @@ class HomeFragment : Fragment(), HomeContract {
     injectDependency()
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-  ): View? {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
     with(binding) {
       btnEditMode.setOnClickListener {
@@ -130,10 +131,8 @@ class HomeFragment : Fragment(), HomeContract {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     accessToken = Gson().fromJson(
-      context?.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)?.getString(
-        TOKEN, null
-      ), Token::class.java
-    ).accessToken
+        context?.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
+        Token::class.java).accessToken
     presenter.attach(this)
     presenter.getLevels(accessToken)
   }
@@ -158,9 +157,8 @@ class HomeFragment : Fragment(), HomeContract {
     var totalEmptySlot = 0
     var totalTakenSlot = 0
     var totalDisableSlot = 0
-    val params = LinearLayout.LayoutParams(
-      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-    )
+    val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT)
     layoutPark.apply {
       orientation = LinearLayout.VERTICAL
       layoutParams = params
@@ -179,41 +177,35 @@ class HomeFragment : Fragment(), HomeContract {
 
       when {
         slotsLayout[index] == SLOT_NULL -> {
-          setupParkingView(
-            index, parkingLayout, slotsLayout[index], STATUS_ROAD, R.drawable.ic_blank
-          )
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
+              R.drawable.ic_blank)
         }
         slotsLayout[index] == SLOT_SCAN_ME || slotsLayout[index] == SLOT_TAKEN -> {
           totalTakenSlot += 1
-          setupParkingView(
-            index, parkingLayout, slotsLayout[index], STATUS_BOOKED, R.drawable.ic_car
-          )
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_BOOKED,
+              R.drawable.ic_car)
         }
         slotsLayout[index] == SLOT_EMPTY -> {
           totalEmptySlot += 1
-          setupParkingView(
-            index, parkingLayout, slotsLayout[index], STATUS_AVAILABLE, R.drawable.ic_park
-          )
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_AVAILABLE,
+              R.drawable.ic_park)
         }
         slotsLayout[index] == SLOT_DISABLE -> {
           totalDisableSlot += 1
-          setupParkingView(
-            index, parkingLayout, slotsLayout[index], STATUS_RESERVED, R.drawable.ic_disable
-          )
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_RESERVED,
+              R.drawable.ic_disable)
         }
         slotsLayout[index] == SLOT_ROAD || slotsLayout[index] == SLOT_READY -> {
-          setupParkingView(
-            index, parkingLayout, slotsLayout[index], STATUS_ROAD, R.drawable.ic_road
-          )
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
+              R.drawable.ic_road)
         }
       }
     }
     showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
   }
 
-  private fun setupParkingView(
-    count: Int, layout: LinearLayout?, code: Char, tags: Int, icon: Int
-  ): TextView {
+  private fun setupParkingView(count: Int, layout: LinearLayout?, code: Char, tags: Int,
+      icon: Int): TextView {
     val view = TextView(context)
     view.apply {
       layoutParams = LinearLayout.LayoutParams(parkSize, parkSize).apply {
@@ -242,13 +234,27 @@ class HomeFragment : Fragment(), HomeContract {
 
   private fun onClick(view: View) {
     if (mode == EDIT_MODE) {
-      with(binding) {
-        tvSelectSlot.visibility = View.GONE
-        layoutSlotDetailLevel.exitEditMode.visibility = View.GONE
-        editMode.visibility = View.VISIBLE
+      if (view.id != -1) {
+        Toast.makeText(context, "Activate the section first to edit this slot", Toast.LENGTH_SHORT).show()
       }
-      Toast.makeText(context, view.id.toString(), Toast.LENGTH_SHORT).show()
+      else {
+        with(binding) {
+          tvSelectSlot.visibility = View.GONE
+          layoutSlotDetailLevel.exitEditMode.visibility = View.GONE
+          editMode.visibility = View.VISIBLE
+        }
+        //todo
+        view.setBackgroundResource(R.drawable.ic_my_location)
+        changeSlot(levelLayout, 'E', view.id )
+        Toast.makeText(context, view.id.toString(), Toast.LENGTH_SHORT).show()
+      }
     }
+  }
+
+  private fun changeSlot(levelLayout: String, status: Char, index: Int) {
+    val levelLayoutStrBuilder = StringBuilder(levelLayout)
+    levelLayoutStrBuilder.setCharAt(index, status)
+    this@HomeFragment.levelLayout = levelLayoutStrBuilder.toString()
   }
 
   private fun editMode() {
@@ -284,14 +290,14 @@ class HomeFragment : Fragment(), HomeContract {
   }
 
   override fun getLayoutSuccess(slotsLayout: String) {
+    levelLayout = slotsLayout
     showParkingLayout(slotsLayout)
   }
 
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     for (index in 0 until listLevel.size) {
-      spinnerItems.add(
-        index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName, false)
-      )
+      spinnerItems.add(index + 1,
+          SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName, false))
     }
   }
 
@@ -314,9 +320,7 @@ class HomeFragment : Fragment(), HomeContract {
                 getString(R.string.activate)
               }
               setOnClickListener {
-                presenter.updateParkingSection(
-                  listSectionDetails[index].idSection, accessToken
-                )
+                presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
               }
             }
           }
@@ -337,9 +341,7 @@ class HomeFragment : Fragment(), HomeContract {
                 getString(R.string.activate)
               }
               setOnClickListener {
-                presenter.updateParkingSection(
-                  listSectionDetails[index].idSection, accessToken
-                )
+                presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
               }
             }
           }
@@ -360,9 +362,7 @@ class HomeFragment : Fragment(), HomeContract {
                 getString(R.string.activate)
               }
               setOnClickListener {
-                presenter.updateParkingSection(
-                  listSectionDetails[index].idSection, accessToken
-                )
+                presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
               }
             }
           }
@@ -383,15 +383,18 @@ class HomeFragment : Fragment(), HomeContract {
                 getString(R.string.activate)
               }
               setOnClickListener {
-                presenter.updateParkingSection(
-                  listSectionDetails[index].idSection, accessToken
-                )
+                presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
               }
             }
           }
         }
       }
     }
+  }
+
+  override fun updateParkingLayoutSuccess(response: String) {
+    TODO(
+        "not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
   override fun updateParkingSectionSuccess(response: String) {
@@ -411,8 +414,7 @@ class HomeFragment : Fragment(), HomeContract {
 
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-      FragmentModule()
-    ).build()
+        FragmentModule()).build()
     profileComponent.inject(this)
   }
 }
