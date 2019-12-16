@@ -20,8 +20,20 @@ class BarcodePresenter @Inject constructor() {
       view.loadCustomerDetailSuccess(parkingZone)
     }, { error ->
       view.showErrorMessage(error.localizedMessage)
-      view.unauthorized()
     })
+    subscriptions.add(subscribe)
+  }
+
+  fun getQrImage(accessToken: String) {
+    val subscribe =
+      api.getQrImage("Grand Indonesia - LG 01.png", accessToken).subscribeOn(Schedulers.io())
+        .observeOn(
+          AndroidSchedulers.mainThread()
+        ).subscribe({
+        view.getQrImageSuccess(it)
+      }, { error ->
+        view.showErrorMessage(error.localizedMessage)
+      })
     subscriptions.add(subscribe)
   }
 

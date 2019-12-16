@@ -2,6 +2,7 @@ package com.future.pms.admin.ui.barcode
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -10,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.future.pms.admin.R
 import com.future.pms.admin.databinding.FragmentBarcodeBinding
 import com.future.pms.admin.di.component.DaggerFragmentComponent
@@ -67,6 +71,9 @@ class BarcodeFragment : Fragment(), BarcodeContract {
       subscribe()
       loadData(accessToken)
     }
+    binding.btnGenerateQr.setOnClickListener {
+      presenter.getQrImage(accessToken)
+    }
     getDateNow()
   }
 
@@ -95,6 +102,14 @@ class BarcodeFragment : Fragment(), BarcodeContract {
         ).toInstant().toEpochMilli()))
       binding.currentTime.start()
     }
+  }
+
+  override fun getQrImageSuccess(qrImage: Drawable) {
+    Glide.with(binding.root).load(qrImage).transform(CenterCrop(), RoundedCorners(80)).placeholder(
+      R.drawable.ic_car
+    ).error(R.drawable.ic_park).fallback(
+      R.drawable.ic_disable
+    ).into(binding.ivQrcode)
   }
 
   override fun showProgress(show: Boolean) {

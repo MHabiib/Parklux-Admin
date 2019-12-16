@@ -46,7 +46,6 @@ import com.future.pms.admin.util.CustomAdapter
 import com.future.pms.admin.util.SpinnerItem
 import com.google.gson.Gson
 import timber.log.Timber
-import java.lang.StringBuilder
 import java.util.*
 import javax.inject.Inject
 
@@ -74,8 +73,9 @@ class HomeFragment : Fragment(), HomeContract {
     injectDependency()
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+  ): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
     with(binding) {
       btnEditMode.setOnClickListener {
@@ -131,8 +131,12 @@ class HomeFragment : Fragment(), HomeContract {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     accessToken = Gson().fromJson(
-        context?.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
-        Token::class.java).accessToken
+      context?.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
+      Token::class.java
+    ).accessToken
+    binding.btnSave.setOnClickListener {
+      presenter.updateLevel(idLevel, levelLayout, accessToken)
+    }
     presenter.attach(this)
     presenter.getLevels(accessToken)
   }
@@ -157,8 +161,9 @@ class HomeFragment : Fragment(), HomeContract {
     var totalEmptySlot = 0
     var totalTakenSlot = 0
     var totalDisableSlot = 0
-    val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT)
+    val params = LinearLayout.LayoutParams(
+      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+    )
     layoutPark.apply {
       orientation = LinearLayout.VERTICAL
       layoutParams = params
@@ -177,35 +182,41 @@ class HomeFragment : Fragment(), HomeContract {
 
       when {
         slotsLayout[index] == SLOT_NULL -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
-              R.drawable.ic_blank)
+          setupParkingView(
+            index, parkingLayout, slotsLayout[index], STATUS_ROAD, R.drawable.ic_blank
+          )
         }
         slotsLayout[index] == SLOT_SCAN_ME || slotsLayout[index] == SLOT_TAKEN -> {
           totalTakenSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_BOOKED,
-              R.drawable.ic_car)
+          setupParkingView(
+            index, parkingLayout, slotsLayout[index], STATUS_BOOKED, R.drawable.ic_car
+          )
         }
         slotsLayout[index] == SLOT_EMPTY -> {
           totalEmptySlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_AVAILABLE,
-              R.drawable.ic_park)
+          setupParkingView(
+            index, parkingLayout, slotsLayout[index], STATUS_AVAILABLE, R.drawable.ic_park
+          )
         }
         slotsLayout[index] == SLOT_DISABLE -> {
           totalDisableSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_RESERVED,
-              R.drawable.ic_disable)
+          setupParkingView(
+            index, parkingLayout, slotsLayout[index], STATUS_RESERVED, R.drawable.ic_disable
+          )
         }
         slotsLayout[index] == SLOT_ROAD || slotsLayout[index] == SLOT_READY -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
-              R.drawable.ic_road)
+          setupParkingView(
+            index, parkingLayout, slotsLayout[index], STATUS_ROAD, R.drawable.ic_road
+          )
         }
       }
     }
     showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
   }
 
-  private fun setupParkingView(count: Int, layout: LinearLayout?, code: Char, tags: Int,
-      icon: Int): TextView {
+  private fun setupParkingView(
+    count: Int, layout: LinearLayout?, code: Char, tags: Int, icon: Int
+  ): TextView {
     val view = TextView(context)
     view.apply {
       layoutParams = LinearLayout.LayoutParams(parkSize, parkSize).apply {
@@ -234,19 +245,66 @@ class HomeFragment : Fragment(), HomeContract {
 
   private fun onClick(view: View) {
     if (mode == EDIT_MODE) {
-      if (view.id != -1) {
-        Toast.makeText(context, "Activate the section first to edit this slot", Toast.LENGTH_SHORT).show()
-      }
-      else {
-        with(binding) {
+      if (view.id == -1) {
+        Toast.makeText(context, "Activate the section first to edit this slot", Toast.LENGTH_SHORT)
+          .show()
+      } else {
+        with(binding, {
           tvSelectSlot.visibility = View.GONE
           layoutSlotDetailLevel.exitEditMode.visibility = View.GONE
           editMode.visibility = View.VISIBLE
-        }
-        //todo
-        view.setBackgroundResource(R.drawable.ic_my_location)
-        changeSlot(levelLayout, 'E', view.id )
-        Toast.makeText(context, view.id.toString(), Toast.LENGTH_SHORT).show()
+          btnSave.visibility = View.VISIBLE
+          slotName.text = view.id.toString()
+          when {
+            levelLayout[view.id] == SLOT_TAKEN -> {
+              Toast.makeText(context, "Can't update this slot", Toast.LENGTH_SHORT).show()
+            }
+            levelLayout[view.id] == SLOT_EMPTY -> {
+              statusPark.setOnClickListener {
+                changeSlot(levelLayout, SLOT_EMPTY, view.id)
+                view.setBackgroundResource(R.drawable.ic_park)
+              }
+              statusDisable.setOnClickListener {
+                changeSlot(levelLayout, SLOT_DISABLE, view.id)
+                view.setBackgroundResource(R.drawable.ic_disable)
+              }
+              statusRoad.setOnClickListener {
+                changeSlot(levelLayout, SLOT_ROAD, view.id)
+                view.setBackgroundResource(R.drawable.ic_road)
+              }
+            }
+
+            levelLayout[view.id] == SLOT_DISABLE -> {
+              statusPark.setOnClickListener {
+                changeSlot(levelLayout, SLOT_EMPTY, view.id)
+                view.setBackgroundResource(R.drawable.ic_park)
+              }
+              statusRoad.setOnClickListener {
+                changeSlot(levelLayout, SLOT_ROAD, view.id)
+                view.setBackgroundResource(R.drawable.ic_road)
+              }
+              statusDisable.setOnClickListener {
+                changeSlot(levelLayout, SLOT_DISABLE, view.id)
+                view.setBackgroundResource(R.drawable.ic_disable)
+              }
+            }
+
+            levelLayout[view.id] == SLOT_ROAD || levelLayout[view.id] == SLOT_READY -> {
+              statusDisable.setOnClickListener {
+                changeSlot(levelLayout, SLOT_DISABLE, view.id)
+                view.setBackgroundResource(R.drawable.ic_disable)
+              }
+              statusPark.setOnClickListener {
+                changeSlot(levelLayout, SLOT_EMPTY, view.id)
+                view.setBackgroundResource(R.drawable.ic_park)
+              }
+              statusRoad.setOnClickListener {
+                changeSlot(levelLayout, SLOT_ROAD, view.id)
+                view.setBackgroundResource(R.drawable.ic_road)
+              }
+            }
+          }
+        })
       }
     }
   }
@@ -263,6 +321,7 @@ class HomeFragment : Fragment(), HomeContract {
         mode = EXIT_EDIT_MODE
         levelName.isEnabled = true
         btnEditMode.text = getString(R.string.edit_mode)
+        btnSave.visibility = View.GONE
         btnViewSection.visibility = View.VISIBLE
         btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
         editMode.visibility = View.GONE
@@ -296,8 +355,9 @@ class HomeFragment : Fragment(), HomeContract {
 
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     for (index in 0 until listLevel.size) {
-      spinnerItems.add(index + 1,
-          SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName, false))
+      spinnerItems.add(
+        index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName, false)
+      )
     }
   }
 
@@ -393,8 +453,7 @@ class HomeFragment : Fragment(), HomeContract {
   }
 
   override fun updateParkingLayoutSuccess(response: String) {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+    Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }
 
   override fun updateParkingSectionSuccess(response: String) {
@@ -414,7 +473,8 @@ class HomeFragment : Fragment(), HomeContract {
 
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-        FragmentModule()).build()
+      FragmentModule()
+    ).build()
     profileComponent.inject(this)
   }
 }

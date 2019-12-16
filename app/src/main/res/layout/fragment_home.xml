@@ -98,6 +98,26 @@
                             app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
 
                         <Button
+                            android:id="@+id/btn_save"
+                            style="@style/NoCaps"
+                            android:layout_width="@dimen/zero_dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twelve_dp"
+                            android:paddingRight="@dimen/twelve_dp"
+                            android:text="@string/save"
+                            android:textColor="@color/colorAccent"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintLeft_toRightOf="@id/guideline5"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
+
+
+                        <Button
                             android:id="@+id/btn_view_level"
                             style="@style/NoCaps"
                             android:layout_width="@dimen/zero_dp"
@@ -167,23 +187,8 @@
                                     android:padding="@dimen/four_dp"
                                     android:src="@drawable/ic_disable"
                                     android:tint="@color/white"
-                                    app:layout_constraintLeft_toRightOf="@id/guideline4"
-                                    app:layout_constraintRight_toLeftOf="@id/guideline7"
-                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
-
-                                <ImageButton
-                                    android:id="@+id/status_car"
-                                    android:layout_width="@dimen/zero_dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/six_dp"
-                                    android:layout_marginTop="@dimen/twelve_dp"
-                                    android:layout_marginRight="@dimen/six_dp"
-                                    android:background="@drawable/card_layout_purple"
-                                    android:padding="@dimen/four_dp"
-                                    android:src="@drawable/ic_car"
-                                    android:tint="@color/white"
                                     app:layout_constraintLeft_toRightOf="@id/guideline6"
-                                    app:layout_constraintRight_toLeftOf="@id/guideline4"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline7"
                                     app:layout_constraintTop_toBottomOf="@id/set_status" />
 
                                 <ImageButton
@@ -192,7 +197,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/twelve_dp"
                                     android:layout_marginRight="@dimen/six_dp"
-                                    android:background="@drawable/card_layout_grey_gradient"
+                                    android:background="@drawable/card_layout_purple"
                                     android:padding="@dimen/four_dp"
                                     android:src="@drawable/ic_park"
                                     android:tint="@color/white"
@@ -226,21 +231,7 @@
                                     android:orientation="vertical"
                                     app:layout_constraintGuide_percent="0.5" />
 
-                                <androidx.constraintlayout.widget.Guideline
-                                    android:id="@+id/guideline6"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    app:layout_constraintGuide_percent="0.25" />
-
-                                <androidx.constraintlayout.widget.Guideline
-                                    android:id="@+id/guideline7"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    app:layout_constraintGuide_percent="0.75" />
-
-                                <com.google.android.material.textfield.TextInputEditText
+                                <TextView
                                     android:id="@+id/slot_name"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -254,6 +245,20 @@
                                     android:textColor="@color/darkGrey"
                                     android:textSize="@dimen/h2"
                                     app:layout_constraintTop_toBottomOf="@id/slot_name_tag" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.66" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.33" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -17,13 +17,13 @@ class Constants {
     const val LEVEL_AVAILABLE = 'A'
 
     const val SELECT_LEVEL = "Select level"
-    val SECTION_ONE = "Section 1"
-    val SECTION_TWO = "Section 2"
-    val SECTION_THREE = "Section 3"
-    val SECTION_FOUR = "Section 4"
+    const val SECTION_ONE = "Section 1"
+    const val SECTION_TWO = "Section 2"
+    const val SECTION_THREE = "Section 3"
+    const val SECTION_FOUR = "Section 4"
 
-    val NOT_ACTIVE = "NOT_ACTIVE"
-    val ACTIVE = "ACTIVE"
+    const val NOT_ACTIVE = "NOT_ACTIVE"
+    const val ACTIVE = "ACTIVE"
 
     const val TOKEN = "token"
     const val ERROR = "Error"

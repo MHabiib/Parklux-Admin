@@ -1,5 +1,6 @@
 package com.future.pms.admin.network
 
+import android.graphics.drawable.Drawable
 import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.model.response.ListLevel
 import com.future.pms.admin.model.response.SectionDetails
@@ -25,4 +26,8 @@ interface ApiServiceInterface {
   @POST("api/parking-zone/update-level/{id}") fun updateLevel(@Path("id") idLevel: String, @Body
   slotsLayout: String, @Query("access_token")
   accessToken: String?): Observable<String>
+
+  @GET("api/qr/{imageName}") fun getQrImage(
+    @Path("imageName") imageName: String, @Query("access_token") accessToken: String?
+  ): Observable<Drawable>
 }
