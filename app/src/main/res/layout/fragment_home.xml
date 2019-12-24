@@ -18,13 +18,40 @@
                 android:id="@+id/btn_add_level"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/twelve_dp"
-                android:layout_marginTop="@dimen/twelve_dp"
-                android:background="@android:color/transparent"
+                android:background="@drawable/card_layout_white_right_bottom_radius"
                 android:src="@drawable/ic_add"
+                android:paddingLeft="@dimen/twelve_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="@id/level_name"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/level_name" />
+
+            <ImageButton
+                android:id="@+id/btn_edit_level"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:background="@drawable/card_layout_white"
+                android:padding="@dimen/eight_dp"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/level_name"
+                app:layout_constraintRight_toLeftOf="@id/btn_sync"
+                app:layout_constraintTop_toTopOf="@id/level_name" />
+
+            <ImageButton
+                android:id="@+id/btn_sync"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/card_layout_white"
+                android:padding="@dimen/eight_dp"
+                android:src="@drawable/ic_sync_off"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@id/level_name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/level_name" />
 
             <Spinner
                 android:id="@+id/level_name"
@@ -35,7 +62,7 @@
                 android:textSize="@dimen/h_medium"
                 android:theme="@style/spinnerTheme"
                 app:layout_constraintLeft_toRightOf="@id/btn_add_level"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn_edit_level"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +101,8 @@
                             android:paddingLeft="@dimen/twelve_dp"
                             android:paddingRight="@dimen/twelve_dp"
                             android:text="@string/edit_mode"
-                            android:textColor="@color/colorPrimary"
+                            android:enabled="false"
+                            android:textColor="@color/darkGrey"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/guideline5"
                             app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
@@ -86,12 +114,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/six_dp"
                             android:layout_marginTop="@dimen/twelve_dp"
-                            android:background="@drawable/card_layout_white"
+                            android:background="@drawable/card_layout_grey"
                             android:fontFamily="sans-serif-light"
                             android:paddingLeft="@dimen/twelve_dp"
+                            android:enabled="false"
                             android:paddingRight="@dimen/twelve_dp"
                             android:text="@string/view_section"
-                            android:textColor="@color/colorSecondary"
+                            android:textColor="@color/darkGrey"
                             app:layout_constraintHorizontal_bias="0.85"
                             app:layout_constraintLeft_toRightOf="@id/guideline5"
                             app:layout_constraintRight_toRightOf="parent"
@@ -273,7 +302,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.5" />
+                            app:layout_constraintGuide_begin="140dp" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </ScrollView>
@@ -283,16 +312,30 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parking_layout"
             android:layout_width="@dimen/zero_dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:background="@drawable/card_layout_parking_layout"
             app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintBottom_toTopOf="@id/guideline10"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_select_level"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/select_level"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35" />
 
             <TextView
                 android:id="@+id/tv_select_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select level"
+                app:layout_constraintVertical_bias="0.70"
                 android:textColor="@color/darkGrey"
                 android:textSize="@dimen/h_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -324,8 +367,7 @@
                         <HorizontalScrollView
                             android:id="@+id/layoutPark"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></HorizontalScrollView>
-
+                            android:layout_height="wrap_content" />
                     </ScrollView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
@@ -355,7 +397,7 @@
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="@dimen/zero_dp"
                 android:layout_marginLeft="@dimen/twelve_dp"
-                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/eight_dp"
                 android:layout_marginRight="@dimen/six_dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline9"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -376,7 +418,7 @@
                     android:id="@+id/constraintLayout5"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/zero_dp"
-                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
                     android:layout_marginBottom="@dimen/six_dp"
                     android:background="@drawable/card_layout_white"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -409,7 +451,7 @@
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="@dimen/zero_dp"
                 android:layout_marginLeft="@dimen/six_dp"
-                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/eight_dp"
                 android:layout_marginRight="@dimen/twelve_dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline9"
                 app:layout_constraintLeft_toRightOf="@id/guideline8"
@@ -429,7 +471,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/zero_dp"
-                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
                     android:layout_marginBottom="@dimen/six_dp"
                     android:background="@drawable/card_layout_white"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -465,7 +507,7 @@
                 android:layout_marginLeft="@dimen/twelve_dp"
                 android:layout_marginTop="@dimen/six_dp"
                 android:layout_marginRight="@dimen/six_dp"
-                android:layout_marginBottom="@dimen/twelve_dp"
+                android:layout_marginBottom="@dimen/twenty_eight_dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/guideline8"
@@ -484,7 +526,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/zero_dp"
-                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
                     android:background="@drawable/card_layout_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/section_three_tag">
@@ -519,7 +561,7 @@
                 android:layout_marginLeft="@dimen/six_dp"
                 android:layout_marginTop="@dimen/six_dp"
                 android:layout_marginRight="@dimen/twelve_dp"
-                android:layout_marginBottom="@dimen/twelve_dp"
+                android:layout_marginBottom="@dimen/twenty_eight_dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/guideline8"
                 app:layout_constraintRight_toRightOf="parent"
@@ -538,7 +580,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/zero_dp"
-                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
                     android:background="@drawable/card_layout_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/section_four_tag">
@@ -577,8 +619,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintGuide_percent="0.47" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/twenty_four_dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

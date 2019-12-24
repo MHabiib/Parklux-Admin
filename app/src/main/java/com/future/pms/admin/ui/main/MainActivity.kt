@@ -1,7 +1,6 @@
 package com.future.pms.admin.ui.main
 
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -9,6 +8,7 @@ import com.future.pms.admin.R
 import com.future.pms.admin.databinding.ActivityMainBinding
 import com.future.pms.admin.di.component.DaggerActivityComponent
 import com.future.pms.admin.di.module.ActivityModule
+import com.future.pms.admin.ui.activitylist.ActivityListFragment
 import com.future.pms.admin.ui.barcode.BarcodeFragment
 import com.future.pms.admin.ui.home.HomeFragment
 import com.future.pms.admin.ui.profile.ProfileFragment
@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity(), MainContract {
         R.id.navigation_profile -> {
           presenter.onProfileIconClick()
         }
+          R.id.navigation_activity_list -> {
+              presenter.onActivityListIconClick()
+          }
       }
       return@setOnNavigationItemSelectedListener true
     }
@@ -45,34 +48,111 @@ class MainActivity : AppCompatActivity(), MainContract {
   }
 
   override fun showHomeFragment() {
-    binding.navView.visibility = View.VISIBLE
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) == null) {
-      binding.navView.menu.findItem(R.id.navigation_home).isChecked = true
-      supportFragmentManager.beginTransaction().disallowAddToBackStack().setCustomAnimations(
-        R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left
-      ).replace(
+        supportFragmentManager.beginTransaction().add(
         R.id.frame, HomeFragment().newInstance(), HomeFragment.TAG
       ).commit()
+    } else {
+        supportFragmentManager.beginTransaction().show(
+            supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
+        ).commit()
     }
+      if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
+          ).commit()
+      }
+      if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
+          ).commit()
+      }
+      if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
+          ).commit()
+      }
   }
 
   override fun showBarcodeFragment() {
-    binding.navView.visibility = View.VISIBLE
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().disallowAddToBackStack().replace(
+        supportFragmentManager.beginTransaction().add(
         R.id.frame, BarcodeFragment().newInstance(), BarcodeFragment.TAG
       ).commit()
+    } else {
+        supportFragmentManager.beginTransaction().show(
+            supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
+        ).commit()
     }
+      if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
+          ).commit()
+      }
+      if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
+          ).commit()
+      }
+      if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
+          ).commit()
+      }
   }
+
+    override fun showActivityListFragment() {
+        if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) == null) {
+            supportFragmentManager.beginTransaction().add(
+                R.id.frame, ActivityListFragment().newInstance(), ActivityListFragment.TAG
+            ).commit()
+        } else {
+            supportFragmentManager.beginTransaction().show(
+                supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
+            ).commit()
+        }
+        if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+            supportFragmentManager.beginTransaction().hide(
+                supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
+            ).commit()
+        }
+        if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
+            supportFragmentManager.beginTransaction().hide(
+                supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
+            ).commit()
+        }
+        if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
+            supportFragmentManager.beginTransaction().hide(
+                supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
+            ).commit()
+        }
+    }
 
   override fun showProfileFragment() {
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().disallowAddToBackStack().setCustomAnimations(
-        R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right
-      ).replace(
+        supportFragmentManager.beginTransaction().add(
         R.id.frame, ProfileFragment().newInstance(), ProfileFragment.TAG
       ).commit()
+    } else {
+        supportFragmentManager.beginTransaction().show(
+            supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
+        ).commit()
     }
+      if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
+          ).commit()
+      }
+      if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
+          ).commit()
+      }
+      if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
+          supportFragmentManager.beginTransaction().hide(
+              supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
+          ).commit()
+      }
   }
 
   private fun injectDependency() {

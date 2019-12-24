@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(), LoginContract {
 
   private fun isValid(): Boolean {
     if (txtEmail?.text.toString().isEmpty()) return false
-    if (txtPassword?.text.toString().isNullOrEmpty()) return false
+      if (txtPassword?.text.toString().isEmpty()) return false
     return true
   }
 

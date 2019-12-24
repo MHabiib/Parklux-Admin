@@ -26,7 +26,7 @@ class BarcodePresenter @Inject constructor() {
 
   fun getQrImage(accessToken: String) {
     val subscribe =
-      api.getQrImage("Grand Indonesia - LG 01.png", accessToken).subscribeOn(Schedulers.io())
+        api.getQrImage(accessToken).subscribeOn(Schedulers.io())
         .observeOn(
           AndroidSchedulers.mainThread()
         ).subscribe({

@@ -1,9 +1,9 @@
 package com.future.pms.admin.network
 
-import android.graphics.drawable.Drawable
 import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.model.response.ListLevel
 import com.future.pms.admin.model.response.SectionDetails
+import com.future.pms.admin.model.response.ongoingpastbooking.Booking
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -24,10 +24,21 @@ interface ApiServiceInterface {
       @Query("access_token") accessToken: String?): Observable<String>
 
   @POST("api/parking-zone/update-level/{id}") fun updateLevel(@Path("id") idLevel: String, @Body
-  slotsLayout: String, @Query("access_token")
-  accessToken: String?): Observable<String>
+  slotsLayout: String, @Query("access_token") accessToken: String?
+  ): Observable<String>
 
-  @GET("api/qr/{imageName}") fun getQrImage(
-    @Path("imageName") imageName: String, @Query("access_token") accessToken: String?
-  ): Observable<Drawable>
+    @POST("api/parking-zone/add-level")
+    fun addParkingLevel(
+        @Body levelName: String,
+        @Query("access_token") accessToken: String?
+    ): Observable<String>
+
+    @GET("api/qr")
+    fun getQrImage(@Query("access_token") accessToken: String?): Observable<String>
+
+    @GET("/api/booking/past/parking-zone")
+    fun findPastBookingParkingZone(
+        @Query("access_token")
+        accessToken: String?, @Query("page") page: Int?
+    ): Observable<Booking>
 }

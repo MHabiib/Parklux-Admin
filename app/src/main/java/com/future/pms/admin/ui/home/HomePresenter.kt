@@ -44,6 +44,22 @@ class HomePresenter @Inject constructor() {
     subscriptions.add(subscribe)
   }
 
+    fun addParkingLevel(levelName: String, accessToken: String) {
+        view.showProgress(true)
+        val subscribe = api.addParkingLevel(levelName, accessToken).subscribeOn(
+            Schedulers.io()
+        ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+            if (null != it) {
+                view.showProgress(false)
+                view.addParkingLevelSuccess(it)
+            }
+        }, {
+            it.message?.let { it1 -> view.showErrorMessage(it1) }
+        })
+        view.showProgress(false)
+        subscriptions.add(subscribe)
+    }
+
   fun getSectionDetails(idLevel: String, accessToken: String) {
     view.showProgress(true)
     val subscribe = api.getSectionDetails(idLevel, accessToken).subscribeOn(
