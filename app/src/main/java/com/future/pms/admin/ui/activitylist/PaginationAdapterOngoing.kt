@@ -1,9 +1,9 @@
 package com.future.pms.admin.ui.activitylist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +12,7 @@ import com.future.pms.admin.model.response.ongoingpastbooking.Content
 import com.future.pms.admin.util.Utils
 import java.util.*
 
-class PaginationAdapter(private val context: Context?) :
+class PaginationAdapterOngoing :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var bookingList: MutableList<Content>? = null
     private var isLoadingAdded = false
@@ -51,10 +51,9 @@ class PaginationAdapter(private val context: Context?) :
                 bookingViewHolder.customerName.text = booking?.customerName
                 bookingViewHolder.customerPhone.text = booking?.customerPhone
                 bookingViewHolder.slot.text = booking?.slotName
-                bookingViewHolder.totalPrice.text = booking?.totalPrice
-                bookingViewHolder.timeRang.text = String.format("%s > %s",
-                    booking?.dateIn?.let { Utils.convertLongToTimeOnly(it) },
-                    booking?.dateOut?.let { Utils.convertLongToTimeOnly(it) })
+              bookingViewHolder.totalPrice.visibility = View.INVISIBLE
+              bookingViewHolder.ivTotalPrice.visibility = View.INVISIBLE
+              bookingViewHolder.timeRang.text = booking?.dateIn?.let { Utils.convertLongToTime(it) }
             }
 
             LOADING -> {
@@ -100,6 +99,10 @@ class PaginationAdapter(private val context: Context?) :
         }
     }
 
+  fun clear() {
+    bookingList?.clear()
+  }
+
     private fun getItem(position: Int): Content? {
         return bookingList?.get(position)
     }
@@ -111,6 +114,7 @@ class PaginationAdapter(private val context: Context?) :
             itemView.findViewById<View>(R.id.tv_customer_phone) as TextView
         val slot: TextView = itemView.findViewById<View>(R.id.tv_slot) as TextView
         val totalPrice: TextView = itemView.findViewById<View>(R.id.tv_total_price) as TextView
+      val ivTotalPrice: ImageView = itemView.findViewById<View>(R.id.iv_total_price) as ImageView
         val timeRang: TextView = itemView.findViewById<View>(R.id.tv_time_range) as TextView
 
     }

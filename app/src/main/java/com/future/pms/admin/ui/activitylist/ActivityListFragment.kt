@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,10 +25,13 @@ class ActivityListFragment : Fragment(), ActivityListContract {
     @Inject
     lateinit var presenter: ActivityListPresenter
     private lateinit var binding: FragmentActivityListBinding
-    private lateinit var paginationAdapter: PaginationAdapter
+    private lateinit var paginationAdapterPast: PaginationAdapterPast
+    private lateinit var paginationAdapterOngoing: PaginationAdapterOngoing
     private lateinit var accessToken: String
-    private var currentPage = 0
-    private var isLastPage = false
+    private var currentPagePast = 0
+    private var currentPageOngoing = 0
+    private var isLastPagePast = false
+    private var isLastPageOngoing = false
 
     companion object {
         const val TAG: String = ACTIVITY_LIST_FRAGMENT
@@ -54,20 +56,53 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         ).accessToken
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        paginationAdapter = PaginationAdapter(context)
-        binding.rvPast.layoutManager = linearLayoutManager
-        binding.rvPast.adapter = this.paginationAdapter
+        val linearLayoutManagerPast = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
+                false)
+        val linearLayoutManagerOngoing = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
+                false)
+        binding.refreshOngoing.setOnRefreshListener {
+            paginationAdapterOngoing.clear()
+            paginationAdapterOngoing.notifyDataSetChanged()
+            currentPageOngoing = 0
+            isLastPageOngoing = false
+            presenter.findOngoingBookingParkingZone(accessToken, currentPageOngoing)
+            binding.refreshOngoing.isRefreshing = false
+        }
+        binding.refreshPast.setOnRefreshListener {
+            paginationAdapterPast.clear()
+            paginationAdapterPast.notifyDataSetChanged()
+            currentPagePast = 0
+            isLastPagePast = false
+            presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+            binding.refreshPast.isRefreshing = false
+        }
+        paginationAdapterPast = PaginationAdapterPast()
+        paginationAdapterOngoing = PaginationAdapterOngoing()
+
+        binding.rvPast.layoutManager = linearLayoutManagerPast
+        binding.rvPast.adapter = this.paginationAdapterPast
         binding.rvPast.addOnScrollListener(object :
-            PaginationScrollListener(linearLayoutManager, isLastPage) {
+                PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
             override fun loadMoreItems() {
-                if (!isLastPage) {
-                    currentPage += 1
-                    loadNextPage()
+                if (!isLastPagePast) {
+                    currentPagePast += 1
+                    loadPastNextPage()
                 }
             }
         })
-        loadFirstPage()
+        binding.rvOngoing.layoutManager = linearLayoutManagerOngoing
+        binding.rvOngoing.adapter = this.paginationAdapterOngoing
+        binding.rvOngoing.addOnScrollListener(object :
+                PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
+            override fun loadMoreItems() {
+                if (!isLastPageOngoing) {
+                    currentPageOngoing += 1
+                    loadOngoingNextPage()
+                }
+            }
+        })
+        presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+        presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
         return binding.root
     }
 
@@ -76,29 +111,56 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         presenter.attach(this)
     }
 
-    private fun loadNextPage() {
-        presenter.findPastBookingParkingZone(accessToken, currentPage)
+    private fun loadOngoingNextPage() {
+        presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
     }
 
-    private fun loadFirstPage() {
-        presenter.findPastBookingParkingZone(accessToken, currentPage)
+    private fun loadPastNextPage() {
+        presenter.findPastBookingParkingZone(accessToken, currentPagePast)
     }
 
     override fun findPastBookingParkingZoneSuccess(booking: Booking) {
-        if (currentPage != 0) {
-            paginationAdapter.removeLoadingFooter()
-            paginationAdapter.addAll(booking.content)
-            if (currentPage <= booking.totalPages) paginationAdapter.addLoadingFooter()
-            else isLastPage = true
+        if (currentPagePast != 0) {
+            if (currentPagePast <= booking.totalPages - 1) {
+                paginationAdapterPast.addLoadingFooter()
+                paginationAdapterPast.addAll(booking.content)
+                paginationAdapterPast.removeLoadingFooter()
+            } else {
+                isLastPagePast = true
+            }
         } else {
-            paginationAdapter.addAll(booking.content)
-            if (currentPage <= booking.totalPages) paginationAdapter.addLoadingFooter()
-            else isLastPage = true
+            paginationAdapterPast.addAll(booking.content)
+            if (currentPagePast >= booking.totalPages - 1) {
+                isLastPagePast = true
+            }
+        }
+    }
+
+    override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
+        if (currentPageOngoing != 0) {
+            if (currentPageOngoing <= booking.totalPages - 1) {
+                paginationAdapterOngoing.addLoadingFooter()
+                paginationAdapterOngoing.addAll(booking.content)
+                paginationAdapterOngoing.removeLoadingFooter()
+            } else {
+                isLastPageOngoing = true
+            }
+        } else {
+            paginationAdapterOngoing.addAll(booking.content)
+            if (currentPageOngoing >= booking.totalPages - 1) {
+                isLastPageOngoing = true
+            }
         }
     }
 
     override fun findPastBookingParkingZoneFailed(response: String) {
-        Toast.makeText(context, response, Toast.LENGTH_LONG).show()
+        isLastPagePast = true
+        paginationAdapterPast.removeLoadingFooter()
+    }
+
+    override fun findOngoingBookingParkingZoneFailed(response: String) {
+        isLastPageOngoing = true
+        paginationAdapterOngoing.removeLoadingFooter()
     }
 
 

@@ -19,6 +19,7 @@ import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT
+import com.future.pms.admin.util.Utils
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_profile.*
 import timber.log.Timber
@@ -104,7 +105,7 @@ class ProfileFragment : Fragment(), ProfileContract {
       profileName.setText(parkingZone.body.name)
       profileEmail.setText(parkingZone.body.emailAdmin)
       profilePhoneNumber.setText(parkingZone.body.phoneNumber)
-      price.setText(parkingZone.body.price.toString())
+      price.setText(Utils.thousandSeparator(parkingZone.body.price.toInt()))
       openHour.setText(parkingZone.body.openHour)
       address.setText(parkingZone.body.address)
       password.hint = "********"

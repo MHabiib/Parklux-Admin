@@ -23,6 +23,7 @@ import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
 import com.future.pms.admin.util.Constants.Companion.BARCODE_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.TOKEN
+import com.future.pms.admin.util.Utils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -81,7 +82,7 @@ class BarcodeFragment : Fragment(), BarcodeContract {
       tvAddressPhone.text = getString(R.string.two_value_comma, parkingZone.body.address,
           parkingZone.body.phoneNumber)
       tvOpenHourPrice.text = getString(R.string.two_value_newline, parkingZone.body.openHour,
-          parkingZone.body.price.toString())
+          Utils.thousandSeparator(parkingZone.body.price.toInt()))
     }
   }
 

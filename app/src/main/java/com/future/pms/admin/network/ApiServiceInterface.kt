@@ -41,4 +41,7 @@ interface ApiServiceInterface {
         @Query("access_token")
         accessToken: String?, @Query("page") page: Int?
     ): Observable<Booking>
+
+  @GET("/api/booking/ongoing/parking-zone") fun findOngoingBookingParkingZone(@Query("access_token")
+  accessToken: String?, @Query("page") page: Int?): Observable<Booking>
 }

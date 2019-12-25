@@ -6,4 +6,8 @@ interface ActivityListContract {
     fun findPastBookingParkingZoneSuccess(booking: Booking)
 
     fun findPastBookingParkingZoneFailed(response: String)
+
+    fun findOngoingBookingParkingZoneFailed(response: String)
+
+    fun findOngoingBookingParkingZoneSuccess(booking: Booking)
 }

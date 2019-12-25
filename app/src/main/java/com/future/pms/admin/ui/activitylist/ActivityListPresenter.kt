@@ -25,6 +25,18 @@ class ActivityListPresenter @Inject constructor() {
         subscriptions.add(subscribe)
     }
 
+    fun findOngoingBookingParkingZone(accessToken: String, page: Int) {
+        val subscribe = api.findOngoingBookingParkingZone(accessToken, page).subscribeOn(
+                Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+            if (null != it) {
+                view.findOngoingBookingParkingZoneSuccess(it)
+            }
+        }, {
+            it.message?.let { it1 -> view.findOngoingBookingParkingZoneFailed(it1) }
+        })
+        subscriptions.add(subscribe)
+    }
+
     fun attach(view: ActivityListContract) {
         this.view = view
     }

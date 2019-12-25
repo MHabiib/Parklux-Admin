@@ -9,6 +9,8 @@ class Constants {
     const val BARCODE_FRAGMENT = "BarcodeFragment"
 
       const val TIME_FORMAT = "HH:mm"
+    const val SHORT_MONTH_DATE_TIME_FORMAT = "HH:mm - dd MMM yy"
+    const val FULL_DATE_TIME_FORMAT = "HH:mm - dd MMMM yy"
 
     const val SLOT_TAKEN = 'T'
     const val SLOT_EMPTY = 'E'
