@@ -415,6 +415,7 @@ class HomeFragment : Fragment(), HomeContract {
         layoutSlotDetailLevel.exitEditMode.visibility = View.INVISIBLE
       }
     }
+    presenter.editModeParkingLevel(idLevel, accessToken)
     presenter.getParkingLayout(idLevel, accessToken)
   }
 
@@ -424,6 +425,10 @@ class HomeFragment : Fragment(), HomeContract {
       emptySlotValue.text = totalEmptySlot.toString()
       takenSlotValue.text = totalTakenSlot.toString()
     }
+  }
+
+  override fun editModeParkingLevelSuccess(response: String) {
+    Timber.tag(TAG).d(response)
   }
 
   override fun addParkingLevelSuccess(response: String) {

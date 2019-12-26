@@ -13,4 +13,5 @@ interface HomeContract {
   fun getLevelsSuccess(listLevel: List<ListLevel>)
   fun getLayoutFailed(error: String)
   fun addParkingLevelSuccess(response: String)
+  fun editModeParkingLevelSuccess(response: String)
 }

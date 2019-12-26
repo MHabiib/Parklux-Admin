@@ -15,8 +15,7 @@ class HomePresenter @Inject constructor() {
   fun getParkingLayout(idLevel: String, accessToken: String) {
     view.showProgress(true)
     val subscribe = api.getParkingLayout(idLevel, accessToken).subscribeOn(
-      Schedulers.io()
-    ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         view.showProgress(false)
         view.getLayoutSuccess(it)
@@ -30,9 +29,8 @@ class HomePresenter @Inject constructor() {
 
   fun getLevels(accessToken: String) {
     view.showProgress(true)
-    val subscribe = api.getLevels(accessToken).subscribeOn(
-      Schedulers.io()
-    ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+    val subscribe = api.getLevels(accessToken).subscribeOn(Schedulers.io()).observeOn(
+        AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         view.showProgress(false)
         view.getLevelsSuccess(it)
@@ -44,27 +42,25 @@ class HomePresenter @Inject constructor() {
     subscriptions.add(subscribe)
   }
 
-    fun addParkingLevel(levelName: String, accessToken: String) {
-        view.showProgress(true)
-        val subscribe = api.addParkingLevel(levelName, accessToken).subscribeOn(
-            Schedulers.io()
-        ).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            if (null != it) {
-                view.showProgress(false)
-                view.addParkingLevelSuccess(it)
-            }
-        }, {
-            it.message?.let { it1 -> view.showErrorMessage(it1) }
-        })
+  fun addParkingLevel(levelName: String, accessToken: String) {
+    view.showProgress(true)
+    val subscribe = api.addParkingLevel(levelName, accessToken).subscribeOn(
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+      if (null != it) {
         view.showProgress(false)
-        subscriptions.add(subscribe)
-    }
+        view.addParkingLevelSuccess(it)
+      }
+    }, {
+      it.message?.let { it1 -> view.showErrorMessage(it1) }
+    })
+    view.showProgress(false)
+    subscriptions.add(subscribe)
+  }
 
   fun getSectionDetails(idLevel: String, accessToken: String) {
     view.showProgress(true)
     val subscribe = api.getSectionDetails(idLevel, accessToken).subscribeOn(
-      Schedulers.io()
-    ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         view.showProgress(false)
         view.getSectionDetailsSuccess(it)
@@ -79,8 +75,7 @@ class HomePresenter @Inject constructor() {
   fun updateParkingSection(idSection: String, accessToken: String) {
     view.showProgress(true)
     val subscribe = api.updateParkingSection(idSection, accessToken).subscribeOn(
-      Schedulers.io()
-    ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         view.showProgress(false)
         view.updateParkingSectionSuccess(it)
@@ -95,11 +90,25 @@ class HomePresenter @Inject constructor() {
   fun updateLevel(idLevel: String, slotsLayout: String, accessToken: String) {
     view.showProgress(true)
     val subscribe = api.updateLevel(idLevel, slotsLayout, accessToken).subscribeOn(
-        Schedulers.io()
-    ).observeOn(AndroidSchedulers.mainThread()).subscribe({
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         view.showProgress(false)
         view.updateParkingLayoutSuccess(it)
+      }
+    }, {
+      it.message?.let { itl -> view.showErrorMessage(itl) }
+    })
+    view.showProgress(false)
+    subscriptions.add(subscribe)
+  }
+
+  fun editModeParkingLevel(idLevel: String, accessToken: String) {
+    view.showProgress(true)
+    val subscribe = api.editModeParkingLevel(idLevel, accessToken).subscribeOn(
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+      if (null != it) {
+        view.showProgress(false)
+        view.editModeParkingLevelSuccess(it)
       }
     }, {
       it.message?.let { itl -> view.showErrorMessage(itl) }
