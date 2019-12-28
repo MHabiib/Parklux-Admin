@@ -10,14 +10,12 @@ object UnsafeOkHttpClient {
     get() {
       try {
         val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
-          override fun checkClientTrusted(
-            chain: Array<java.security.cert.X509Certificate>, authType: String
-          ) { //No Implement Required
+          override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>,
+              authType: String) { //No Implement Required
           }
 
-          override fun checkServerTrusted(
-            chain: Array<java.security.cert.X509Certificate>, authType: String
-          ) {  //No Implement Required
+          override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>,
+              authType: String) {  //No Implement Required
           }
 
           override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {

@@ -15,8 +15,7 @@ class BarcodePresenter @Inject constructor() {
 
   fun loadData(accessToken: String) {
     val subscribe = api.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
-      AndroidSchedulers.mainThread()
-    ).subscribe({ parkingZone: ParkingZone ->
+        AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZone ->
       view.loadCustomerDetailSuccess(parkingZone)
     }, { error ->
       view.showErrorMessage(error.localizedMessage)
@@ -25,15 +24,12 @@ class BarcodePresenter @Inject constructor() {
   }
 
   fun getQrImage(accessToken: String) {
-    val subscribe =
-        api.getQrImage(accessToken).subscribeOn(Schedulers.io())
-        .observeOn(
-          AndroidSchedulers.mainThread()
-        ).subscribe({
-        view.getQrImageSuccess(it)
-      }, { error ->
-        view.showErrorMessage(error.localizedMessage)
-      })
+    val subscribe = api.getQrImage(accessToken).subscribeOn(Schedulers.io()).observeOn(
+        AndroidSchedulers.mainThread()).subscribe({
+      view.getQrImageSuccess(it)
+    }, { error ->
+      view.showErrorMessage(error.localizedMessage)
+    })
     subscriptions.add(subscribe)
   }
 

@@ -20,9 +20,8 @@ class LoginActivity : AppCompatActivity(), LoginContract {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    window.setFlags(
-      WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
-    )
+    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN)
     setContentView(R.layout.activity_login)
     injectDependency()
     presenter.attach(this)
@@ -38,7 +37,7 @@ class LoginActivity : AppCompatActivity(), LoginContract {
 
   private fun isValid(): Boolean {
     if (txtEmail?.text.toString().isEmpty()) return false
-      if (txtPassword?.text.toString().isEmpty()) return false
+    if (txtPassword?.text.toString().isEmpty()) return false
     return true
   }
 
@@ -52,8 +51,7 @@ class LoginActivity : AppCompatActivity(), LoginContract {
     val view = currentFocus
     view?.let {
       val mInputMethodManager = getSystemService(
-        Activity.INPUT_METHOD_SERVICE
-      ) as InputMethodManager
+          Activity.INPUT_METHOD_SERVICE) as InputMethodManager
       mInputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
     }
   }
@@ -90,8 +88,7 @@ class LoginActivity : AppCompatActivity(), LoginContract {
 
   private fun injectDependency() {
     val activityComponent = DaggerActivityComponent.builder().activityModule(
-      ActivityModule(this)
-    ).build()
+        ActivityModule(this)).build()
     activityComponent.inject(this)
   }
 }

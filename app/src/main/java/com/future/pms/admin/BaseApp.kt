@@ -22,8 +22,7 @@ class BaseApp : Application() {
 
   private fun setup() {
     component = DaggerApplicationComponent.builder().applicationModule(
-      ApplicationModule(this)
-    ).build()
+        ApplicationModule(this)).build()
     component.inject(this)
   }
 }

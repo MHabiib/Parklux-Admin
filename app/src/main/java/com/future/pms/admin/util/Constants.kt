@@ -5,10 +5,10 @@ class Constants {
     const val AUTHENTCATION = "authentication"
     const val HOME_FRAGMENT = "HomeFragment"
     const val PROFILE_FRAGMENT = "ProfileFragment"
-      const val ACTIVITY_LIST_FRAGMENT = "ActivityListFragment"
+    const val ACTIVITY_LIST_FRAGMENT = "ActivityListFragment"
     const val BARCODE_FRAGMENT = "BarcodeFragment"
 
-      const val TIME_FORMAT = "HH:mm"
+    const val TIME_FORMAT = "HH:mm"
     const val SHORT_MONTH_DATE_TIME_FORMAT = "HH:mm - dd MMM yy"
     const val FULL_DATE_TIME_FORMAT = "HH:mm - dd MMMM yy"
 
@@ -33,15 +33,15 @@ class Constants {
     const val TOKEN = "token"
     const val ERROR = "Error"
 
-      const val parkSize = 88
-      const val parkMargin = 0
-      const val parkPadding = 0
+    const val parkSize = 88
+    const val parkMargin = 0
+    const val parkPadding = 0
     const val STATUS_AVAILABLE = 1
     const val STATUS_BOOKED = 2
     const val STATUS_RESERVED = 3
     const val STATUS_ROAD = 4
 
-    const val EDIT_MODE = 0
-    const val EXIT_EDIT_MODE = 1
+    const val EDIT_MODE = "EditMode"
+    const val EXIT_EDIT_MODE = "ExitEditMode"
   }
 }

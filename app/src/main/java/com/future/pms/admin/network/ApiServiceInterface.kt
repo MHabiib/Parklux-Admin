@@ -29,8 +29,9 @@ interface ApiServiceInterface {
   @POST("api/parking-zone/add-level") fun addParkingLevel(@Body levelName: String,
       @Query("access_token") accessToken: String?): Observable<String>
 
-  @POST("api/parking-zone/level/edit-mode/{id}") fun editModeParkingLevel(@Path("id")
-  idLevel: String, @Query("access_token") accessToken: String?): Observable<String>
+  @POST("api/parking-zone/level/edit-mode/{id}/{mode}") fun editModeParkingLevel(@Path("id")
+  idLevel: String, @Path("mode") mode: String, @Query("access_token")
+  accessToken: String?): Observable<String>
 
   @GET("api/qr") fun getQrImage(@Query("access_token") accessToken: String?): Observable<String>
 

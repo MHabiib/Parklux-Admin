@@ -8,12 +8,9 @@ class RetrofitClient {
   companion object Factory {
     fun create(): ApiServiceInterface {
       val retrofit = retrofit2.Retrofit.Builder().baseUrl(
-        NetworkConstant.BASE
-      ).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).client(
-        UnsafeOkHttpClient.unsafeOkHttpClient
-      ).addConverterFactory(
-        GsonConverterFactory.create(GsonBuilder().setLenient().create())
-      ).build()
+          NetworkConstant.BASE).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).client(
+          UnsafeOkHttpClient.unsafeOkHttpClient).addConverterFactory(
+          GsonConverterFactory.create(GsonBuilder().setLenient().create())).build()
 
       return retrofit.create(ApiServiceInterface::class.java)
     }

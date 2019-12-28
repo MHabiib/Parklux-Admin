@@ -14,13 +14,11 @@ import java.util.*
 class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var bookingList: MutableList<Content>? = null
   private var isLoadingAdded = false
+  private val loading = 0
+  private val item = 1
 
   init {
     bookingList = LinkedList()
-  }
-
-  fun setBookingList(bookingList: MutableList<Content>) {
-    this.bookingList = bookingList
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -28,11 +26,11 @@ class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val inflater = LayoutInflater.from(parent.context)
 
     when (viewType) {
-      ITEM -> {
+      item -> {
         val viewItem = inflater.inflate(R.layout.item_list, parent, false)
         viewHolder = BookingViewHolder(viewItem)
       }
-      LOADING -> {
+      loading -> {
         val viewLoading = inflater.inflate(R.layout.item_progress, parent, false)
         viewHolder = LoadingViewHolder(viewLoading)
       }
@@ -44,7 +42,7 @@ class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val booking = bookingList?.get(position)
     when (getItemViewType(position)) {
-      ITEM -> {
+      item -> {
         val bookingViewHolder = holder as BookingViewHolder
         bookingViewHolder.customerName.text = booking?.customerName
         bookingViewHolder.customerPhone.text = booking?.customerPhone
@@ -58,7 +56,7 @@ class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             booking?.dateOut?.let { Utils.convertLongToTimeShortMonth(it) })
       }
 
-      LOADING -> {
+      loading -> {
         val loadingViewHolder = holder as LoadingViewHolder
         loadingViewHolder.progressBar.visibility = View.VISIBLE
       }
@@ -70,7 +68,7 @@ class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun getItemViewType(position: Int): Int {
-    return if (position == bookingList?.size?.minus(1) && isLoadingAdded) LOADING else ITEM
+    return if (position == bookingList?.size?.minus(1) && isLoadingAdded) loading else item
   }
 
   fun addLoadingFooter() {
@@ -110,26 +108,15 @@ class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   inner class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
     val customerName: TextView = itemView.findViewById<View>(R.id.tv_customer_name) as TextView
     val customerPhone: TextView = itemView.findViewById<View>(R.id.tv_customer_phone) as TextView
     val slot: TextView = itemView.findViewById<View>(R.id.tv_slot) as TextView
     val totalPrice: TextView = itemView.findViewById<View>(R.id.tv_total_price) as TextView
     val timeRang: TextView = itemView.findViewById<View>(R.id.tv_time_range) as TextView
-
   }
 
   inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
     val progressBar: ProgressBar = itemView.findViewById<View>(
         R.id.loadmore_progress) as ProgressBar
-
   }
-
-  companion object {
-    private val LOADING = 0
-    private val ITEM = 1
-  }
-
-
 }

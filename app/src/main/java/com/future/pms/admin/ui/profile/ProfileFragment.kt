@@ -42,9 +42,8 @@ class ProfileFragment : Fragment(), ProfileContract {
     injectDependency()
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-  ): View? {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
     with(binding) {
       btnLogout.setOnClickListener {
@@ -59,10 +58,8 @@ class ProfileFragment : Fragment(), ProfileContract {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val accessToken = Gson().fromJson(
-      context?.getSharedPreferences(Constants.AUTHENTCATION, Context.MODE_PRIVATE)?.getString(
-        Constants.TOKEN, null
-      ), Token::class.java
-    ).accessToken
+        context?.getSharedPreferences(Constants.AUTHENTCATION, Context.MODE_PRIVATE)?.getString(
+            Constants.TOKEN, null), Token::class.java).accessToken
     presenter.attach(this)
     presenter.apply {
       subscribe()
@@ -72,8 +69,7 @@ class ProfileFragment : Fragment(), ProfileContract {
 
   override fun onSuccess() {
     TODO(
-      "not implemented"
-    ) //To change body of created functions use File | Settings | File Templates.
+        "not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
   override fun onFailed(e: String) {
@@ -139,8 +135,7 @@ class ProfileFragment : Fragment(), ProfileContract {
 
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-      FragmentModule()
-    ).build()
+        FragmentModule()).build()
     profileComponent.inject(this)
   }
 }

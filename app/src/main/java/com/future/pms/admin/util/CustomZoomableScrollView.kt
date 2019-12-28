@@ -23,36 +23,29 @@ class CustomZoomScrollView : ScrollView {
     //step 2: create instance from GestureDetector(this step should be place into onCreate())
     gestureDetector = GestureDetector(getContext(), GestureListener())
 
-    mScaleDetector = ScaleGestureDetector(
-      getContext(),
-      object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-          val scale = 1 - detector.scaleFactor
+    mScaleDetector = ScaleGestureDetector(getContext(),
+        object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+          override fun onScale(detector: ScaleGestureDetector): Boolean {
+            val scale = 1 - detector.scaleFactor
 
-          val prevScale = mScale
-          mScale += scale
+            val prevScale = mScale
+            mScale += scale
 
-          if (mScale < 0.1f)
-          // Minimum scale condition:
-            mScale = 0.1f
+            if (mScale < 0.1f)
+            // Minimum scale condition:
+              mScale = 0.1f
 
-          if (mScale > 10f)
-          // Maximum scale condition:
-            mScale = 10f
-          val scaleAnimation = ScaleAnimation(
-            1f / prevScale,
-            1f / mScale,
-            1f / prevScale,
-            1f / mScale,
-            detector.focusX,
-            detector.focusY
-          )
-          scaleAnimation.duration = 0
-          scaleAnimation.fillAfter = true
-          rootView.findViewById<View>(R.id.scroll_view).startAnimation(scaleAnimation)
-          return true
-        }
-      })
+            if (mScale > 10f)
+            // Maximum scale condition:
+              mScale = 10f
+            val scaleAnimation = ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale,
+                1f / mScale, detector.focusX, detector.focusY)
+            scaleAnimation.duration = 0
+            scaleAnimation.fillAfter = true
+            rootView.findViewById<View>(R.id.scroll_view).startAnimation(scaleAnimation)
+            return true
+          }
+        })
   }
 
   // step 3: override dispatchTouchEvent()

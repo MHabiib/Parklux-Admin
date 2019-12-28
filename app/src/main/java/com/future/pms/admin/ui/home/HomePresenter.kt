@@ -102,9 +102,9 @@ class HomePresenter @Inject constructor() {
     subscriptions.add(subscribe)
   }
 
-  fun editModeParkingLevel(idLevel: String, accessToken: String) {
+  fun editModeParkingLevel(idLevel: String, mode: String, accessToken: String) {
     view.showProgress(true)
-    val subscribe = api.editModeParkingLevel(idLevel, accessToken).subscribeOn(
+    val subscribe = api.editModeParkingLevel(idLevel, mode, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         view.showProgress(false)

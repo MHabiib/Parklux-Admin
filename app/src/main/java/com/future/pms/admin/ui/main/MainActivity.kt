@@ -20,9 +20,8 @@ class MainActivity : AppCompatActivity(), MainContract {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    window.setFlags(
-      WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
-    )
+    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN)
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     injectDependency()
     presenter.attach(this)
@@ -38,9 +37,9 @@ class MainActivity : AppCompatActivity(), MainContract {
         R.id.navigation_profile -> {
           presenter.onProfileIconClick()
         }
-          R.id.navigation_activity_list -> {
-              presenter.onActivityListIconClick()
-          }
+        R.id.navigation_activity_list -> {
+          presenter.onActivityListIconClick()
+        }
       }
       return@setOnNavigationItemSelectedListener true
     }
@@ -49,116 +48,95 @@ class MainActivity : AppCompatActivity(), MainContract {
 
   override fun showHomeFragment() {
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) == null) {
-        supportFragmentManager.beginTransaction().add(
-        R.id.frame, HomeFragment().newInstance(), HomeFragment.TAG
-      ).commit()
+      supportFragmentManager.beginTransaction().add(R.id.frame, HomeFragment().newInstance(),
+          HomeFragment.TAG).commit()
     } else {
-        supportFragmentManager.beginTransaction().show(
-            supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
-        ).commit()
+      supportFragmentManager.beginTransaction().show(
+          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
     }
-      if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
-          ).commit()
-      }
-      if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
-          ).commit()
-      }
-      if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
-          ).commit()
-      }
+    if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+    }
   }
 
   override fun showBarcodeFragment() {
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) == null) {
-        supportFragmentManager.beginTransaction().add(
-        R.id.frame, BarcodeFragment().newInstance(), BarcodeFragment.TAG
-      ).commit()
+      supportFragmentManager.beginTransaction().add(R.id.frame, BarcodeFragment().newInstance(),
+          BarcodeFragment.TAG).commit()
     } else {
-        supportFragmentManager.beginTransaction().show(
-            supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
-        ).commit()
+      supportFragmentManager.beginTransaction().show(
+          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
     }
-      if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
-          ).commit()
-      }
-      if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
-          ).commit()
-      }
-      if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
-          ).commit()
-      }
+    if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+    }
   }
 
-    override fun showActivityListFragment() {
-        if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) == null) {
-            supportFragmentManager.beginTransaction().add(
-                R.id.frame, ActivityListFragment().newInstance(), ActivityListFragment.TAG
-            ).commit()
-        } else {
-            supportFragmentManager.beginTransaction().show(
-                supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
-            ).commit()
-        }
-        if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
-            supportFragmentManager.beginTransaction().hide(
-                supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
-            ).commit()
-        }
-        if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
-            supportFragmentManager.beginTransaction().hide(
-                supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
-            ).commit()
-        }
-        if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
-            supportFragmentManager.beginTransaction().hide(
-                supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
-            ).commit()
-        }
+  override fun showActivityListFragment() {
+    if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) == null) {
+      supportFragmentManager.beginTransaction().add(R.id.frame,
+          ActivityListFragment().newInstance(), ActivityListFragment.TAG).commit()
+    } else {
+      supportFragmentManager.beginTransaction().show(
+          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
     }
+    if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+    }
+  }
 
   override fun showProfileFragment() {
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) == null) {
-        supportFragmentManager.beginTransaction().add(
-        R.id.frame, ProfileFragment().newInstance(), ProfileFragment.TAG
-      ).commit()
+      supportFragmentManager.beginTransaction().add(R.id.frame, ProfileFragment().newInstance(),
+          ProfileFragment.TAG).commit()
     } else {
-        supportFragmentManager.beginTransaction().show(
-            supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!
-        ).commit()
+      supportFragmentManager.beginTransaction().show(
+          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
     }
-      if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!
-          ).commit()
-      }
-      if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!
-          ).commit()
-      }
-      if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
-          supportFragmentManager.beginTransaction().hide(
-              supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!
-          ).commit()
-      }
+    if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+    }
   }
 
   private fun injectDependency() {
     val activityComponent = DaggerActivityComponent.builder().activityModule(
-      ActivityModule(this)
-    ).build()
+        ActivityModule(this)).build()
 
     activityComponent.inject(this)
   }

@@ -28,9 +28,8 @@ class SplashActivity : AppCompatActivity(), SplashContract {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    window.setFlags(
-      WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
-    )
+    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN)
     setContentView(R.layout.activity_splash)
     injectDependency()
     presenter.attach(this)
@@ -59,11 +58,9 @@ class SplashActivity : AppCompatActivity(), SplashContract {
 
   override fun refreshFetcher() {
     val authFetcher = APICreator(AuthAPI::class.java).generate()
-    val subscribe = authFetcher.refresh(
-      GRANT_TYPE, Authentication.getRefresh(applicationContext)
-    ).subscribeOn(Schedulers.io()).observeOn(
-      AndroidSchedulers.mainThread()
-    ).subscribe({ token: Token ->
+    val subscribe = authFetcher.refresh(GRANT_TYPE,
+        Authentication.getRefresh(applicationContext)).subscribeOn(Schedulers.io()).observeOn(
+        AndroidSchedulers.mainThread()).subscribe({ token: Token ->
       Authentication.save(applicationContext, token)
       onSuccess()
     }, { onLogin() })
@@ -90,8 +87,7 @@ class SplashActivity : AppCompatActivity(), SplashContract {
 
   private fun injectDependency() {
     val activityComponent = DaggerActivityComponent.builder().activityModule(
-      ActivityModule(this)
-    ).build()
+        ActivityModule(this)).build()
     activityComponent.inject(this)
   }
 }

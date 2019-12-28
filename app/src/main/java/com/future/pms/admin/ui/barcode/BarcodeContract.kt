@@ -8,5 +8,5 @@ interface BarcodeContract {
   fun showErrorMessage(error: String)
   fun unauthorized()
   fun loadCustomerDetailSuccess(parkingZone: ParkingZone)
-    fun getQrImageSuccess(imageName: String)
+  fun getQrImageSuccess(imageName: String)
 }

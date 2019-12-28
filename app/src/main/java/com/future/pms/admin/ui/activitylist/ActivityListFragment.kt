@@ -22,152 +22,144 @@ import com.google.gson.Gson
 import javax.inject.Inject
 
 class ActivityListFragment : Fragment(), ActivityListContract {
-    @Inject
-    lateinit var presenter: ActivityListPresenter
-    private lateinit var binding: FragmentActivityListBinding
-    private lateinit var paginationAdapterPast: PaginationAdapterPast
-    private lateinit var paginationAdapterOngoing: PaginationAdapterOngoing
-    private lateinit var accessToken: String
-    private var currentPagePast = 0
-    private var currentPageOngoing = 0
-    private var isLastPagePast = false
-    private var isLastPageOngoing = false
+  @Inject lateinit var presenter: ActivityListPresenter
+  private lateinit var binding: FragmentActivityListBinding
+  private lateinit var paginationAdapterPast: PaginationAdapterPast
+  private lateinit var paginationAdapterOngoing: PaginationAdapterOngoing
+  private lateinit var accessToken: String
+  private var currentPagePast = 0
+  private var currentPageOngoing = 0
+  private var isLastPagePast = false
+  private var isLastPageOngoing = false
 
-    companion object {
-        const val TAG: String = ACTIVITY_LIST_FRAGMENT
+  companion object {
+    const val TAG: String = ACTIVITY_LIST_FRAGMENT
+  }
+
+  fun newInstance(): ActivityListFragment {
+    return ActivityListFragment()
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    injectDependency()
+  }
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?): View? {
+    accessToken = Gson().fromJson(
+        context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(TOKEN, null),
+        Token::class.java).accessToken
+    binding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
+    val linearLayoutManagerPast = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    val linearLayoutManagerOngoing = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
+        false)
+    binding.refreshOngoing.setOnRefreshListener {
+      paginationAdapterOngoing.clear()
+      paginationAdapterOngoing.notifyDataSetChanged()
+      currentPageOngoing = 0
+      isLastPageOngoing = false
+      presenter.findOngoingBookingParkingZone(accessToken, currentPageOngoing)
+      binding.refreshOngoing.isRefreshing = false
     }
-
-    fun newInstance(): ActivityListFragment {
-        return ActivityListFragment()
+    binding.refreshPast.setOnRefreshListener {
+      paginationAdapterPast.clear()
+      paginationAdapterPast.notifyDataSetChanged()
+      currentPagePast = 0
+      isLastPagePast = false
+      presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+      binding.refreshPast.isRefreshing = false
     }
+    paginationAdapterPast = PaginationAdapterPast()
+    paginationAdapterOngoing = PaginationAdapterOngoing()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        injectDependency()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        accessToken = Gson().fromJson(
-            context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(
-                TOKEN, null
-            ), Token::class.java
-        ).accessToken
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
-        val linearLayoutManagerPast = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
-                false)
-        val linearLayoutManagerOngoing = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
-                false)
-        binding.refreshOngoing.setOnRefreshListener {
-            paginationAdapterOngoing.clear()
-            paginationAdapterOngoing.notifyDataSetChanged()
-            currentPageOngoing = 0
-            isLastPageOngoing = false
-            presenter.findOngoingBookingParkingZone(accessToken, currentPageOngoing)
-            binding.refreshOngoing.isRefreshing = false
+    binding.rvPast.layoutManager = linearLayoutManagerPast
+    binding.rvPast.adapter = this.paginationAdapterPast
+    binding.rvPast.addOnScrollListener(object :
+        PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
+      override fun loadMoreItems() {
+        if (!isLastPagePast) {
+          currentPagePast += 1
+          loadPastNextPage()
         }
-        binding.refreshPast.setOnRefreshListener {
-            paginationAdapterPast.clear()
-            paginationAdapterPast.notifyDataSetChanged()
-            currentPagePast = 0
-            isLastPagePast = false
-            presenter.findPastBookingParkingZone(accessToken, currentPagePast)
-            binding.refreshPast.isRefreshing = false
+      }
+    })
+    binding.rvOngoing.layoutManager = linearLayoutManagerOngoing
+    binding.rvOngoing.adapter = this.paginationAdapterOngoing
+    binding.rvOngoing.addOnScrollListener(object :
+        PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
+      override fun loadMoreItems() {
+        if (!isLastPageOngoing) {
+          currentPageOngoing += 1
+          loadOngoingNextPage()
         }
-        paginationAdapterPast = PaginationAdapterPast()
-        paginationAdapterOngoing = PaginationAdapterOngoing()
+      }
+    })
+    presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+    presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
+    return binding.root
+  }
 
-        binding.rvPast.layoutManager = linearLayoutManagerPast
-        binding.rvPast.adapter = this.paginationAdapterPast
-        binding.rvPast.addOnScrollListener(object :
-                PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
-            override fun loadMoreItems() {
-                if (!isLastPagePast) {
-                    currentPagePast += 1
-                    loadPastNextPage()
-                }
-            }
-        })
-        binding.rvOngoing.layoutManager = linearLayoutManagerOngoing
-        binding.rvOngoing.adapter = this.paginationAdapterOngoing
-        binding.rvOngoing.addOnScrollListener(object :
-                PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
-            override fun loadMoreItems() {
-                if (!isLastPageOngoing) {
-                    currentPageOngoing += 1
-                    loadOngoingNextPage()
-                }
-            }
-        })
-        presenter.findPastBookingParkingZone(accessToken, currentPagePast)
-        presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
-        return binding.root
-    }
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    presenter.attach(this)
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        presenter.attach(this)
-    }
+  private fun loadOngoingNextPage() {
+    presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
+  }
 
-    private fun loadOngoingNextPage() {
-        presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
-    }
+  private fun loadPastNextPage() {
+    presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+  }
 
-    private fun loadPastNextPage() {
-        presenter.findPastBookingParkingZone(accessToken, currentPagePast)
-    }
-
-    override fun findPastBookingParkingZoneSuccess(booking: Booking) {
-        if (currentPagePast != 0) {
-            if (currentPagePast <= booking.totalPages - 1) {
-                paginationAdapterPast.addLoadingFooter()
-                paginationAdapterPast.addAll(booking.content)
-                paginationAdapterPast.removeLoadingFooter()
-            } else {
-                isLastPagePast = true
-            }
-        } else {
-            paginationAdapterPast.addAll(booking.content)
-            if (currentPagePast >= booking.totalPages - 1) {
-                isLastPagePast = true
-            }
-        }
-    }
-
-    override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
-        if (currentPageOngoing != 0) {
-            if (currentPageOngoing <= booking.totalPages - 1) {
-                paginationAdapterOngoing.addLoadingFooter()
-                paginationAdapterOngoing.addAll(booking.content)
-                paginationAdapterOngoing.removeLoadingFooter()
-            } else {
-                isLastPageOngoing = true
-            }
-        } else {
-            paginationAdapterOngoing.addAll(booking.content)
-            if (currentPageOngoing >= booking.totalPages - 1) {
-                isLastPageOngoing = true
-            }
-        }
-    }
-
-    override fun findPastBookingParkingZoneFailed(response: String) {
-        isLastPagePast = true
+  override fun findPastBookingParkingZoneSuccess(booking: Booking) {
+    if (currentPagePast != 0) {
+      if (currentPagePast <= booking.totalPages - 1) {
+        paginationAdapterPast.addLoadingFooter()
+        paginationAdapterPast.addAll(booking.content)
         paginationAdapterPast.removeLoadingFooter()
+      } else {
+        isLastPagePast = true
+      }
+    } else {
+      paginationAdapterPast.addAll(booking.content)
+      if (currentPagePast >= booking.totalPages - 1) {
+        isLastPagePast = true
+      }
     }
+  }
 
-    override fun findOngoingBookingParkingZoneFailed(response: String) {
-        isLastPageOngoing = true
+  override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
+    if (currentPageOngoing != 0) {
+      if (currentPageOngoing <= booking.totalPages - 1) {
+        paginationAdapterOngoing.addLoadingFooter()
+        paginationAdapterOngoing.addAll(booking.content)
         paginationAdapterOngoing.removeLoadingFooter()
+      } else {
+        isLastPageOngoing = true
+      }
+    } else {
+      paginationAdapterOngoing.addAll(booking.content)
+      if (currentPageOngoing >= booking.totalPages - 1) {
+        isLastPageOngoing = true
+      }
     }
+  }
 
+  override fun findPastBookingParkingZoneFailed(response: String) {
+    isLastPagePast = true
+    paginationAdapterPast.removeLoadingFooter()
+  }
 
-    private fun injectDependency() {
-        val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-            FragmentModule()
-        ).build()
-        profileComponent.inject(this)
-    }
+  override fun findOngoingBookingParkingZoneFailed(response: String) {
+    isLastPageOngoing = true
+    paginationAdapterOngoing.removeLoadingFooter()
+  }
+
+  private fun injectDependency() {
+    val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
+        FragmentModule()).build()
+    profileComponent.inject(this)
+  }
 }

@@ -17,9 +17,9 @@ class MainPresenter @Inject constructor() {
     view.showBarcodeFragment()
   }
 
-    fun onActivityListIconClick() {
-        view.showActivityListFragment()
-    }
+  fun onActivityListIconClick() {
+    view.showActivityListFragment()
+  }
 
   fun onProfileIconClick() {
     view.showProfileFragment()

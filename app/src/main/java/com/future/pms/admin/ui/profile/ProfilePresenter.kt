@@ -19,8 +19,7 @@ class ProfilePresenter @Inject constructor() {
 
   fun loadData(accessToken: String) {
     val subscribe = api.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
-      AndroidSchedulers.mainThread()
-    ).subscribe({ parkingZone: ParkingZone ->
+        AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZone ->
       view.loadCustomerDetailSuccess(parkingZone)
     }, { error ->
       view.showErrorMessage(error.localizedMessage)

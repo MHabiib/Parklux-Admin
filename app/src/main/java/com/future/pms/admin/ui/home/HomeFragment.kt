@@ -81,6 +81,13 @@ class HomeFragment : Fragment(), HomeContract {
     injectDependency()
   }
 
+  override fun onPause() {
+    if (mode == EDIT_MODE) {
+      editMode()
+    }
+    super.onPause()
+  }
+
   @SuppressLint("ClickableViewAccessibility") override fun onCreateView(inflater: LayoutInflater,
       container: ViewGroup?, savedInstanceState: Bundle?): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, null, false)
@@ -111,6 +118,8 @@ class HomeFragment : Fragment(), HomeContract {
             btnViewSection.setTextColor(resources.getColor(R.color.colorAccent))
             btnEditMode.isEnabled = true
             btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
+            btnSync.visibility = View.VISIBLE
+            btnEditLevel.visibility = View.VISIBLE
             layoutPark.removeAllViews()
             layoutPark.refreshDrawableState()
             layoutPark.invalidate()
@@ -390,6 +399,7 @@ class HomeFragment : Fragment(), HomeContract {
   private fun editMode() {
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
+        btnSync.visibility = View.VISIBLE
         mode = EXIT_EDIT_MODE
         levelName.isEnabled = true
         btnEditMode.text = getString(R.string.edit_mode)
@@ -400,12 +410,14 @@ class HomeFragment : Fragment(), HomeContract {
         layoutSlotDetailLevel.exitEditMode.visibility = View.VISIBLE
         btnEditMode.visibility = View.VISIBLE
         tvSelectSlot.visibility = View.GONE
+        presenter.editModeParkingLevel(idLevel, mode, accessToken)
       } else {
         if (isSyncOn) {
           isSyncOn = false
           btnSync.setImageResource(R.drawable.ic_sync_off)
           handler.removeCallbacksAndMessages(null)
         }
+        btnSync.visibility = View.INVISIBLE
         mode = EDIT_MODE
         levelName.isEnabled = false
         btnEditMode.text = getString(R.string.exit_edit_mode)
@@ -413,9 +425,9 @@ class HomeFragment : Fragment(), HomeContract {
         btnEditMode.setTextColor(resources.getColor(R.color.red))
         tvSelectSlot.visibility = View.VISIBLE
         layoutSlotDetailLevel.exitEditMode.visibility = View.INVISIBLE
+        presenter.editModeParkingLevel(idLevel, mode, accessToken)
       }
     }
-    presenter.editModeParkingLevel(idLevel, accessToken)
     presenter.getParkingLayout(idLevel, accessToken)
   }
 
