@@ -68,23 +68,6 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     return if (position == bookingList?.size?.minus(1) && isLoadingAdded) loading else item
   }
 
-  fun addLoadingFooter() {
-    isLoadingAdded = true
-    add(Content())
-  }
-
-  fun removeLoadingFooter() {
-    isLoadingAdded = false
-
-    val position = bookingList?.size?.minus(1)
-    val result = position?.let { getItem(it) }
-
-    if (result != null) {
-      bookingList?.removeAt(position)
-      notifyItemRemoved(position)
-    }
-  }
-
   fun add(booking: Content) {
     bookingList?.add(booking)
     bookingList?.size?.minus(1)?.let { notifyItemInserted(it) }

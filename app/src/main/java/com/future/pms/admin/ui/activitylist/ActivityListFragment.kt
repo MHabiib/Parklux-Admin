@@ -79,7 +79,6 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
       override fun loadMoreItems() {
         if (!isLastPagePast) {
-          currentPagePast += 1
           loadPastNextPage()
         }
       }
@@ -90,7 +89,6 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
       override fun loadMoreItems() {
         if (!isLastPageOngoing) {
-          currentPageOngoing += 1
           loadOngoingNextPage()
         }
       }
@@ -116,9 +114,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   override fun findPastBookingParkingZoneSuccess(booking: Booking) {
     if (currentPagePast != 0) {
       if (currentPagePast <= booking.totalPages - 1) {
-        paginationAdapterPast.addLoadingFooter()
         paginationAdapterPast.addAll(booking.content)
-        paginationAdapterPast.removeLoadingFooter()
+        currentPagePast += 1
       } else {
         isLastPagePast = true
       }
@@ -126,6 +123,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
       paginationAdapterPast.addAll(booking.content)
       if (currentPagePast >= booking.totalPages - 1) {
         isLastPagePast = true
+      } else {
+        currentPagePast += 1
       }
     }
   }
@@ -133,9 +132,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
     if (currentPageOngoing != 0) {
       if (currentPageOngoing <= booking.totalPages - 1) {
-        paginationAdapterOngoing.addLoadingFooter()
         paginationAdapterOngoing.addAll(booking.content)
-        paginationAdapterOngoing.removeLoadingFooter()
+        currentPageOngoing += 1
       } else {
         isLastPageOngoing = true
       }
@@ -143,18 +141,18 @@ class ActivityListFragment : Fragment(), ActivityListContract {
       paginationAdapterOngoing.addAll(booking.content)
       if (currentPageOngoing >= booking.totalPages - 1) {
         isLastPageOngoing = true
+      } else {
+        currentPageOngoing += 1
       }
     }
   }
 
   override fun findPastBookingParkingZoneFailed(response: String) {
     isLastPagePast = true
-    paginationAdapterPast.removeLoadingFooter()
   }
 
   override fun findOngoingBookingParkingZoneFailed(response: String) {
     isLastPageOngoing = true
-    paginationAdapterOngoing.removeLoadingFooter()
   }
 
   private fun injectDependency() {
