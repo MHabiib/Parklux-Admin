@@ -2,6 +2,7 @@ package com.future.pms.admin.network
 
 import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.model.response.ListLevel
+import com.future.pms.admin.model.response.ParkingZoneResponse
 import com.future.pms.admin.model.response.SectionDetails
 import com.future.pms.admin.model.response.ongoingpastbooking.Booking
 import io.reactivex.Observable
@@ -32,6 +33,10 @@ interface ApiServiceInterface {
   @POST("api/parking-zone/level/edit-mode/{id}/{mode}") fun editModeParkingLevel(@Path("id")
   idLevel: String, @Path("mode") mode: String, @Query("access_token")
   accessToken: String?): Observable<String>
+
+  @Multipart @PUT("api/parking-zone/update-zone") fun updateParkingZone(@Query("access_token")
+  accessToken: String?, @Part("parkingZone")
+  parkingZone: ParkingZoneResponse): Observable<ParkingZoneResponse>
 
   @GET("api/qr") fun getQrImage(@Query("access_token") accessToken: String?): Observable<String>
 

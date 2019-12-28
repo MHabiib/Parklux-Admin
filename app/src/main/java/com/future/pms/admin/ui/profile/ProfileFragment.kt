@@ -2,12 +2,14 @@ package com.future.pms.admin.ui.profile
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.future.pms.admin.R
@@ -15,7 +17,7 @@ import com.future.pms.admin.databinding.FragmentProfileBinding
 import com.future.pms.admin.di.component.DaggerFragmentComponent
 import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
-import com.future.pms.admin.model.profile.ParkingZone
+import com.future.pms.admin.model.response.ParkingZoneResponse
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT
@@ -28,6 +30,7 @@ import javax.inject.Inject
 class ProfileFragment : Fragment(), ProfileContract {
   @Inject lateinit var presenter: ProfilePresenter
   private lateinit var binding: FragmentProfileBinding
+  private lateinit var accessToken: String
 
   companion object {
     const val TAG: String = PROFILE_FRAGMENT
@@ -51,16 +54,23 @@ class ProfileFragment : Fragment(), ProfileContract {
         presenter.signOut()
         onLogout()
       }
+      btnSave.setOnClickListener {
+        showProgress(true)
+        presenter.update(binding.profileName.text.toString(), binding.profileEmail.text.toString(),
+            binding.profilePhoneNumber.text.toString(), binding.price.text.toString(),
+            binding.openHour.text.toString(), binding.address.text.toString(),
+            binding.password.text.toString(), accessToken)
+      }
       return root
     }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val accessToken = Gson().fromJson(
+    presenter.attach(this)
+    accessToken = Gson().fromJson(
         context?.getSharedPreferences(Constants.AUTHENTCATION, Context.MODE_PRIVATE)?.getString(
             Constants.TOKEN, null), Token::class.java).accessToken
-    presenter.attach(this)
     presenter.apply {
       subscribe()
       loadData(accessToken)
@@ -68,8 +78,8 @@ class ProfileFragment : Fragment(), ProfileContract {
   }
 
   override fun onSuccess() {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+    Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show()
+    refreshPage()
   }
 
   override fun onFailed(e: String) {
@@ -95,15 +105,17 @@ class ProfileFragment : Fragment(), ProfileContract {
     startActivity(intent)
   }
 
-  override fun loadCustomerDetailSuccess(parkingZone: ParkingZone) {
+  override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
     with(binding) {
-      profileNameDisplay.text = parkingZone.body.name
-      profileName.setText(parkingZone.body.name)
-      profileEmail.setText(parkingZone.body.emailAdmin)
-      profilePhoneNumber.setText(parkingZone.body.phoneNumber)
-      price.setText(Utils.thousandSeparator(parkingZone.body.price.toInt()))
-      openHour.setText(parkingZone.body.openHour)
-      address.setText(parkingZone.body.address)
+      profileNameDisplay.text = parkingZone.name
+      profileName.setText(parkingZone.name)
+      profileEmail.setText(parkingZone.emailAdmin)
+      profilePhoneNumber.setText(parkingZone.phoneNumber)
+      price.text = null
+      price.hint = (String.format(getString(R.string.idr_price),
+          Utils.thousandSeparator(parkingZone.price.toInt())))
+      openHour.setText(parkingZone.openHour)
+      address.setText(parkingZone.address)
       password.hint = "********"
       profileNameDisplay.addTextChangedListener(textWatcher())
       profileName.addTextChangedListener(textWatcher())
@@ -126,6 +138,14 @@ class ProfileFragment : Fragment(), ProfileContract {
 
       override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
+  }
+
+  private fun refreshPage() {
+    val ft = fragmentManager?.beginTransaction()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      ft?.setReorderingAllowed(false)
+    }
+    ft?.detach(this)?.attach(this)?.commit()
   }
 
   override fun onLogout() {

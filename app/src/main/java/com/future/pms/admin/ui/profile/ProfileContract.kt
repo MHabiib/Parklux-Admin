@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.profile
 
-import com.future.pms.admin.model.profile.ParkingZone
+import com.future.pms.admin.model.response.ParkingZoneResponse
 
 interface ProfileContract {
   fun onSuccess()
@@ -8,6 +8,6 @@ interface ProfileContract {
   fun showProgress(show: Boolean)
   fun showErrorMessage(error: String)
   fun unauthorized()
-  fun loadCustomerDetailSuccess(parkingZone: ParkingZone)
+  fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse)
   fun onLogout()
 }

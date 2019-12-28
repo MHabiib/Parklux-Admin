@@ -16,7 +16,7 @@ import com.future.pms.admin.databinding.FragmentBarcodeBinding
 import com.future.pms.admin.di.component.DaggerFragmentComponent
 import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
-import com.future.pms.admin.model.profile.ParkingZone
+import com.future.pms.admin.model.response.ParkingZoneResponse
 import com.future.pms.admin.network.NetworkConstant.BASE
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.util.Constants
@@ -76,13 +76,13 @@ class BarcodeFragment : Fragment(), BarcodeContract {
     getDateNow()
   }
 
-  override fun loadCustomerDetailSuccess(parkingZone: ParkingZone) {
+  override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
     with(binding) {
-      tvParkingZoneName.text = getString(R.string.welcome_to_s, parkingZone.body.name)
-      tvAddressPhone.text = getString(R.string.two_value_comma, parkingZone.body.address,
-          parkingZone.body.phoneNumber)
-      tvOpenHourPrice.text = getString(R.string.two_value_newline, parkingZone.body.openHour,
-          Utils.thousandSeparator(parkingZone.body.price.toInt()))
+      tvParkingZoneName.text = getString(R.string.welcome_to_s, parkingZone.name)
+      tvAddressPhone.text = getString(R.string.two_value_comma, parkingZone.address,
+          parkingZone.phoneNumber)
+      tvOpenHourPrice.text = getString(R.string.two_value_newline, parkingZone.openHour,
+          Utils.thousandSeparator(parkingZone.price.toInt()))
     }
   }
 
@@ -146,7 +146,7 @@ class BarcodeFragment : Fragment(), BarcodeContract {
   override fun showErrorMessage(error: String) {
     activity?.let {
       Snackbar.make(it.findViewById(android.R.id.content), getString(R.string.parking_slot_full),
-          Snackbar.LENGTH_LONG).show()
+          Snackbar.LENGTH_SHORT).show()
     }
     Timber.tag(Constants.ERROR).e(error)
   }

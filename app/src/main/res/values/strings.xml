@@ -38,6 +38,7 @@
     <string name="new_level">New level</string>
     <string name="create">Create</string>
     <string name="range">%s -> %s</string>
+    <string name="idr_price">IDR %s</string>
     <string name="expires_in">Expires in: %s : %s</string>
     <string name="parking_slot_full">Parking slot full</string>
 </resources>

@@ -16,7 +16,7 @@ class BarcodePresenter @Inject constructor() {
   fun loadData(accessToken: String) {
     val subscribe = api.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZone ->
-      view.loadCustomerDetailSuccess(parkingZone)
+      view.loadCustomerDetailSuccess(parkingZone.parkingZoneResponse)
     }, { error ->
       view.showErrorMessage(error.localizedMessage)
     })
