@@ -98,6 +98,43 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/password" />
 
+                        <Button
+                            android:id="@+id/open_hour"
+                            style="@style/NoCaps"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/open_hours"
+                            android:textColor="@color/darkGrey"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/iv_open_hour"
+                            app:layout_constraintTop_toBottomOf="@id/open_hour_tag" />
+
+                        <Button
+                            android:id="@+id/open_hour2"
+                            style="@style/NoCaps"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/close_hours"
+                            android:textColor="@color/darkGrey"
+                            app:layout_constraintLeft_toRightOf="@id/iv_open_hour"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/open_hour_tag" />
+
+                        <ImageView
+                            android:id="@+id/iv_open_hour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/four_dp"
+                            android:layout_marginBottom="@dimen/four_dp"
+                            android:rotation="180"
+                            android:src="@drawable/ic_back"
+                            app:layout_constraintBottom_toBottomOf="@id/open_hour"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/open_hour" />
+
                         <ProgressBar
                             android:id="@+id/progressBar"
                             android:layout_width="wrap_content"
@@ -150,7 +187,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/four_dp"
-                            android:text="@string/open_hour"
+                            android:text="Opening hours"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintTop_toBottomOf="@id/price" />
 
@@ -229,20 +266,6 @@
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
                             app:layout_constraintTop_toBottomOf="@id/price_tag" />
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/open_hour"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:imeOptions="flagNoExtractUi"
-                            android:inputType="number"
-                            android:maxLines="1"
-                            android:paddingBottom="@dimen/twelve_dp"
-                            android:singleLine="true"
-                            android:textColor="@color/darkGrey"
-                            android:textSize="@dimen/h2"
-                            app:layout_constraintTop_toBottomOf="@id/open_hour_tag" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/address"

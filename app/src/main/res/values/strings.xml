@@ -24,7 +24,7 @@
     <string name="welcome_to_s">Welcome to %s</string>
     <string name="two_value_comma">%s, %s</string>
     <string name="two_value_newline">%s\nIDR %s/hour</string>
-    <string name="open_hour_nprice">Open hour\nPrice</string>
+    <string name="open_hour_nprice">Opening hour\nPrice</string>
     <string name="deactivate">D\ne\na\nc\nt\ni\nv\na\nt\ne</string>
     <string name="activate">A\nc\nt\ni\nv\na\nt\ne</string>
     <string name="exit_edit_mode">Exit edit mode</string>
@@ -38,6 +38,7 @@
     <string name="new_level">New level</string>
     <string name="create">Create</string>
     <string name="range">%s -> %s</string>
+    <string name="range2">%s - %s</string>
     <string name="idr_price">IDR %s</string>
     <string name="expires_in">Expires in: %s : %s</string>
     <string name="parking_slot_full">Parking slot full</string>
@@ -65,4 +66,6 @@
     <string name="cant_deactivate_section">Can\'t deactivate this section</string>
     <string name="still_have_ongoin_this_section">Still have ongoing parking on this section</string>
     <string name="this_level_status_is_unavailable">This level status is Unavailable</string>
+    <string name="close_hours">Close hours</string>
+    <string name="open_hours">Open hours</string>
 </resources>
