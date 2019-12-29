@@ -2,6 +2,7 @@ package com.future.pms.admin.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.ScrollingMovementMethod
@@ -20,12 +21,14 @@ import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.model.response.ListLevel
 import com.future.pms.admin.model.response.SectionDetails
+import com.future.pms.admin.ui.main.MainActivity
 import com.future.pms.admin.util.Constants.Companion.ACTIVE
 import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
 import com.future.pms.admin.util.Constants.Companion.EDIT_MODE
 import com.future.pms.admin.util.Constants.Companion.ERROR
 import com.future.pms.admin.util.Constants.Companion.EXIT_EDIT_MODE
 import com.future.pms.admin.util.Constants.Companion.HOME_FRAGMENT
+import com.future.pms.admin.util.Constants.Companion.LEVEL_UNAVAILABLE
 import com.future.pms.admin.util.Constants.Companion.SECTION_ONE
 import com.future.pms.admin.util.Constants.Companion.SECTION_THREE
 import com.future.pms.admin.util.Constants.Companion.SECTION_TWO
@@ -65,6 +68,8 @@ class HomeFragment : Fragment(), HomeContract {
   private lateinit var layout: HorizontalScrollView
   private lateinit var accessToken: String
   private lateinit var idLevel: String
+  private lateinit var nameLevel: String
+  private lateinit var levelStatus: String
   private lateinit var levelLayout: String
   private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
 
@@ -98,18 +103,19 @@ class HomeFragment : Fragment(), HomeContract {
     with(bindingHome.home) {
       val adapter = context?.let { CustomAdapter(it, R.layout.spinner_style, spinnerItems) }
       adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-      spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, true)) // First item
+      spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "", true)) // First item
       levelName.adapter = adapter
       levelName.setSelection(0)
       levelName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
-          Toast.makeText(context, "Nothing selected", Toast.LENGTH_LONG).show()
+          Toast.makeText(context, getString(R.string.nothing_selected), Toast.LENGTH_LONG).show()
         }
 
         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
           val level = p0?.getItemAtPosition(p2) as SpinnerItem
           idLevel = level.idItem
+          nameLevel = level.itemString
+          levelStatus = level.itemStatus
 
           if (p2 != 0) {
             tvSelectLevel.visibility = View.GONE
@@ -128,13 +134,17 @@ class HomeFragment : Fragment(), HomeContract {
 
             presenter.getParkingLayout(idLevel, accessToken)
             presenter.getSectionDetails(idLevel, accessToken)
+
+            if (levelStatus == LEVEL_UNAVAILABLE) {
+              tvUnavailableTag.visibility = View.VISIBLE
+            } else {
+              tvUnavailableTag.visibility = View.GONE
+            }
           }
         }
       }
       layout = layoutPark
-    }
 
-    with(bindingHome.home) {
       btnEditMode.setOnClickListener {
         editMode()
       }
@@ -157,6 +167,11 @@ class HomeFragment : Fragment(), HomeContract {
         presenter.getParkingLayout(idLevel, accessToken)
       }
 
+      btnEditLevel.setOnClickListener {
+        val activity = activity as MainActivity?
+        activity?.presenter?.showEditLevel(idLevel, nameLevel, levelStatus)
+      }
+
       btnSync.setOnClickListener {
         if (isSyncOn) {
           isSyncOn = false
@@ -171,7 +186,7 @@ class HomeFragment : Fragment(), HomeContract {
               handler.postDelayed(this, 5000)
             }
           }, 5000)
-          Toast.makeText(context, "Automatically refresh Parking Layout every 5 seconsds",
+          Toast.makeText(context, getString(R.string.automatically_refresh_5s),
               Toast.LENGTH_SHORT).show()
         }
       }
@@ -199,7 +214,7 @@ class HomeFragment : Fragment(), HomeContract {
         if (isValid()) {
           presenter.addParkingLevel(bindingHome.addLevel.txtLevelName.text.toString(), accessToken)
         } else {
-          Toast.makeText(context, "Fill all the entries", Toast.LENGTH_LONG).show()
+          Toast.makeText(context, getString(R.string.fill_all_the_entries), Toast.LENGTH_LONG).show()
         }
       }
       return root
@@ -219,16 +234,6 @@ class HomeFragment : Fragment(), HomeContract {
         Token::class.java).accessToken
     presenter.attach(this)
     presenter.getLevels(accessToken)
-  }
-
-  override fun showProgress(show: Boolean) {
-    /*if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
-    }*/
   }
 
   private fun showParkingLayout(slotsLayout: String) {
@@ -326,7 +331,7 @@ class HomeFragment : Fragment(), HomeContract {
   private fun onClick(view: View) {
     if (mode == EDIT_MODE) {
       if (view.id == -1) {
-        Toast.makeText(context, "Activate the section first to edit this slot",
+        Toast.makeText(context, getString(R.string.activate_this_section),
             Toast.LENGTH_SHORT).show()
       } else {
         with(bindingHome.home, {
@@ -338,7 +343,7 @@ class HomeFragment : Fragment(), HomeContract {
 
           when {
             levelLayout[view.id] == SLOT_TAKEN -> {
-              Toast.makeText(context, "Can't update this slot", Toast.LENGTH_SHORT).show()
+              Toast.makeText(context, getString(R.string.cant_update_slot), Toast.LENGTH_SHORT).show()
             }
             levelLayout[view.id] == SLOT_EMPTY -> {
               statusPark.setOnClickListener {
@@ -400,6 +405,7 @@ class HomeFragment : Fragment(), HomeContract {
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
         btnSync.visibility = View.VISIBLE
+        btnEditLevel.visibility = View.VISIBLE
         mode = EXIT_EDIT_MODE
         levelName.isEnabled = true
         btnEditMode.text = getString(R.string.edit_mode)
@@ -418,6 +424,7 @@ class HomeFragment : Fragment(), HomeContract {
           handler.removeCallbacksAndMessages(null)
         }
         btnSync.visibility = View.INVISIBLE
+        btnEditLevel.visibility = View.INVISIBLE
         mode = EDIT_MODE
         levelName.isEnabled = false
         btnEditMode.text = getString(R.string.exit_edit_mode)
@@ -444,8 +451,8 @@ class HomeFragment : Fragment(), HomeContract {
   }
 
   override fun addParkingLevelSuccess(response: String) {
-    Toast.makeText(context, "Success create level", Toast.LENGTH_LONG).show()
-    presenter.getLevels(accessToken)
+    Toast.makeText(context, getString(R.string.success_create_level), Toast.LENGTH_LONG).show()
+    refreshPage()
     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     bindingHome.addLevel.txtLevelName.text?.clear()
     bindingHome.addLevel.cbIHaveRead.isChecked = false
@@ -458,10 +465,10 @@ class HomeFragment : Fragment(), HomeContract {
 
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     spinnerItems.clear()
-    spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, true)) // First item
+    spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "", true)) // First item
     for (index in 0 until listLevel.size) {
-      spinnerItems.add(index + 1,
-          SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName, false))
+      spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
+          listLevel[index].levelStatus, false))
     }
   }
 
@@ -542,8 +549,8 @@ class HomeFragment : Fragment(), HomeContract {
 
   private fun Button.showConfirmationDialog(listSectionDetails: List<SectionDetails>, index: Int) {
     context?.let {
-      AlertDialog.Builder(it).setTitle("Deactivate section").setMessage(
-          "Are you sure you want to deactivate this section?").setPositiveButton(
+      AlertDialog.Builder(it).setTitle(getString(R.string.deactivate_section)).setMessage(
+          getString(R.string.deactivate_section_confirmation)).setPositiveButton(
           android.R.string.yes) { _, _ ->
         presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
       }.setNegativeButton(android.R.string.no, null).setIcon(R.drawable.ic_arrow).show()
@@ -552,8 +559,8 @@ class HomeFragment : Fragment(), HomeContract {
 
   private fun Button.showCantDeactivateDialog() {
     context?.let {
-      AlertDialog.Builder(it).setTitle("Can't deactivate this section").setMessage(
-          "Still have ongoing parking on this section").setPositiveButton(android.R.string.yes,
+      AlertDialog.Builder(it).setTitle(getString(R.string.cant_deactivate_section)).setMessage(
+          getString(R.string.still_have_ongoin_this_section)).setPositiveButton(android.R.string.yes,
           null).setIcon(R.drawable.ic_arrow).show()
     }
   }
@@ -566,6 +573,15 @@ class HomeFragment : Fragment(), HomeContract {
   override fun updateParkingSectionSuccess(response: String) {
     presenter.getSectionDetails(idLevel, accessToken)
     presenter.getParkingLayout(idLevel, accessToken)
+  }
+
+  fun refreshPage() {
+    val ft = fragmentManager?.beginTransaction()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      ft?.setReorderingAllowed(false)
+    }
+    ft?.detach(this)?.attach(this)?.commit()
+    bindingHome.home.levelName.setSelection(0)
   }
 
   override fun getLayoutFailed(error: String) {

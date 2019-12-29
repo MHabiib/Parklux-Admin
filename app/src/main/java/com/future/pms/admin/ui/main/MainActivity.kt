@@ -12,6 +12,10 @@ import com.future.pms.admin.ui.activitylist.ActivityListFragment
 import com.future.pms.admin.ui.barcode.BarcodeFragment
 import com.future.pms.admin.ui.home.HomeFragment
 import com.future.pms.admin.ui.profile.ProfileFragment
+import com.future.pms.admin.ui.updatelevel.UpdateLevelFragment
+import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
+import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
+import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainContract {
@@ -51,8 +55,15 @@ class MainActivity : AppCompatActivity(), MainContract {
       supportFragmentManager.beginTransaction().add(R.id.frame, HomeFragment().newInstance(),
           HomeFragment.TAG).commit()
     } else {
-      supportFragmentManager.beginTransaction().show(
-          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+      if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) == null) {
+        supportFragmentManager.beginTransaction().show(
+            supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+      } else {
+        supportFragmentManager.beginTransaction().show(
+            supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+        supportFragmentManager.beginTransaction().show(
+            supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
       supportFragmentManager.beginTransaction().hide(
@@ -88,6 +99,10 @@ class MainActivity : AppCompatActivity(), MainContract {
       supportFragmentManager.beginTransaction().hide(
           supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
     }
+    if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+    }
   }
 
   override fun showActivityListFragment() {
@@ -110,6 +125,10 @@ class MainActivity : AppCompatActivity(), MainContract {
       supportFragmentManager.beginTransaction().hide(
           supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
     }
+    if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+    }
   }
 
   override fun showProfileFragment() {
@@ -131,6 +150,29 @@ class MainActivity : AppCompatActivity(), MainContract {
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
       supportFragmentManager.beginTransaction().hide(
           supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+    }
+    if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) != null) {
+      supportFragmentManager.beginTransaction().hide(
+          supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+    }
+  }
+
+  override fun showEditLevel(idLevel: String, levelName: String, levelStatus: String) {
+    val fragment = UpdateLevelFragment()
+    val bundle = Bundle()
+    bundle.putString(ID_LEVEL, idLevel)
+    bundle.putString(LEVEL_NAME, levelName)
+    bundle.putString(LEVEL_STATUS, levelStatus)
+    fragment.arguments = bundle
+    if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) == null) {
+      supportFragmentManager.beginTransaction().add(R.id.frame, fragment,
+          UpdateLevelFragment.TAG).commit()
+    }
+  }
+
+  override fun onBackPressedUpdateLevel() {
+    supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)?.let {
+      supportFragmentManager.beginTransaction().remove(it).commit()
     }
   }
 

@@ -81,6 +81,7 @@
                 app:layout_constraintTop_toBottomOf="@id/about_level_tag" />
 
             <TextView
+                android:id="@+id/tx_ihave_read"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
@@ -188,6 +189,6 @@
             app:layout_constraintBottom_toBottomOf="@id/swipe_up"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/swipe_up"
-            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.appbar.AppBarLayout>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

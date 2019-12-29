@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseWhite"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/twelve_dp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="@dimen/twelve_dp"
+            android:src="@drawable/update"
+            app:layout_constraintBottom_toTopOf="@id/guideline3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:layout_marginEnd="@dimen/twelve_dp"
+            android:layout_marginBottom="@dimen/twelve_dp"
+            android:background="@drawable/card_layout_white"
+            android:padding="@dimen/twelve_dp"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <Button
+                        android:id="@+id/btn_update"
+                        style="@style/NoCaps"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/twelve_dp"
+                        android:layout_marginTop="@dimen/twelve_dp"
+                        android:layout_marginEnd="@dimen/four_dp"
+                        android:layout_marginBottom="@dimen/four_dp"
+                        android:background="@drawable/card_layout_white"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/update"
+                        android:textColor="@color/colorAccent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rg_status" />
+
+                    <Button
+                        android:id="@+id/btn_delete"
+                        style="@style/NoCaps"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/twelve_dp"
+                        android:layout_marginTop="@dimen/eight_dp"
+                        android:layout_marginEnd="@dimen/four_dp"
+                        android:layout_marginBottom="@dimen/four_dp"
+                        android:background="@drawable/card_layout_white"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/delete"
+                        android:textColor="@color/red"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_delete_details" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/eight_dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_level_name">
+
+                        <RadioButton
+                            android:id="@+id/rb_available"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/four_dp"
+                            android:layout_weight="1"
+                            android:text="@string/available"
+                            android:textColor="@color/darkGrey" />
+
+                        <RadioButton
+                            android:id="@+id/rb_unavailable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingEnd="@dimen/sixteen_dp"
+                            android:text="@string/unavailable"
+                            android:textColor="@color/darkGrey" />
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/update_level_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/update_parking_level"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/h_medium"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_level_name_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/twelve_dp"
+                        android:text="@string/level_name"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/h2"
+                        app:layout_constraintBottom_toBottomOf="@id/txt_level_name"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/update_level_tag" />
+
+                    <TextView
+                        android:id="@+id/tv_level_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/h2"
+                        app:layout_constraintBottom_toBottomOf="@id/rg_status"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/rg_status" />
+
+                    <TextView
+                        android:id="@+id/delete_level_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/twelve_dp"
+                        android:gravity="center"
+                        android:text="Delete level"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/h_medium"
+                        app:layout_constraintTop_toBottomOf="@id/line" />
+
+                    <TextView
+                        android:id="@+id/tv_delete_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/eight_dp"
+                        android:text="@string/delete_details"
+                        app:layout_constraintTop_toBottomOf="@id/delete_level_tag" />
+
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="@dimen/twelve_dp"
+                        android:background="@color/lightGrey"
+                        app:layout_constraintTop_toBottomOf="@id/btn_update" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_level_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/twenty_dp"
+                        android:layout_marginTop="@dimen/twelve_dp"
+                        android:hint="@string/level_name"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/sixteen_dp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/h2"
+                        app:backgroundTint="@color/colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_level_name_tag"
+                        app:layout_constraintTop_toBottomOf="@id/update_level_tag" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.42" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

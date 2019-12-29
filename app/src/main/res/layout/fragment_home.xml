@@ -58,7 +58,7 @@
             <Spinner
                 android:id="@+id/level_name"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/twenty_eight_dp"
                 android:layout_marginLeft="@dimen/twelve_dp"
                 android:layout_marginTop="@dimen/twelve_dp"
                 android:textSize="@dimen/h_medium"
@@ -651,6 +651,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.96" />
+
+        <TextView
+            android:id="@+id/tv_unavailable_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/this_level_status_is_unavailable"
+            android:textSize="@dimen/h1"
+            android:visibility="gone"
+            android:gravity="center"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

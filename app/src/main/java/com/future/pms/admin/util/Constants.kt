@@ -7,6 +7,7 @@ class Constants {
     const val PROFILE_FRAGMENT = "ProfileFragment"
     const val ACTIVITY_LIST_FRAGMENT = "ActivityListFragment"
     const val BARCODE_FRAGMENT = "BarcodeFragment"
+    const val UPDATE_LEVEL_FRAGMENT = "UpdateLevelFragmentFragment"
 
     const val TIME_FORMAT = "HH:mm"
     const val SHORT_MONTH_DATE_TIME_FORMAT = "HH:mm - dd MMM yy"
@@ -19,7 +20,11 @@ class Constants {
     const val SLOT_NULL = '_'
     const val SLOT_READY = 'O'
     const val SLOT_SCAN_ME = 'S'
-    const val LEVEL_AVAILABLE = 'A'
+
+    const val LEVEL_AVAILABLE = "A"
+    const val LEVEL_UNAVAILABLE = "U"
+    const val LEVEL_TAKE_OUT = "Z"
+    const val DELETE_LEVEL_STATUS = 99
 
     const val SELECT_LEVEL = "Select level"
     const val SECTION_ONE = "Section 1"
@@ -43,5 +48,9 @@ class Constants {
 
     const val EDIT_MODE = "EditMode"
     const val EXIT_EDIT_MODE = "ExitEditMode"
+
+    const val ID_LEVEL = "idLevel"
+    const val LEVEL_STATUS = "levelStatus"
+    const val LEVEL_NAME = "levelName"
   }
 }
