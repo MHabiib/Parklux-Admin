@@ -7,6 +7,7 @@ import com.future.pms.admin.model.response.ParkingZoneResponse
 import com.future.pms.admin.model.response.SectionDetails
 import com.future.pms.admin.model.response.ongoingpastbooking.Booking
 import io.reactivex.Observable
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -39,6 +40,10 @@ interface ApiServiceInterface {
   @Multipart @PUT("api/parking-zone/update-zone") fun updateParkingZone(@Query("access_token")
   accessToken: String?, @Part("parkingZone")
   parkingZone: ParkingZoneResponse): Observable<ParkingZoneResponse>
+
+  @Multipart @PUT("api/parking-zone/update-zone/picture") fun updateParkingZonePicture(
+      @Query("access_token") accessToken: String?, @Part
+      picture: MultipartBody.Part): Observable<String>
 
   @PUT("api/parking-zone/update-level") fun updateParkingLevel(@Query("access_token")
   accessToken: String?, @Body levelDetailsRequest: LevelDetailsRequest): Observable<Response<Void>>

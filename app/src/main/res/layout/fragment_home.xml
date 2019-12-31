@@ -76,8 +76,7 @@
                         <HorizontalScrollView
                             android:id="@+id/layoutPark"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/twelve_dp" />
+                            android:layout_height="wrap_content"/>
                     </ScrollView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>

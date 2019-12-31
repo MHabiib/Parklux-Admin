@@ -11,6 +11,7 @@ import com.future.pms.admin.util.Authentication
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class ProfilePresenter @Inject constructor() {
@@ -37,8 +38,20 @@ class ProfilePresenter @Inject constructor() {
       price.toDouble()
     }
     val parkingZone = ParkingZoneResponse(address, email, name, openHour, password, phoneNumber,
-        priceInDouble)
+        priceInDouble,"")
     val subscribe = api.updateParkingZone(token, parkingZone).subscribeOn(
+        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+      view.showProgress(false)
+      view.onSuccess()
+    }, {
+      view.showProgress(false)
+      view.onFailed(it.message.toString())
+    })
+    subscriptions.add(subscribe)
+  }
+
+  fun addPicture(accessToken: String, picture: MultipartBody.Part) {
+    val subscribe = api.updateParkingZonePicture(accessToken, picture).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       view.showProgress(false)
       view.onSuccess()
