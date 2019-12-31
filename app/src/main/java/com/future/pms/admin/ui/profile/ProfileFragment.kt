@@ -67,8 +67,8 @@ class ProfileFragment : Fragment(), ProfileContract {
                 binding.openHour2.text.toString()), binding.address.text.toString(),
             binding.password.text.toString(), accessToken)
       }
-      openHour.setOnClickListener { context?.let { it1 -> getDate(openHour, it1) } }
-      openHour2.setOnClickListener { context?.let { it1 -> getDate(openHour2, it1) } }
+      openHour.setOnClickListener { context?.let { context -> getDate(openHour, context) } }
+      openHour2.setOnClickListener { context?.let { context -> getDate(openHour2, context) } }
       return root
     }
   }
@@ -125,7 +125,7 @@ class ProfileFragment : Fragment(), ProfileContract {
       openHour.text = parkingZone.openHour.substring(0, 5)
       openHour2.text = parkingZone.openHour.substring(7, 13)
       address.setText(parkingZone.address)
-      password.hint = "********"
+      password.hint = getString(R.string.password_hint)
       profileNameDisplay.addTextChangedListener(textWatcher())
       profileName.addTextChangedListener(textWatcher())
       profileEmail.addTextChangedListener(textWatcher())

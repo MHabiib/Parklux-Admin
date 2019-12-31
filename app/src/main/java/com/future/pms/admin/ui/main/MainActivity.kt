@@ -56,26 +56,32 @@ class MainActivity : AppCompatActivity(), MainContract {
           HomeFragment.TAG).commit()
     } else {
       if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) == null) {
-        supportFragmentManager.beginTransaction().show(
-            supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+        supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
+          supportFragmentManager.beginTransaction().show(it).commit()
+        }
       } else {
-        supportFragmentManager.beginTransaction().show(
-            supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
-        supportFragmentManager.beginTransaction().show(
-            supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+        supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
+          supportFragmentManager.beginTransaction().show(it).commit()
+        }
+        supportFragmentManager.run { findFragmentByTag(UpdateLevelFragment.TAG) }?.let {
+          supportFragmentManager.beginTransaction().show(it).commit()
+        }
       }
     }
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ProfileFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(BarcodeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ActivityListFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
   }
 
@@ -84,24 +90,29 @@ class MainActivity : AppCompatActivity(), MainContract {
       supportFragmentManager.beginTransaction().add(R.id.frame, BarcodeFragment().newInstance(),
           BarcodeFragment.TAG).commit()
     } else {
-      supportFragmentManager.beginTransaction().show(
-          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(BarcodeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().show(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ProfileFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ActivityListFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(UpdateLevelFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
   }
 
@@ -110,24 +121,29 @@ class MainActivity : AppCompatActivity(), MainContract {
       supportFragmentManager.beginTransaction().add(R.id.frame,
           ActivityListFragment().newInstance(), ActivityListFragment.TAG).commit()
     } else {
-      supportFragmentManager.beginTransaction().show(
-          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ActivityListFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().show(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(BarcodeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ProfileFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(UpdateLevelFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
   }
 
@@ -136,24 +152,29 @@ class MainActivity : AppCompatActivity(), MainContract {
       supportFragmentManager.beginTransaction().add(R.id.frame, ProfileFragment().newInstance(),
           ProfileFragment.TAG).commit()
     } else {
-      supportFragmentManager.beginTransaction().show(
-          supportFragmentManager.findFragmentByTag(ProfileFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ProfileFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().show(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(BarcodeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(HomeFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(ActivityListFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
     if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) != null) {
-      supportFragmentManager.beginTransaction().hide(
-          supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)!!).commit()
+      supportFragmentManager.run { findFragmentByTag(UpdateLevelFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().hide(it).commit()
+      }
     }
   }
 

@@ -70,4 +70,14 @@
     <string name="open_hours">Open hours</string>
     <string name="slot_number">Slot number</string>
     <string name="force_update_message">You will force update this slot, if you change this slot state, the booking of this parking slot will completed after you press Save button</string>
+    <string name="home">Home</string>
+    <string name="qr">QR</string>
+    <string name="activity">Activity</string>
+    <string name="profile">Profile</string>
+    <string name="swipe_up_to_add_level">Swipe up to add level</string>
+    <string name="parking_management_system">Parking Management System</string>
+    <string name="past">Past</string>
+    <string name="you_don_t_have_any_ongoing_parking">You don\'t have any ongoing parking</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="password_hint">********</string>
 </resources>

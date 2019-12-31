@@ -14,7 +14,7 @@
             android:layout_marginTop="@dimen/four_dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="Parking Management System"
+            android:text="@string/parking_management_system"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/h_medium"
             app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/six_dp"
+            android:paddingStart="@dimen/six_dp"
             android:paddingTop="@dimen/four_dp"
             android:paddingBottom="@dimen/twelve_dp"
             app:layout_constraintLeft_toRightOf="@id/guideline"
@@ -33,8 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingRight="@dimen/twelve_dp"
-                android:text="Past"
+                android:paddingEnd="@dimen/twelve_dp"
+                android:text="@string/past"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/h_medium"
                 android:textStyle="bold"
@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/four_dp"
-            android:paddingRight="@dimen/six_dp"
+            android:paddingEnd="@dimen/six_dp"
             android:paddingBottom="@dimen/twelve_dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/guideline">
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fourty_dp"
                 android:gravity="center"
-                android:text="You don't have any ongoing parking"
+                android:text="@string/you_don_t_have_any_ongoing_parking"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@id/tv_ongoing_tag" />
 
@@ -91,8 +91,8 @@
                 android:id="@+id/tv_ongoing_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/twelve_dp"
-                android:text="Ongoing"
+                android:paddingStart="@dimen/twelve_dp"
+                android:text="@string/ongoing"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/h_medium"
                 android:textStyle="bold"

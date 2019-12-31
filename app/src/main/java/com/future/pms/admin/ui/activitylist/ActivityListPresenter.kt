@@ -19,7 +19,7 @@ class ActivityListPresenter @Inject constructor() {
         view.findPastBookingParkingZoneSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.findPastBookingParkingZoneFailed(it1) }
+      it.message?.let { throwable -> view.findPastBookingParkingZoneFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -31,7 +31,7 @@ class ActivityListPresenter @Inject constructor() {
         view.findOngoingBookingParkingZoneSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.findOngoingBookingParkingZoneFailed(it1) }
+      it.message?.let { throwable -> view.findOngoingBookingParkingZoneFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }

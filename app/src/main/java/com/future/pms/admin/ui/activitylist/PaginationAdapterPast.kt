@@ -22,20 +22,17 @@ class PaginationAdapterPast : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-    var viewHolder: RecyclerView.ViewHolder? = null
     val inflater = LayoutInflater.from(parent.context)
-
-    when (viewType) {
+    return when (viewType) {
       item -> {
         val viewItem = inflater.inflate(R.layout.item_list, parent, false)
-        viewHolder = BookingViewHolder(viewItem)
+        BookingViewHolder(viewItem)
       }
-      loading -> {
+      else -> {
         val viewLoading = inflater.inflate(R.layout.item_progress, parent, false)
-        viewHolder = LoadingViewHolder(viewLoading)
+        LoadingViewHolder(viewLoading)
       }
     }
-    return viewHolder!!
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

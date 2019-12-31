@@ -23,24 +23,20 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-    var viewHolder: RecyclerView.ViewHolder? = null
     val inflater = LayoutInflater.from(parent.context)
-
-    when (viewType) {
+    return when (viewType) {
       item -> {
         val viewItem = inflater.inflate(R.layout.item_list, parent, false)
-        viewHolder = BookingViewHolder(viewItem)
+        BookingViewHolder(viewItem)
       }
-      loading -> {
+      else -> {
         val viewLoading = inflater.inflate(R.layout.item_progress, parent, false)
-        viewHolder = LoadingViewHolder(viewLoading)
+        LoadingViewHolder(viewLoading)
       }
     }
-    return viewHolder!!
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
     val booking = bookingList?.get(position)
     when (getItemViewType(position)) {
       item -> {
@@ -95,13 +91,10 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     val totalPrice: TextView = itemView.findViewById<View>(R.id.tv_total_price) as TextView
     val ivTotalPrice: ImageView = itemView.findViewById<View>(R.id.iv_total_price) as ImageView
     val timeRang: TextView = itemView.findViewById<View>(R.id.tv_time_range) as TextView
-
   }
 
   inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
     val progressBar: ProgressBar = itemView.findViewById<View>(
         R.id.loadmore_progress) as ProgressBar
-
   }
 }

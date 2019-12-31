@@ -35,7 +35,7 @@ class UpdateLevelPresenter @Inject constructor() {
         }
       }
     }, {
-      it.message?.let { itl -> view.showErrorMessage() }
+      it.message?.let { _ -> view.showErrorMessage() }
     })
     subscriptions.add(subscribe)
   }

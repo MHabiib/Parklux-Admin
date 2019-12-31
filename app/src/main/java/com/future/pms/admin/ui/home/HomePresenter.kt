@@ -19,7 +19,7 @@ class HomePresenter @Inject constructor() {
         view.getLayoutSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.getLayoutFailed(it1) }
+      it.message?.let { throwable -> view.getLayoutFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -31,7 +31,7 @@ class HomePresenter @Inject constructor() {
         view.getLevelsSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.showErrorMessage(it1) }
+      it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
 
     subscriptions.add(subscribe)
@@ -44,7 +44,7 @@ class HomePresenter @Inject constructor() {
         view.addParkingLevelSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.showErrorMessage(it1) }
+      it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -56,7 +56,7 @@ class HomePresenter @Inject constructor() {
         view.getSectionDetailsSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.showErrorMessage(it1) }
+      it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -68,7 +68,7 @@ class HomePresenter @Inject constructor() {
         view.updateParkingSectionSuccess(it)
       }
     }, {
-      it.message?.let { it1 -> view.showErrorMessage(it1) }
+      it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -80,7 +80,7 @@ class HomePresenter @Inject constructor() {
         view.updateParkingLayoutSuccess(it)
       }
     }, {
-      it.message?.let { itl -> view.showErrorMessage(itl) }
+      it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -92,7 +92,7 @@ class HomePresenter @Inject constructor() {
         view.editModeParkingLevelSuccess(it)
       }
     }, {
-      it.message?.let { itl -> view.showErrorMessage(itl) }
+      it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
     subscriptions.add(subscribe)
   }

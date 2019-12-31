@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.ScrollingMovementMethod
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -308,18 +307,15 @@ class HomeFragment : Fragment(), HomeContract {
       setPadding(0, 0, 0, 0)
       gravity = Gravity.CENTER
       setBackgroundResource(icon)
-      setTextColor(resources.getColor(R.color.gold))
-      tag = tags
-
       if (code != SLOT_NULL) {
         id = count
-        text = count.toString()
-      } else {
-        text = ""
       }
 
+      if (icon == R.drawable.ic_road) {
+        setTextColor(resources.getColor(R.color.colorPrimaryDark))
+        text = ((id % 16) + 1).toString()
+      }
       setOnClickListener { onClick(view) }
-      setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
     }
 
     layout?.let {
