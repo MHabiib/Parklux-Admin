@@ -68,4 +68,6 @@
     <string name="this_level_status_is_unavailable">This level status is Unavailable</string>
     <string name="close_hours">Close hours</string>
     <string name="open_hours">Open hours</string>
+    <string name="slot_number">Slot number</string>
+    <string name="force_update_message">You will force update this slot, if you change this slot state, the booking of this parking slot will completed after you press Save button</string>
 </resources>

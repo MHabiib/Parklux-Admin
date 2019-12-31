@@ -50,6 +50,7 @@ import com.future.pms.admin.util.Constants.Companion.parkPadding
 import com.future.pms.admin.util.Constants.Companion.parkSize
 import com.future.pms.admin.util.CustomAdapter
 import com.future.pms.admin.util.SpinnerItem
+import com.future.pms.admin.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import timber.log.Timber
@@ -214,7 +215,8 @@ class HomeFragment : Fragment(), HomeContract {
         if (isValid()) {
           presenter.addParkingLevel(bindingHome.addLevel.txtLevelName.text.toString(), accessToken)
         } else {
-          Toast.makeText(context, getString(R.string.fill_all_the_entries), Toast.LENGTH_LONG).show()
+          Toast.makeText(context, getString(R.string.fill_all_the_entries),
+              Toast.LENGTH_LONG).show()
         }
       }
       return root
@@ -341,54 +343,24 @@ class HomeFragment : Fragment(), HomeContract {
           btnSave.visibility = View.VISIBLE
           slotName.text = view.id.toString()
 
-          when {
-            levelLayout[view.id] == SLOT_TAKEN -> {
-              Toast.makeText(context, getString(R.string.cant_update_slot), Toast.LENGTH_SHORT).show()
+          if (levelLayout[view.id] == SLOT_TAKEN) {
+            context?.let {
+              Utils.simpleDialogMessage(it, String.format(getString(R.string.two_value_comma),
+                  getString(R.string.slot_number), view.id),
+                  getString(R.string.force_update_message))
             }
-            levelLayout[view.id] == SLOT_EMPTY -> {
-              statusPark.setOnClickListener {
-                changeSlot(levelLayout, SLOT_EMPTY, view.id)
-                view.setBackgroundResource(R.drawable.ic_park)
-              }
-              statusDisable.setOnClickListener {
-                changeSlot(levelLayout, SLOT_DISABLE, view.id)
-                view.setBackgroundResource(R.drawable.ic_disable)
-              }
-              statusRoad.setOnClickListener {
-                changeSlot(levelLayout, SLOT_ROAD, view.id)
-                view.setBackgroundResource(R.drawable.ic_road)
-              }
-            }
-
-            levelLayout[view.id] == SLOT_DISABLE -> {
-              statusPark.setOnClickListener {
-                changeSlot(levelLayout, SLOT_EMPTY, view.id)
-                view.setBackgroundResource(R.drawable.ic_park)
-              }
-              statusRoad.setOnClickListener {
-                changeSlot(levelLayout, SLOT_ROAD, view.id)
-                view.setBackgroundResource(R.drawable.ic_road)
-              }
-              statusDisable.setOnClickListener {
-                changeSlot(levelLayout, SLOT_DISABLE, view.id)
-                view.setBackgroundResource(R.drawable.ic_disable)
-              }
-            }
-
-            levelLayout[view.id] == SLOT_ROAD || levelLayout[view.id] == SLOT_READY -> {
-              statusDisable.setOnClickListener {
-                changeSlot(levelLayout, SLOT_DISABLE, view.id)
-                view.setBackgroundResource(R.drawable.ic_disable)
-              }
-              statusPark.setOnClickListener {
-                changeSlot(levelLayout, SLOT_EMPTY, view.id)
-                view.setBackgroundResource(R.drawable.ic_park)
-              }
-              statusRoad.setOnClickListener {
-                changeSlot(levelLayout, SLOT_ROAD, view.id)
-                view.setBackgroundResource(R.drawable.ic_road)
-              }
-            }
+          }
+          statusDisable.setOnClickListener {
+            changeSlot(levelLayout, SLOT_DISABLE, view.id)
+            view.setBackgroundResource(R.drawable.ic_disable)
+          }
+          statusPark.setOnClickListener {
+            changeSlot(levelLayout, SLOT_EMPTY, view.id)
+            view.setBackgroundResource(R.drawable.ic_park)
+          }
+          statusRoad.setOnClickListener {
+            changeSlot(levelLayout, SLOT_ROAD, view.id)
+            view.setBackgroundResource(R.drawable.ic_road)
           }
         })
       }
@@ -560,8 +532,8 @@ class HomeFragment : Fragment(), HomeContract {
   private fun Button.showCantDeactivateDialog() {
     context?.let {
       AlertDialog.Builder(it).setTitle(getString(R.string.cant_deactivate_section)).setMessage(
-          getString(R.string.still_have_ongoin_this_section)).setPositiveButton(android.R.string.yes,
-          null).setIcon(R.drawable.ic_arrow).show()
+          getString(R.string.still_have_ongoin_this_section)).setPositiveButton(
+          android.R.string.yes, null).setIcon(R.drawable.ic_arrow).show()
     }
   }
 
