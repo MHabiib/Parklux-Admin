@@ -31,6 +31,7 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   private var currentPageOngoing = 0
   private var isLastPagePast = false
   private var isLastPageOngoing = false
+  private var isLoading = false
 
   companion object {
     const val TAG: String = ACTIVITY_LIST_FRAGMENT
@@ -78,7 +79,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
     binding.rvPast.addOnScrollListener(object :
         PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
       override fun loadMoreItems() {
-        if (!isLastPagePast) {
+        if (!isLoading && !isLastPagePast) {
+          isLoading = true
           loadPastNextPage()
         }
       }
@@ -88,7 +90,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
     binding.rvOngoing.addOnScrollListener(object :
         PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
       override fun loadMoreItems() {
-        if (!isLastPageOngoing) {
+        if (!isLoading && !isLastPageOngoing) {
+          isLoading = true
           loadOngoingNextPage()
         }
       }
@@ -127,6 +130,7 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         currentPagePast += 1
       }
     }
+    isLoading = false
   }
 
   override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
@@ -145,6 +149,7 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         currentPageOngoing += 1
       }
     }
+    isLoading = false
   }
 
   override fun findPastBookingParkingZoneFailed(response: String) {
