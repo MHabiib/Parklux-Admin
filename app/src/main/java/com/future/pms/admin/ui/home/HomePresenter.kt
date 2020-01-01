@@ -33,7 +33,6 @@ class HomePresenter @Inject constructor() {
     }, {
       it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
-
     subscriptions.add(subscribe)
   }
 

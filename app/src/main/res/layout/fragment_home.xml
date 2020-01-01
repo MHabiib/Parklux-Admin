@@ -6,15 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_unavailable_tag"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/this_level_status_is_unavailable"
-            android:textSize="@dimen/h1"
-            android:visibility="gone" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parking_layout"
             android:layout_width="@dimen/zero_dp"
@@ -663,6 +654,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_end="@dimen/twenty_four_dp" />
+
+        <TextView
+            android:id="@+id/tv_unavailable_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/this_level_status_is_unavailable"
+            android:textSize="@dimen/h1"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

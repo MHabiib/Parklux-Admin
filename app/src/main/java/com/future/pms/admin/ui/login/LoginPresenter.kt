@@ -3,8 +3,10 @@ package com.future.pms.admin.ui.login
 import com.future.pms.admin.di.base.BasePresenter
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.network.APICreator
+import com.future.pms.admin.network.ApiServiceInterface
 import com.future.pms.admin.network.AuthAPI
 import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE
+import com.future.pms.admin.network.RetrofitClient
 import com.future.pms.admin.util.Authentication
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,6 +15,7 @@ import javax.inject.Inject
 
 class LoginPresenter @Inject constructor() : BasePresenter<LoginContract>() {
   private val subscriptions = CompositeDisposable()
+  private val api: ApiServiceInterface = RetrofitClient.create()
 
   fun subscribe() {}
 
@@ -29,4 +32,18 @@ class LoginPresenter @Inject constructor() : BasePresenter<LoginContract>() {
     }, { view?.onError() })
     subscriptions.add(subscribe)
   }
+
+  fun loadData(accessToken: String) {
+    val subscribe = api.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
+        AndroidSchedulers.mainThread()).subscribe({
+      view?.let { view -> call(view, view::onAuthorized) }
+    }, {
+      getContext()?.let {
+        Authentication.delete(it)
+        view?.onError()
+      }
+    })
+    subscriptions.add(subscribe)
+  }
+
 }

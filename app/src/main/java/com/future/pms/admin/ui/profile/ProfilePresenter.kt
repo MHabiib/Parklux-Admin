@@ -25,7 +25,6 @@ class ProfilePresenter @Inject constructor() {
       view.loadCustomerDetailSuccess(parkingZone.parkingZoneResponse)
     }, { error ->
       view.showErrorMessage(error.localizedMessage)
-      view.unauthorized()
     })
     subscriptions.add(subscribe)
   }
@@ -38,7 +37,7 @@ class ProfilePresenter @Inject constructor() {
       price.toDouble()
     }
     val parkingZone = ParkingZoneResponse(address, email, name, openHour, password, phoneNumber,
-        priceInDouble,"")
+        priceInDouble, "")
     val subscribe = api.updateParkingZone(token, parkingZone).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       view.showProgress(false)

@@ -6,7 +6,6 @@ interface BarcodeContract {
   fun getDateNow()
   fun showProgress(show: Boolean)
   fun showErrorMessage(error: String)
-  fun unauthorized()
   fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse)
   fun getQrImageSuccess(imageName: String)
 }

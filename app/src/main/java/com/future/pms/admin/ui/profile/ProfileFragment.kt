@@ -147,7 +147,7 @@ class ProfileFragment : Fragment(), ProfileContract {
     }
   }
 
-  fun rotateImage(src:Bitmap, degree:Float):Bitmap {
+  fun rotateImage(src: Bitmap, degree: Float): Bitmap {
     // create new matrix
     val matrix = Matrix()
     // setup rotation degree
@@ -178,11 +178,6 @@ class ProfileFragment : Fragment(), ProfileContract {
     Timber.tag(Constants.ERROR).e(error)
   }
 
-  override fun unauthorized() {
-    val intent = Intent(activity, LoginActivity::class.java)
-    startActivity(intent)
-  }
-
   override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
     with(binding) {
       profileNameDisplay.text = parkingZone.name
@@ -196,10 +191,13 @@ class ProfileFragment : Fragment(), ProfileContract {
       openHour2.text = parkingZone.openHour.substring(7, 13)
       address.setText(parkingZone.address)
       password.hint = getString(R.string.password_hint)
-      Glide.with(binding.root).load(getString(R.string.picture_url, NetworkConstant.BASE, parkingZone.imageUrl)).transform(
-          CenterCrop(), RoundedCorners(80)).diskCacheStrategy(DiskCacheStrategy.NONE )
-          .skipMemoryCache(true).placeholder(R.drawable.ic_parking_zone_default).error(
-          R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(binding.ivParkingZoneImage)
+      Glide.with(binding.root).load(
+          getString(R.string.picture_url, NetworkConstant.BASE, parkingZone.imageUrl)).transform(
+          CenterCrop(), RoundedCorners(80)).diskCacheStrategy(
+          DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(
+              R.drawable.ic_parking_zone_default).error(
+              R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
+              binding.ivParkingZoneImage)
       profileNameDisplay.addTextChangedListener(textWatcher())
       profileName.addTextChangedListener(textWatcher())
       profileEmail.addTextChangedListener(textWatcher())
