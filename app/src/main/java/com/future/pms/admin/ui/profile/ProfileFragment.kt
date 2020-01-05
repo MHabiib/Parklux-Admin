@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -114,14 +113,13 @@ class ProfileFragment : Fragment(), ProfileContract {
     super.onActivityResult(reqCode, resultCode, data)
     if (resultCode == RESULT_OK) {
       try {
-        var selectedImage = BitmapFactory.decodeStream(
+        val selectedImage = BitmapFactory.decodeStream(
             data?.data?.let { activity?.contentResolver?.openInputStream(it) })
-        selectedImage = rotateImage(selectedImage, 90F)
-        val reqFile = RequestBody.create(MediaType.parse(getString(R.string.image_jpeg)),
-            persistImage(selectedImage))
-        val body = MultipartBody.Part.createFormData(getString(R.string.file),
-            getString(R.string.image_name), reqFile)
-        presenter.addPicture(accessToken, body)
+        presenter.addPicture(accessToken,
+            MultipartBody.Part.createFormData(getString(R.string.file),
+                getString(R.string.image_name),
+                RequestBody.create(MediaType.parse(getString(R.string.image_jpeg)),
+                    persistImage(selectedImage))))
         binding.ivParkingZoneImage.setImageBitmap(selectedImage)
       } catch (e: FileNotFoundException) {
         e.printStackTrace()
@@ -145,14 +143,6 @@ class ProfileFragment : Fragment(), ProfileContract {
     } catch (e: Exception) {
       imageFile
     }
-  }
-
-  fun rotateImage(src: Bitmap, degree: Float): Bitmap {
-    // create new matrix
-    val matrix = Matrix()
-    // setup rotation degree
-    matrix.postRotate(degree)
-    return Bitmap.createBitmap(src, 0, 0, src.width, src.height, matrix, true)
   }
 
   override fun onSuccess() {
@@ -195,9 +185,8 @@ class ProfileFragment : Fragment(), ProfileContract {
           getString(R.string.picture_url, NetworkConstant.BASE, parkingZone.imageUrl)).transform(
           CenterCrop(), RoundedCorners(80)).diskCacheStrategy(
           DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(
-              R.drawable.ic_parking_zone_default).error(
-              R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
-              binding.ivParkingZoneImage)
+          R.drawable.ic_parking_zone_default).error(R.drawable.ic_parking_zone_default).fallback(
+          R.drawable.ic_parking_zone_default).into(binding.ivParkingZoneImage)
       profileNameDisplay.addTextChangedListener(textWatcher())
       profileName.addTextChangedListener(textWatcher())
       profileEmail.addTextChangedListener(textWatcher())

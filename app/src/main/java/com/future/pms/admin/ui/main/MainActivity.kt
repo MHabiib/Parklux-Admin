@@ -51,13 +51,16 @@ class MainActivity : AppCompatActivity(), MainContract {
   }
 
   override fun showHomeFragment() {
+    binding.navView.menu.findItem(R.id.navigation_home).isChecked = true
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().add(R.id.frame, HomeFragment().newInstance(),
+      supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+          R.animator.fade_out).add(R.id.frame, HomeFragment().newInstance(),
           HomeFragment.TAG).commit()
     } else {
       if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) == null) {
         supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
-          supportFragmentManager.beginTransaction().show(it).commit()
+          supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+              R.animator.fade_out).show(it).commit()
         }
       } else {
         supportFragmentManager.run { findFragmentByTag(HomeFragment.TAG) }?.let {
@@ -87,11 +90,13 @@ class MainActivity : AppCompatActivity(), MainContract {
 
   override fun showBarcodeFragment() {
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().add(R.id.frame, BarcodeFragment().newInstance(),
+      supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+          R.animator.fade_out).add(R.id.frame, BarcodeFragment().newInstance(),
           BarcodeFragment.TAG).commit()
     } else {
       supportFragmentManager.run { findFragmentByTag(BarcodeFragment.TAG) }?.let {
-        supportFragmentManager.beginTransaction().show(it).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+            R.animator.fade_out).show(it).commit()
       }
     }
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) != null) {
@@ -118,11 +123,13 @@ class MainActivity : AppCompatActivity(), MainContract {
 
   override fun showActivityListFragment() {
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().add(R.id.frame,
-          ActivityListFragment().newInstance(), ActivityListFragment.TAG).commit()
+      supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+          R.animator.fade_out).add(R.id.frame, ActivityListFragment().newInstance(),
+          ActivityListFragment.TAG).commit()
     } else {
       supportFragmentManager.run { findFragmentByTag(ActivityListFragment.TAG) }?.let {
-        supportFragmentManager.beginTransaction().show(it).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+            R.animator.fade_out).show(it).commit()
       }
     }
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
@@ -149,11 +156,13 @@ class MainActivity : AppCompatActivity(), MainContract {
 
   override fun showProfileFragment() {
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().add(R.id.frame, ProfileFragment().newInstance(),
+      supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+          R.animator.fade_out).add(R.id.frame, ProfileFragment().newInstance(),
           ProfileFragment.TAG).commit()
     } else {
       supportFragmentManager.run { findFragmentByTag(ProfileFragment.TAG) }?.let {
-        supportFragmentManager.beginTransaction().show(it).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+            R.animator.fade_out).show(it).commit()
       }
     }
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
@@ -186,8 +195,8 @@ class MainActivity : AppCompatActivity(), MainContract {
     bundle.putString(LEVEL_STATUS, levelStatus)
     fragment.arguments = bundle
     if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) == null) {
-      supportFragmentManager.beginTransaction().add(R.id.frame, fragment,
-          UpdateLevelFragment.TAG).commit()
+      supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+          R.animator.fade_out).add(R.id.frame, fragment, UpdateLevelFragment.TAG).commit()
     }
   }
 

@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.ScrollingMovementMethod
+import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -315,6 +316,7 @@ class HomeFragment : Fragment(), HomeContract {
         setTextColor(resources.getColor(R.color.colorPrimaryDark))
         text = ((id % 16) + 1).toString()
       }
+      setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
       setOnClickListener { onClick(view) }
     }
 

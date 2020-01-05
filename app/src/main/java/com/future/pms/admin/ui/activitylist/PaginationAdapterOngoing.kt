@@ -84,7 +84,6 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
   }
 
   inner class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
     val customerName: TextView = itemView.findViewById<View>(R.id.tv_customer_name) as TextView
     val customerPhone: TextView = itemView.findViewById<View>(R.id.tv_customer_phone) as TextView
     val slot: TextView = itemView.findViewById<View>(R.id.tv_slot) as TextView
