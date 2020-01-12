@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.future.pms.admin.R
@@ -24,35 +23,20 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
-    return when (viewType) {
-      item -> {
-        val viewItem = inflater.inflate(R.layout.item_list, parent, false)
-        BookingViewHolder(viewItem)
-      }
-      else -> {
-        val viewLoading = inflater.inflate(R.layout.item_progress, parent, false)
-        LoadingViewHolder(viewLoading)
-      }
-    }
+    val viewItem = inflater.inflate(R.layout.item_list, parent, false)
+    return BookingViewHolder(viewItem)
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val booking = bookingList?.get(position)
-    when (getItemViewType(position)) {
-      item -> {
-        val bookingViewHolder = holder as BookingViewHolder
-        bookingViewHolder.customerName.text = booking?.customerName
-        bookingViewHolder.customerPhone.text = booking?.customerPhone
-        bookingViewHolder.slot.text = booking?.slotName
-        bookingViewHolder.totalPrice.visibility = View.INVISIBLE
-        bookingViewHolder.ivTotalPrice.visibility = View.INVISIBLE
-        bookingViewHolder.timeRang.text = booking?.dateIn?.let { Utils.convertLongToTime(it) }
-      }
-
-      loading -> {
-        val loadingViewHolder = holder as LoadingViewHolder
-        loadingViewHolder.progressBar.visibility = View.VISIBLE
-      }
+    if (getItemViewType(position) == item) {
+      val bookingViewHolder = holder as BookingViewHolder
+      bookingViewHolder.customerName.text = booking?.customerName
+      bookingViewHolder.customerPhone.text = booking?.customerPhone
+      bookingViewHolder.slot.text = booking?.slotName
+      bookingViewHolder.totalPrice.visibility = View.INVISIBLE
+      bookingViewHolder.ivTotalPrice.visibility = View.INVISIBLE
+      bookingViewHolder.timeRang.text = booking?.dateIn?.let { Utils.convertLongToTime(it) }
     }
   }
 
@@ -79,10 +63,6 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     bookingList?.clear()
   }
 
-  private fun getItem(position: Int): Content? {
-    return bookingList?.get(position)
-  }
-
   inner class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val customerName: TextView = itemView.findViewById<View>(R.id.tv_customer_name) as TextView
     val customerPhone: TextView = itemView.findViewById<View>(R.id.tv_customer_phone) as TextView
@@ -90,10 +70,5 @@ class PaginationAdapterOngoing : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     val totalPrice: TextView = itemView.findViewById<View>(R.id.tv_total_price) as TextView
     val ivTotalPrice: ImageView = itemView.findViewById<View>(R.id.iv_total_price) as ImageView
     val timeRang: TextView = itemView.findViewById<View>(R.id.tv_time_range) as TextView
-  }
-
-  inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val progressBar: ProgressBar = itemView.findViewById<View>(
-        R.id.loadmore_progress) as ProgressBar
   }
 }

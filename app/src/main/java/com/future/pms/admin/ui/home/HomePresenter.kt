@@ -25,12 +25,15 @@ class HomePresenter @Inject constructor() {
   }
 
   fun getLevels(accessToken: String) {
+    view.showProgress(true)
     val subscribe = api.getLevels(accessToken).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
+        view.showProgress(false)
         view.getLevelsSuccess(it)
       }
     }, {
+      view.showProgress(false)
       it.message?.let { throwable -> view.showErrorMessage(throwable) }
     })
     subscriptions.add(subscribe)

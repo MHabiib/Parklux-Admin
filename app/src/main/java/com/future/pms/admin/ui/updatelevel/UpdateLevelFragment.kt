@@ -90,21 +90,21 @@ class UpdateLevelFragment : Fragment(), UpdateLevelContract {
       val rbUnavailable: RadioButton = binding.rbUnavailable
       rbUnavailable.setOnClickListener {
         MaterialAlertDialogBuilder(context).setTitle(getString(R.string.caution)).setMessage(
-                getString(R.string.unavailable_details)).setPositiveButton(getString(R.string.ok),
-                null).setNegativeButton(getString(R.string.cancel)) { _: DialogInterface, _: Int ->
-              rgStatus.check(R.id.rb_available)
-            }.show()
+            getString(R.string.unavailable_details)).setPositiveButton(getString(R.string.ok),
+            null).setNegativeButton(getString(R.string.cancel)) { _: DialogInterface, _: Int ->
+          rgStatus.check(R.id.rb_available)
+        }.show()
       }
     }
   }
 
   override fun showErrorMessage() {
     MaterialAlertDialogBuilder(context).setTitle(getString(R.string.failed)).setMessage(
-            getString(R.string.still_ongoing_parking)).setPositiveButton(getString(R.string.ok),
-            null).show()
+        getString(R.string.still_ongoing_parking)).setPositiveButton(getString(R.string.ok),
+        null).show()
   }
 
-  override fun updateParkingLevelSuccess(response: Response<Void>) {
+  override fun updateParkingLevelSuccess(response: Response<Unit>) {
     val activity = activity as MainActivity?
     activity?.presenter?.onBackPressedUpdateLevel()
     val fm = fragmentManager

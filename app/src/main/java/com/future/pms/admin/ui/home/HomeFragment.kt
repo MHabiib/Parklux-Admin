@@ -22,6 +22,7 @@ import com.future.pms.admin.model.Token
 import com.future.pms.admin.model.response.ListLevel
 import com.future.pms.admin.model.response.SectionDetails
 import com.future.pms.admin.ui.main.MainActivity
+import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.ACTIVE
 import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
 import com.future.pms.admin.util.Constants.Companion.EDIT_MODE
@@ -33,15 +34,21 @@ import com.future.pms.admin.util.Constants.Companion.SECTION_ONE
 import com.future.pms.admin.util.Constants.Companion.SECTION_THREE
 import com.future.pms.admin.util.Constants.Companion.SECTION_TWO
 import com.future.pms.admin.util.Constants.Companion.SELECT_LEVEL
+import com.future.pms.admin.util.Constants.Companion.SLOT_BLOCK
 import com.future.pms.admin.util.Constants.Companion.SLOT_DISABLE
 import com.future.pms.admin.util.Constants.Companion.SLOT_EMPTY
+import com.future.pms.admin.util.Constants.Companion.SLOT_IN
 import com.future.pms.admin.util.Constants.Companion.SLOT_NULL
+import com.future.pms.admin.util.Constants.Companion.SLOT_OUT
 import com.future.pms.admin.util.Constants.Companion.SLOT_READY
 import com.future.pms.admin.util.Constants.Companion.SLOT_ROAD
 import com.future.pms.admin.util.Constants.Companion.SLOT_SCAN_ME
 import com.future.pms.admin.util.Constants.Companion.SLOT_TAKEN
 import com.future.pms.admin.util.Constants.Companion.STATUS_AVAILABLE
+import com.future.pms.admin.util.Constants.Companion.STATUS_BLOCK
 import com.future.pms.admin.util.Constants.Companion.STATUS_BOOKED
+import com.future.pms.admin.util.Constants.Companion.STATUS_IN
+import com.future.pms.admin.util.Constants.Companion.STATUS_OUT
 import com.future.pms.admin.util.Constants.Companion.STATUS_RESERVED
 import com.future.pms.admin.util.Constants.Companion.STATUS_ROAD
 import com.future.pms.admin.util.Constants.Companion.TOKEN
@@ -53,6 +60,7 @@ import com.future.pms.admin.util.SpinnerItem
 import com.future.pms.admin.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -75,6 +83,9 @@ class HomeFragment : Fragment(), HomeContract {
   private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
 
   companion object {
+    private val LETTER = ArrayList(
+        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"))
+    private const val TOTAL_SLOTS_IN_ROW = 16
     const val TAG: String = HOME_FRAGMENT
   }
 
@@ -290,6 +301,16 @@ class HomeFragment : Fragment(), HomeContract {
         }
         slotsLayout[index] == SLOT_ROAD || slotsLayout[index] == SLOT_READY -> {
           setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
+              R.color.transparent)
+        }
+        slotsLayout[index] == SLOT_IN -> {
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_IN, R.drawable.ic_in)
+        }
+        slotsLayout[index] == SLOT_OUT -> {
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_OUT, R.drawable.ic_out)
+        }
+        slotsLayout[index] == SLOT_BLOCK -> {
+          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_BLOCK,
               R.drawable.ic_road)
         }
       }
@@ -312,7 +333,7 @@ class HomeFragment : Fragment(), HomeContract {
         id = count
       }
 
-      if (icon == R.drawable.ic_road) {
+      if (icon == R.color.transparent) {
         setTextColor(resources.getColor(R.color.colorPrimaryDark))
         text = ((id % 16) + 1).toString()
       }
@@ -339,7 +360,7 @@ class HomeFragment : Fragment(), HomeContract {
           layoutSlotDetailLevel.exitEditMode.visibility = View.GONE
           editMode.visibility = View.VISIBLE
           btnSave.visibility = View.VISIBLE
-          slotName.text = view.id.toString()
+          slotName.text = slotName(view.id)
 
           if (levelLayout[view.id] == SLOT_TAKEN) {
             context?.let {
@@ -358,6 +379,18 @@ class HomeFragment : Fragment(), HomeContract {
           }
           statusRoad.setOnClickListener {
             changeSlot(levelLayout, SLOT_ROAD, view.id)
+            view.setBackgroundResource(R.color.transparent)
+          }
+          statusIn.setOnClickListener {
+            changeSlot(levelLayout, SLOT_IN, view.id)
+            view.setBackgroundResource(R.drawable.ic_in)
+          }
+          statusOut.setOnClickListener {
+            changeSlot(levelLayout, SLOT_OUT, view.id)
+            view.setBackgroundResource(R.drawable.ic_out)
+          }
+          statusBlock.setOnClickListener {
+            changeSlot(levelLayout, SLOT_BLOCK, view.id)
             view.setBackgroundResource(R.drawable.ic_road)
           }
         })
@@ -440,6 +473,8 @@ class HomeFragment : Fragment(), HomeContract {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus, false))
     }
+    bindingHome.home.ivSelectLevel.visibility = View.VISIBLE
+    bindingHome.home.tvSelectLevel.visibility = View.VISIBLE
   }
 
   override fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>) {
@@ -545,6 +580,15 @@ class HomeFragment : Fragment(), HomeContract {
     presenter.getParkingLayout(idLevel, accessToken)
   }
 
+  private fun slotName(slotAt: Int): String {
+    for (i in 1 .. TOTAL_SLOTS_IN_ROW) {
+      if (slotAt < TOTAL_SLOTS_IN_ROW * i) {
+        return "(" + LETTER[i - 1] + "-" + ((slotAt % TOTAL_SLOTS_IN_ROW) + 1) + ")"
+      }
+    }
+    return ""
+  }
+
   fun refreshPage() {
     val ft = fragmentManager?.beginTransaction()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -554,13 +598,30 @@ class HomeFragment : Fragment(), HomeContract {
     bindingHome.home.levelName.setSelection(0)
   }
 
+  override fun showProgress(show: Boolean) {
+    if (null != progressBar) {
+      if (show) {
+        progressBar.visibility = View.VISIBLE
+      } else {
+        progressBar.visibility = View.GONE
+      }
+    }
+  }
+
   override fun getLayoutFailed(error: String) {
     Timber.tag(ERROR).e(error)
   }
 
   override fun showErrorMessage(error: String) {
     Timber.tag(ERROR).e(error)
-    Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+    bindingHome.home.ibRefresh.visibility = View.VISIBLE
+    bindingHome.home.ibRefresh.setOnClickListener {
+      presenter.getLevels(accessToken)
+      bindingHome.home.ibRefresh.visibility = View.GONE
+    }
+    if (error.contains(Constants.NO_CONNECTION)) {
+      Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
+    }
   }
 
   private fun injectDependency() {

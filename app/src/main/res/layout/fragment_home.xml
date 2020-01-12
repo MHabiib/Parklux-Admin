@@ -6,72 +6,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/parking_layout"
-            android:layout_width="@dimen/zero_dp"
-            android:layout_height="0dp"
-            android:background="@drawable/card_layout_parking_layout"
-            app:layout_constraintBottom_toTopOf="@id/guideline10"
-            app:layout_constraintLeft_toRightOf="@id/guideline2"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_select_level"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/select_level"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.35" />
-
-            <TextView
-                android:id="@+id/tv_select_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select level"
-                android:textColor="@color/darkGrey"
-                android:textSize="@dimen/h_medium"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.70" />
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/custom_scrollview"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/zero_dp"
-                android:paddingStart="@dimen/twelve_dp"
-                android:paddingTop="@dimen/twelve_dp"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <include layout="@layout/numbering_left" />
-
-                    <ScrollView
-                        android:id="@+id/scroll_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/sixteen_dp"
-                        android:overScrollMode="never"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <HorizontalScrollView
-                            android:id="@+id/layoutPark"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </ScrollView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_unavailable_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/this_level_status_is_unavailable"
+            android:textSize="@dimen/h1"
+            android:visibility="gone" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/section_layout"
@@ -517,7 +459,7 @@
                                     android:layout_marginTop="@dimen/twelve_dp"
                                     android:background="@drawable/card_layout_purple"
                                     android:padding="@dimen/four_dp"
-                                    android:src="@drawable/ic_road"
+                                    android:src="@drawable/ic_blank"
                                     android:tint="@color/white"
                                     app:layout_constraintLeft_toRightOf="@id/guideline7"
                                     app:layout_constraintRight_toRightOf="parent"
@@ -551,6 +493,49 @@
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintRight_toLeftOf="@id/guideline6"
                                     app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <ImageButton
+                                    android:id="@+id/status_in"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_in"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline6"
+                                    app:layout_constraintTop_toBottomOf="@id/status_park" />
+
+                                <ImageButton
+                                    android:id="@+id/status_block"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_road"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline6"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline7"
+                                    app:layout_constraintTop_toBottomOf="@id/status_disable" />
+
+                                <ImageButton
+                                    android:id="@+id/status_out"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_out"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline7"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/status_park" />
 
                                 <TextView
                                     android:id="@+id/slot_name_tag"
@@ -627,12 +612,101 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.40" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parking_layout"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="0dp"
+            android:background="@drawable/card_layout_parking_layout"
+            app:layout_constraintBottom_toTopOf="@id/guideline10"
+            app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/ib_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_sync"
+                android:tint="@color/colorAccent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/iv_select_level"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/select_level"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_select_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select level"
+                android:textColor="@color/darkGrey"
+                android:textSize="@dimen/h_medium"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.70" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/custom_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:paddingStart="@dimen/twelve_dp"
+                android:paddingTop="@dimen/twelve_dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ScrollView
+                        android:id="@+id/scroll_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:overScrollMode="never"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <HorizontalScrollView
+                            android:id="@+id/layoutPark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </ScrollView>
+
+                    <include layout="@layout/numbering_left" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -655,14 +729,12 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_end="@dimen/twenty_four_dp" />
 
-        <TextView
-            android:id="@+id/tv_unavailable_tag"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/this_level_status_is_unavailable"
-            android:textSize="@dimen/h1"
-            android:visibility="gone" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

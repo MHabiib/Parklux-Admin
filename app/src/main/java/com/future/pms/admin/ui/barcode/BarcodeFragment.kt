@@ -5,18 +5,17 @@ import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.future.pms.admin.R
 import com.future.pms.admin.databinding.FragmentBarcodeBinding
 import com.future.pms.admin.di.component.DaggerFragmentComponent
 import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.model.response.ParkingZoneResponse
-import com.future.pms.admin.network.NetworkConstant.BASE
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
 import com.future.pms.admin.util.Constants.Companion.BARCODE_FRAGMENT
@@ -24,7 +23,7 @@ import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Utils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_barcode.*
 import timber.log.Timber
 import java.text.DateFormat
 import java.time.LocalDate
@@ -36,6 +35,7 @@ import javax.inject.Inject
 class BarcodeFragment : Fragment(), BarcodeContract {
   @Inject lateinit var presenter: BarcodePresenter
   private lateinit var binding: FragmentBarcodeBinding
+  private lateinit var accessToken: String
 
   companion object {
     const val TAG: String = BARCODE_FRAGMENT
@@ -60,7 +60,7 @@ class BarcodeFragment : Fragment(), BarcodeContract {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val accessToken = Gson().fromJson(
+    accessToken = Gson().fromJson(
         context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
@@ -69,6 +69,8 @@ class BarcodeFragment : Fragment(), BarcodeContract {
       loadData(accessToken)
     }
     binding.btnGenerateQr.setOnClickListener {
+      binding.btnGenerateQr.isEnabled = false
+      binding.btnGenerateQr.text = ""
       presenter.getQrImage(accessToken)
     }
     getDateNow()
@@ -104,9 +106,9 @@ class BarcodeFragment : Fragment(), BarcodeContract {
       tvScan.visibility = View.VISIBLE
       tvMe.visibility = View.VISIBLE
     }
-    Glide.with(binding.root).load(getString(R.string.image_url, BASE, imageName)).transform(
-        CenterCrop(), RoundedCorners(80)).placeholder(R.drawable.generate_qr).error(
-        R.drawable.generate_qr).fallback(R.drawable.generate_qr).into(binding.ivQrcode)
+    Glide.with(binding.root).load(imageName).transform(CenterCrop()).placeholder(
+        R.drawable.generate_qr).error(R.drawable.generate_qr).fallback(R.drawable.generate_qr).into(
+        binding.ivQrcode)
     val cT = object : CountDownTimer(20000, 1000) {
       override fun onTick(millisUntilFinished: Long) {
         val va = ((millisUntilFinished % 60000) / 1000).toInt()
@@ -116,6 +118,7 @@ class BarcodeFragment : Fragment(), BarcodeContract {
 
       override fun onFinish() {
         binding.btnGenerateQr.text = getString(R.string.generate_qr)
+        binding.btnGenerateQr.isEnabled = true
       }
     }
     cT.start()
@@ -141,12 +144,35 @@ class BarcodeFragment : Fragment(), BarcodeContract {
     }
   }
 
+  override fun showProgressTop(show: Boolean) {
+    if (null != progressBarTop) {
+      if (show) {
+        progressBarTop.visibility = View.VISIBLE
+      } else {
+        progressBarTop.visibility = View.GONE
+      }
+    }
+  }
+
   override fun showErrorMessage(error: String) {
+    binding.btnGenerateQr.isEnabled = true
+    binding.btnGenerateQr.text = getString(R.string.generate_qr)
     activity?.let {
       Snackbar.make(it.findViewById(android.R.id.content), getString(R.string.parking_slot_full),
           Snackbar.LENGTH_SHORT).show()
     }
     Timber.tag(Constants.ERROR).e(error)
+  }
+
+  override fun showError(error: String) {
+    if (error.contains(Constants.NO_CONNECTION)) {
+      Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
+    }
+    binding.ibRefresh.visibility = View.VISIBLE
+    binding.ibRefresh.setOnClickListener {
+      presenter.loadData(accessToken)
+      binding.ibRefresh.visibility = View.GONE
+    }
   }
 
   private fun injectDependency() {

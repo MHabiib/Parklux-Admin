@@ -8,6 +8,7 @@ import com.future.pms.admin.model.response.SectionDetails
 import com.future.pms.admin.model.response.ongoingpastbooking.Booking
 import io.reactivex.Observable
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -46,9 +47,10 @@ interface ApiServiceInterface {
       picture: MultipartBody.Part): Observable<String>
 
   @PUT("api2/parking-zone/update-level") fun updateParkingLevel(@Query("access_token")
-  accessToken: String?, @Body levelDetailsRequest: LevelDetailsRequest): Observable<Response<Void>>
+  accessToken: String?, @Body levelDetailsRequest: LevelDetailsRequest): Observable<Response<Unit>>
 
-  @GET("api2/qr") fun getQrImage(@Query("access_token") accessToken: String?): Observable<String>
+  @GET("api2/qr") fun getQrImage(@Query("access_token")
+  accessToken: String?): Observable<ResponseBody>
 
   @GET("/api2/booking/past/parking-zone") fun findPastBookingParkingZone(@Query("access_token")
   accessToken: String?, @Query("page") page: Int?): Observable<Booking>

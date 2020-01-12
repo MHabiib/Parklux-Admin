@@ -52,10 +52,14 @@ class ActivityListFragment : Fragment(), ActivityListContract {
         context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
+    binding.shimmerOngoing.startShimmerAnimation()
+    binding.shimmerPast.startShimmerAnimation()
     val linearLayoutManagerPast = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     val linearLayoutManagerOngoing = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
         false)
     binding.refreshOngoing.setOnRefreshListener {
+      binding.shimmerOngoing.visibility = View.VISIBLE
+      binding.shimmerOngoing.startShimmerAnimation()
       paginationAdapterOngoing.clear()
       paginationAdapterOngoing.notifyDataSetChanged()
       currentPageOngoing = 0
@@ -64,6 +68,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
       binding.refreshOngoing.isRefreshing = false
     }
     binding.refreshPast.setOnRefreshListener {
+      binding.shimmerPast.visibility = View.VISIBLE
+      binding.shimmerPast.startShimmerAnimation()
       paginationAdapterPast.clear()
       paginationAdapterPast.notifyDataSetChanged()
       currentPagePast = 0
@@ -115,6 +121,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   }
 
   override fun findPastBookingParkingZoneSuccess(booking: Booking) {
+    binding.shimmerPast.visibility = View.GONE
+    binding.shimmerPast.stopShimmerAnimation()
     if (currentPagePast != 0) {
       if (currentPagePast <= booking.totalPages - 1) {
         paginationAdapterPast.addAll(booking.content)
@@ -134,6 +142,8 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   }
 
   override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
+    binding.shimmerOngoing.visibility = View.GONE
+    binding.shimmerOngoing.stopShimmerAnimation()
     if (currentPageOngoing != 0) {
       if (currentPageOngoing <= booking.totalPages - 1) {
         paginationAdapterOngoing.addAll(booking.content)
@@ -153,10 +163,14 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   }
 
   override fun findPastBookingParkingZoneFailed(response: String) {
+    binding.shimmerPast.visibility = View.GONE
+    binding.shimmerPast.stopShimmerAnimation()
     isLastPagePast = true
   }
 
   override fun findOngoingBookingParkingZoneFailed(response: String) {
+    binding.shimmerOngoing.visibility = View.GONE
+    binding.shimmerOngoing.stopShimmerAnimation()
     isLastPageOngoing = true
   }
 

@@ -8,12 +8,36 @@
         android:layout_height="match_parent"
         android:background="@color/baseWhite">
 
+        <ImageButton
+            android:id="@+id/ib_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:layout_marginRight="@dimen/twelve_dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_sync"
+            android:tint="@color/colorAccent"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/iv_parking_zone_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginLeft="@dimen/twelve_dp"
             android:layout_marginBottom="@dimen/twelve_dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/profile_name_display" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/custom_progressbar"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/guideline3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/guideline"
@@ -135,17 +159,6 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="@id/open_hour" />
-
-                        <ProgressBar
-                            android:id="@+id/progressBar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:indeterminateDrawable="@drawable/custom_progressbar"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/name_tag"
@@ -274,6 +287,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:imeOptions="flagNoExtractUi"
+                            android:inputType="textNoSuggestions"
                             android:maxLines="4"
                             android:paddingBottom="@dimen/twelve_dp"
                             android:textColor="@color/darkGrey"

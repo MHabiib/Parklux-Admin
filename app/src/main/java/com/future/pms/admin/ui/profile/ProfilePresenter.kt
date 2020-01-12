@@ -20,10 +20,13 @@ class ProfilePresenter @Inject constructor() {
   private lateinit var view: ProfileContract
 
   fun loadData(accessToken: String) {
+    view.showProgress(true)
     val subscribe = api.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZone ->
+      view.showProgress(false)
       view.loadCustomerDetailSuccess(parkingZone.parkingZoneResponse)
     }, { error ->
+      view.showProgress(false)
       view.showErrorMessage(error.localizedMessage)
     })
     subscriptions.add(subscribe)
@@ -31,6 +34,7 @@ class ProfilePresenter @Inject constructor() {
 
   fun update(name: String, email: String, phoneNumber: String, price: String, openHour: String,
       address: String, password: String, token: String) {
+    view.showProgress(true)
     val priceInDouble: Double = if (price == "") {
       0.0
     } else {
@@ -50,6 +54,7 @@ class ProfilePresenter @Inject constructor() {
   }
 
   fun addPicture(accessToken: String, picture: MultipartBody.Part) {
+    view.showProgress(true)
     val subscribe = api.updateParkingZonePicture(accessToken, picture).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       view.showProgress(false)

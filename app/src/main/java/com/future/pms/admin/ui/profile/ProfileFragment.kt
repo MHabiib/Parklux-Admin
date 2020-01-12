@@ -1,10 +1,13 @@
 package com.future.pms.admin.ui.profile
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -16,6 +19,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -28,7 +33,7 @@ import com.future.pms.admin.di.component.DaggerFragmentComponent
 import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.model.response.ParkingZoneResponse
-import com.future.pms.admin.network.NetworkConstant
+import com.future.pms.admin.ui.barcode.BarcodeFragment
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT
@@ -53,6 +58,7 @@ class ProfileFragment : Fragment(), ProfileContract {
   private lateinit var accessToken: String
 
   companion object {
+    const val PERMISSION_REQUEST_CODE = 707
     const val TAG: String = PROFILE_FRAGMENT
   }
 
@@ -75,7 +81,6 @@ class ProfileFragment : Fragment(), ProfileContract {
         onLogout()
       }
       btnSave.setOnClickListener {
-        showProgress(true)
         presenter.update(binding.profileName.text.toString(), binding.profileEmail.text.toString(),
             binding.profilePhoneNumber.text.toString(), binding.price.text.toString(),
             String.format(getString(R.string.range2), binding.openHour.text.toString(),
@@ -85,7 +90,11 @@ class ProfileFragment : Fragment(), ProfileContract {
       openHour.setOnClickListener { context?.let { context -> getDate(openHour, context) } }
       openHour2.setOnClickListener { context?.let { context -> getDate(openHour2, context) } }
       ivParkingZoneImage.setOnClickListener {
-        getImageFromGallery()
+        if (checkPermission()) {
+          getImageFromGallery()
+        } else {
+          requestPermission()
+        }
       }
       return root
     }
@@ -146,8 +155,10 @@ class ProfileFragment : Fragment(), ProfileContract {
   }
 
   override fun onSuccess() {
+    val barcodeFragment = fragmentManager?.findFragmentByTag(BarcodeFragment.TAG) as BarcodeFragment
+    barcodeFragment.presenter.loadData(accessToken)
     Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show()
-    refreshPage()
+    presenter.loadData(accessToken)
   }
 
   override fun onFailed(e: String) {
@@ -165,6 +176,14 @@ class ProfileFragment : Fragment(), ProfileContract {
   }
 
   override fun showErrorMessage(error: String) {
+    if (error.contains(Constants.NO_CONNECTION)) {
+      Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
+    }
+    binding.ibRefresh.visibility = View.VISIBLE
+    binding.ibRefresh.setOnClickListener {
+      presenter.loadData(accessToken)
+      binding.ibRefresh.visibility = View.GONE
+    }
     Timber.tag(Constants.ERROR).e(error)
   }
 
@@ -181,12 +200,11 @@ class ProfileFragment : Fragment(), ProfileContract {
       openHour2.text = parkingZone.openHour.substring(7, 13)
       address.setText(parkingZone.address)
       password.hint = getString(R.string.password_hint)
-      Glide.with(binding.root).load(
-          getString(R.string.picture_url, NetworkConstant.BASE, parkingZone.imageUrl)).transform(
-          CenterCrop(), RoundedCorners(80)).diskCacheStrategy(
-          DiskCacheStrategy.NONE).skipMemoryCache(true).placeholder(
-          R.drawable.ic_parking_zone_default).error(R.drawable.ic_parking_zone_default).fallback(
-          R.drawable.ic_parking_zone_default).into(binding.ivParkingZoneImage)
+      Glide.with(binding.root).load(parkingZone.imageUrl).transform(CenterCrop(),
+          RoundedCorners(80)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(
+          true).placeholder(R.drawable.ic_parking_zone_default).error(
+          R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
+          binding.ivParkingZoneImage)
       profileNameDisplay.addTextChangedListener(textWatcher())
       profileName.addTextChangedListener(textWatcher())
       profileEmail.addTextChangedListener(textWatcher())
@@ -231,6 +249,32 @@ class ProfileFragment : Fragment(), ProfileContract {
       ft?.setReorderingAllowed(false)
     }
     ft?.detach(this)?.attach(this)?.commit()
+  }
+
+  private fun checkPermission(): Boolean {
+    val result = context?.let {
+      ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+    return result == PackageManager.PERMISSION_GRANTED
+  }
+
+  private fun requestPermission() {
+    if (ActivityCompat.shouldShowRequestPermissionRationale(context as Activity,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      requestAppPermissions()
+    } else {
+      activity?.let {
+        ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            PERMISSION_REQUEST_CODE)
+      }
+    }
+  }
+
+  private fun requestAppPermissions() {
+    activity?.let {
+      ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
+    }
   }
 
   override fun onLogout() {

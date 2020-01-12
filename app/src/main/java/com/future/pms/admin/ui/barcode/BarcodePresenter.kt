@@ -14,21 +14,27 @@ class BarcodePresenter @Inject constructor() {
   private lateinit var view: BarcodeContract
 
   fun loadData(accessToken: String) {
+    view.showProgressTop(true)
     val subscribe = api.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZone ->
+      view.showProgressTop(false)
       view.loadCustomerDetailSuccess(parkingZone.parkingZoneResponse)
     }, { error ->
-      view.showErrorMessage(error.localizedMessage)
+      view.showProgressTop(false)
+      view.showError(error.message.toString())
     })
     subscriptions.add(subscribe)
   }
 
   fun getQrImage(accessToken: String) {
+    view.showProgress(true)
     val subscribe = api.getQrImage(accessToken).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({
-      view.getQrImageSuccess(it)
+      view.showProgress(false)
+      view.getQrImageSuccess(it.string())
     }, { error ->
-      view.showErrorMessage(error.localizedMessage)
+      view.showProgress(false)
+      view.showErrorMessage(error.message.toString())
     })
     subscriptions.add(subscribe)
   }

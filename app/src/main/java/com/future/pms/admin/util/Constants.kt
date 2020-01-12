@@ -20,6 +20,9 @@ class Constants {
     const val SLOT_NULL = '_'
     const val SLOT_READY = 'O'
     const val SLOT_SCAN_ME = 'S'
+    const val SLOT_IN = 'I'
+    const val SLOT_OUT = 'Q'
+    const val SLOT_BLOCK = 'B'
 
     const val LEVEL_AVAILABLE = "A"
     const val LEVEL_UNAVAILABLE = "U"
@@ -38,6 +41,8 @@ class Constants {
     const val TOKEN = "token"
     const val ERROR = "Error"
 
+    const val NO_CONNECTION = "No address associated with hostname"
+
     const val parkSize = 88
     const val parkMargin = 0
     const val parkPadding = 0
@@ -45,6 +50,9 @@ class Constants {
     const val STATUS_BOOKED = 2
     const val STATUS_RESERVED = 3
     const val STATUS_ROAD = 4
+    const val STATUS_IN = 5
+    const val STATUS_OUT = 6
+    const val STATUS_BLOCK = 7
 
     const val EDIT_MODE = "EditMode"
     const val EXIT_EDIT_MODE = "ExitEditMode"

@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="match_parent"
             android:paddingStart="@dimen/six_dp"
             android:paddingTop="@dimen/four_dp"
@@ -44,7 +44,7 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/refresh_past"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/zero_dp"
                 android:layout_marginTop="@dimen/twelve_dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_past_tag">
@@ -56,10 +56,40 @@
                     android:background="@drawable/card_layout_white_right"
                     android:padding="@dimen/twelve_dp" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_past"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/twenty_four_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_past_tag">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_list_shimmer_past" />
+
+                    <include layout="@layout/item_list_shimmer_past" />
+
+                    <include layout="@layout/item_list_shimmer_past" />
+
+                    <include layout="@layout/item_list_shimmer_past" />
+
+                    <include layout="@layout/item_list_shimmer_past" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/four_dp"
             android:paddingEnd="@dimen/six_dp"
@@ -69,7 +99,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/zero_dp"
                 android:layout_marginTop="@dimen/twelve_dp"
                 android:background="@drawable/card_layout_white_left"
                 android:padding="@dimen/fourty_dp"
@@ -109,7 +139,7 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/refresh_ongoing"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/zero_dp"
                 android:layout_marginTop="@dimen/twelve_dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline2"
                 app:layout_constraintTop_toBottomOf="@id/tv_ongoing_tag">
@@ -121,6 +151,33 @@
                     android:background="@drawable/card_layout_white_left"
                     android:padding="@dimen/twelve_dp" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_ongoing"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/twenty_four_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline2"
+                app:layout_constraintTop_toBottomOf="@id/tv_ongoing_tag">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_list_shimmer_ongoing" />
+
+                    <include layout="@layout/item_list_shimmer_ongoing" />
+
+                    <include layout="@layout/item_list_shimmer_ongoing" />
+
+                    <include layout="@layout/item_list_shimmer_ongoing" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

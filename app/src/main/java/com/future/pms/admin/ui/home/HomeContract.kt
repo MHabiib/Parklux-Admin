@@ -13,4 +13,5 @@ interface HomeContract {
   fun getLayoutFailed(error: String)
   fun addParkingLevelSuccess(response: String)
   fun editModeParkingLevelSuccess(response: String)
+  fun showProgress(show: Boolean)
 }
