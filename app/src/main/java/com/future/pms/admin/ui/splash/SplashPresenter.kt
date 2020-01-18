@@ -1,14 +1,10 @@
 package com.future.pms.admin.ui.splash
 
+import com.future.pms.admin.di.base.BasePresenter
 import com.future.pms.admin.util.Authentication
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class SplashPresenter @Inject constructor() {
-  private val subscriptions = CompositeDisposable()
-  private lateinit var view: SplashContract
-
-  fun subscribe() {}
+class SplashPresenter @Inject constructor() : BasePresenter<SplashContract>() {
 
   fun unsubscribe() {
     subscriptions.clear()
@@ -19,14 +15,16 @@ class SplashPresenter @Inject constructor() {
   }
 
   fun isAuthenticated() {
-    try {
-      if (Authentication.isAuthenticated(view.isAuthenticated())) {
-        view.onSuccess()
-      } else {
-        view.refreshFetcher()
+    view?.apply {
+      try {
+        if (Authentication.isAuthenticated(isAuthenticated())) {
+          onSuccess()
+        } else {
+          refreshFetcher()
+        }
+      } catch (e: Authentication.WithoutAuthenticatedException) {
+        onLogin()
       }
-    } catch (e: Authentication.WithoutAuthenticatedException) {
-      view.onLogin()
     }
   }
 }

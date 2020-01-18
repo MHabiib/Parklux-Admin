@@ -18,7 +18,7 @@ import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.ui.home.HomeFragment
 import com.future.pms.admin.ui.main.MainActivity
-import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
+import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.DELETE_LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.HOME_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
@@ -64,7 +64,7 @@ class UpdateLevelFragment : Fragment(), UpdateLevelContract {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val accessToken = Gson().fromJson(
-        context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(TOKEN, null),
+        context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
     with(binding) {
@@ -98,7 +98,7 @@ class UpdateLevelFragment : Fragment(), UpdateLevelContract {
     }
   }
 
-  override fun showErrorMessage() {
+  override fun onFailed(message: String) {
     MaterialAlertDialogBuilder(context).setTitle(getString(R.string.failed)).setMessage(
         getString(R.string.still_ongoing_parking)).setPositiveButton(getString(R.string.ok),
         null).show()

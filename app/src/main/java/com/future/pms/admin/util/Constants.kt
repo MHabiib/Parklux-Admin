@@ -2,7 +2,7 @@ package com.future.pms.admin.util
 
 class Constants {
   companion object {
-    const val AUTHENTCATION = "authentication"
+    const val AUTHENTICATION = "authentication"
     const val HOME_FRAGMENT = "HomeFragment"
     const val PROFILE_FRAGMENT = "ProfileFragment"
     const val ACTIVITY_LIST_FRAGMENT = "ActivityListFragment"
@@ -41,6 +41,9 @@ class Constants {
     const val TOKEN = "token"
     const val ERROR = "Error"
 
+    const val NOT_FOUND_CODE = "404"
+    const val UNAUTHORIZED_CODE = "401"
+    const val BAD_REQUEST_CODE = "400"
     const val NO_CONNECTION = "No address associated with hostname"
 
     const val parkSize = 88
@@ -60,5 +63,8 @@ class Constants {
     const val ID_LEVEL = "idLevel"
     const val LEVEL_STATUS = "levelStatus"
     const val LEVEL_NAME = "levelName"
+
+    const val PAST = "past"
+    const val ONGOING = "ongoing"
   }
 }

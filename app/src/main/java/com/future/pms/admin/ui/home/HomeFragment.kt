@@ -24,7 +24,7 @@ import com.future.pms.admin.model.response.SectionDetails
 import com.future.pms.admin.ui.main.MainActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.ACTIVE
-import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
+import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.EDIT_MODE
 import com.future.pms.admin.util.Constants.Companion.ERROR
 import com.future.pms.admin.util.Constants.Companion.EXIT_EDIT_MODE
@@ -243,7 +243,7 @@ class HomeFragment : Fragment(), HomeContract {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     accessToken = Gson().fromJson(
-        context?.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
+        context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
     presenter.getLevels(accessToken)
@@ -608,18 +608,14 @@ class HomeFragment : Fragment(), HomeContract {
     }
   }
 
-  override fun getLayoutFailed(error: String) {
-    Timber.tag(ERROR).e(error)
-  }
-
-  override fun showErrorMessage(error: String) {
-    Timber.tag(ERROR).e(error)
+  override fun onFailed(message: String) {
+    Timber.tag(ERROR).e(message)
     bindingHome.home.ibRefresh.visibility = View.VISIBLE
     bindingHome.home.ibRefresh.setOnClickListener {
       presenter.getLevels(accessToken)
       bindingHome.home.ibRefresh.visibility = View.GONE
     }
-    if (error.contains(Constants.NO_CONNECTION)) {
+    if (message.contains(Constants.NO_CONNECTION)) {
       Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
     }
   }

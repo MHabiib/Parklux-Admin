@@ -13,7 +13,7 @@ import com.future.pms.admin.di.module.ActivityModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.network.APICreator
 import com.future.pms.admin.network.AuthAPI
-import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE
+import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE_REFRESH
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.ui.main.MainActivity
 import com.future.pms.admin.util.Authentication
@@ -58,7 +58,7 @@ class SplashActivity : AppCompatActivity(), SplashContract {
 
   override fun refreshFetcher() {
     val authFetcher = APICreator(AuthAPI::class.java).generate()
-    val subscribe = authFetcher.refresh(GRANT_TYPE,
+    val subscribe = authFetcher.refresh(GRANT_TYPE_REFRESH,
         Authentication.getRefresh(applicationContext)).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({ token: Token ->
       Authentication.save(applicationContext, token)
@@ -72,11 +72,11 @@ class SplashActivity : AppCompatActivity(), SplashContract {
       val intent = Intent(this, LoginActivity::class.java)
       startActivity(intent)
       finish()
-    }, 1000)
+    }, 5000)
   }
 
-  override fun onError(e: Throwable) {
-    Toast.makeText(this, e.message.toString(), Toast.LENGTH_LONG).show()
+  override fun onFailed(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     showLogin()
   }
 

@@ -1,25 +1,22 @@
 package com.future.pms.admin.ui.activitylist
 
-import com.future.pms.admin.network.ApiServiceInterface
-import com.future.pms.admin.network.RetrofitClient
+import com.future.pms.admin.di.base.BasePresenter
+import com.future.pms.admin.util.Constants.Companion.ONGOING
+import com.future.pms.admin.util.Constants.Companion.PAST
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ActivityListPresenter @Inject constructor() {
-  private val subscriptions = CompositeDisposable()
-  private lateinit var view: ActivityListContract
-  private val api: ApiServiceInterface = RetrofitClient.create()
+class ActivityListPresenter @Inject constructor() : BasePresenter<ActivityListContract>() {
 
   fun findPastBookingParkingZone(accessToken: String, page: Int) {
     val subscribe = api.findPastBookingParkingZone(accessToken, page).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.findPastBookingParkingZoneSuccess(it)
+        view?.findPastBookingParkingZoneSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.findPastBookingParkingZoneFailed(throwable) }
+      it.message?.let { _ -> view?.onFailed(PAST) }
     })
     subscriptions.add(subscribe)
   }
@@ -28,10 +25,10 @@ class ActivityListPresenter @Inject constructor() {
     val subscribe = api.findOngoingBookingParkingZone(accessToken, page).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.findOngoingBookingParkingZoneSuccess(it)
+        view?.findOngoingBookingParkingZoneSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.findOngoingBookingParkingZoneFailed(throwable) }
+      it.message?.let { _ -> view?.onFailed(ONGOING) }
     })
     subscriptions.add(subscribe)
   }

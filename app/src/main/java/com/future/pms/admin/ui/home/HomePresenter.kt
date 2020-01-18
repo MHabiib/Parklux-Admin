@@ -1,52 +1,49 @@
 package com.future.pms.admin.ui.home
 
-import com.future.pms.admin.network.ApiServiceInterface
-import com.future.pms.admin.network.RetrofitClient
+import com.future.pms.admin.di.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class HomePresenter @Inject constructor() {
-  private val subscriptions = CompositeDisposable()
-  private val api: ApiServiceInterface = RetrofitClient.create()
-  private lateinit var view: HomeContract
+class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
 
   fun getParkingLayout(idLevel: String, accessToken: String) {
     val subscribe = api.getParkingLayout(idLevel, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.getLayoutSuccess(it)
+        view?.getLayoutSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.getLayoutFailed(throwable) }
+      it.message?.let { throwable -> view?.onFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
 
   fun getLevels(accessToken: String) {
-    view.showProgress(true)
-    val subscribe = api.getLevels(accessToken).subscribeOn(Schedulers.io()).observeOn(
-        AndroidSchedulers.mainThread()).subscribe({
-      if (null != it) {
-        view.showProgress(false)
-        view.getLevelsSuccess(it)
-      }
-    }, {
-      view.showProgress(false)
-      it.message?.let { throwable -> view.showErrorMessage(throwable) }
-    })
-    subscriptions.add(subscribe)
+    view?.apply {
+      showProgress(true)
+      val subscribe = api.getLevels(accessToken).subscribeOn(Schedulers.io()).observeOn(
+          AndroidSchedulers.mainThread()).subscribe({
+        if (null != it) {
+          showProgress(false)
+          getLevelsSuccess(it)
+        }
+      }, {
+        showProgress(false)
+        it.message?.let { throwable -> onFailed(throwable) }
+      })
+      subscriptions.add(subscribe)
+    }
   }
 
   fun addParkingLevel(levelName: String, accessToken: String) {
     val subscribe = api.addParkingLevel(levelName, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.addParkingLevelSuccess(it)
+        view?.addParkingLevelSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.showErrorMessage(throwable) }
+      it.message?.let { throwable -> view?.onFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -55,10 +52,10 @@ class HomePresenter @Inject constructor() {
     val subscribe = api.getSectionDetails(idLevel, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.getSectionDetailsSuccess(it)
+        view?.getSectionDetailsSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.showErrorMessage(throwable) }
+      it.message?.let { throwable -> view?.onFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -67,10 +64,10 @@ class HomePresenter @Inject constructor() {
     val subscribe = api.updateParkingSection(idSection, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.updateParkingSectionSuccess(it)
+        view?.updateParkingSectionSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.showErrorMessage(throwable) }
+      it.message?.let { throwable -> view?.onFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -79,10 +76,10 @@ class HomePresenter @Inject constructor() {
     val subscribe = api.updateLevel(idLevel, slotsLayout, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.updateParkingLayoutSuccess(it)
+        view?.updateParkingLayoutSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.showErrorMessage(throwable) }
+      it.message?.let { throwable -> view?.onFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
@@ -91,19 +88,15 @@ class HomePresenter @Inject constructor() {
     val subscribe = api.editModeParkingLevel(idLevel, mode, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
-        view.editModeParkingLevelSuccess(it)
+        view?.editModeParkingLevelSuccess(it)
       }
     }, {
-      it.message?.let { throwable -> view.showErrorMessage(throwable) }
+      it.message?.let { throwable -> view?.onFailed(throwable) }
     })
     subscriptions.add(subscribe)
   }
 
   fun attach(view: HomeContract) {
     this.view = view
-  }
-
-  fun subscribe() {
-    //No implement required
   }
 }

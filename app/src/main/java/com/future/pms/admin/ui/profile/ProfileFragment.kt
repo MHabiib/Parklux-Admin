@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -36,6 +35,9 @@ import com.future.pms.admin.model.response.ParkingZoneResponse
 import com.future.pms.admin.ui.barcode.BarcodeFragment
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.util.Constants
+import com.future.pms.admin.util.Constants.Companion.BAD_REQUEST_CODE
+import com.future.pms.admin.util.Constants.Companion.NOT_FOUND_CODE
+import com.future.pms.admin.util.Constants.Companion.NO_CONNECTION
 import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT
 import com.future.pms.admin.util.Utils
 import com.google.gson.Gson
@@ -104,7 +106,7 @@ class ProfileFragment : Fragment(), ProfileContract {
     super.onViewCreated(view, savedInstanceState)
     presenter.attach(this)
     accessToken = Gson().fromJson(
-        context?.getSharedPreferences(Constants.AUTHENTCATION, Context.MODE_PRIVATE)?.getString(
+        context?.getSharedPreferences(Constants.AUTHENTICATION, Context.MODE_PRIVATE)?.getString(
             Constants.TOKEN, null), Token::class.java).accessToken
     presenter.apply {
       subscribe()
@@ -161,8 +163,23 @@ class ProfileFragment : Fragment(), ProfileContract {
     presenter.loadData(accessToken)
   }
 
-  override fun onFailed(e: String) {
-    Timber.e(e)
+  override fun onFailed(message: String) {
+    when {
+      message.contains(NO_CONNECTION) -> Toast.makeText(context,
+          getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
+      message.contains(BAD_REQUEST_CODE) -> Toast.makeText(context,
+          "Failed to update profile, email already used !", Toast.LENGTH_SHORT).show()
+      message.contains(NOT_FOUND_CODE) -> {
+        presenter.signOut()
+        onLogout()
+      }
+    }
+    binding.ibRefresh.visibility = View.VISIBLE
+    binding.ibRefresh.setOnClickListener {
+      presenter.loadData(accessToken)
+      binding.ibRefresh.visibility = View.GONE
+    }
+    Timber.tag(Constants.ERROR).e(message)
   }
 
   override fun showProgress(show: Boolean) {
@@ -175,18 +192,6 @@ class ProfileFragment : Fragment(), ProfileContract {
     }
   }
 
-  override fun showErrorMessage(error: String) {
-    if (error.contains(Constants.NO_CONNECTION)) {
-      Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
-    }
-    binding.ibRefresh.visibility = View.VISIBLE
-    binding.ibRefresh.setOnClickListener {
-      presenter.loadData(accessToken)
-      binding.ibRefresh.visibility = View.GONE
-    }
-    Timber.tag(Constants.ERROR).e(error)
-  }
-
   override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
     with(binding) {
       profileNameDisplay.text = parkingZone.name
@@ -197,7 +202,7 @@ class ProfileFragment : Fragment(), ProfileContract {
       price.hint = (String.format(getString(R.string.idr_price),
           Utils.thousandSeparator(parkingZone.price.toInt())))
       openHour.text = parkingZone.openHour.substring(0, 5)
-      openHour2.text = parkingZone.openHour.substring(7, 13)
+      openHour2.text = parkingZone.openHour.substring(8, 13)
       address.setText(parkingZone.address)
       password.hint = getString(R.string.password_hint)
       Glide.with(binding.root).load(parkingZone.imageUrl).transform(CenterCrop(),
@@ -243,14 +248,6 @@ class ProfileFragment : Fragment(), ProfileContract {
     }
   }
 
-  private fun refreshPage() {
-    val ft = fragmentManager?.beginTransaction()
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      ft?.setReorderingAllowed(false)
-    }
-    ft?.detach(this)?.attach(this)?.commit()
-  }
-
   private fun checkPermission(): Boolean {
     val result = context?.let {
       ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -280,6 +277,7 @@ class ProfileFragment : Fragment(), ProfileContract {
   override fun onLogout() {
     val intent = Intent(activity, LoginActivity::class.java)
     startActivity(intent)
+    activity?.finish()
   }
 
   private fun injectDependency() {

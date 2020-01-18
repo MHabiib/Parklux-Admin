@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +16,10 @@ import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.model.response.ongoingpastbooking.Booking
 import com.future.pms.admin.util.Constants.Companion.ACTIVITY_LIST_FRAGMENT
-import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
+import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
+import com.future.pms.admin.util.Constants.Companion.NO_CONNECTION
+import com.future.pms.admin.util.Constants.Companion.ONGOING
+import com.future.pms.admin.util.Constants.Companion.PAST
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.PaginationScrollListener
 import com.google.gson.Gson
@@ -49,7 +53,7 @@ class ActivityListFragment : Fragment(), ActivityListContract {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     accessToken = Gson().fromJson(
-        context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(TOKEN, null),
+        context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
     binding.shimmerOngoing.startShimmerAnimation()
@@ -162,16 +166,23 @@ class ActivityListFragment : Fragment(), ActivityListContract {
     isLoading = false
   }
 
-  override fun findPastBookingParkingZoneFailed(response: String) {
-    binding.shimmerPast.visibility = View.GONE
-    binding.shimmerPast.stopShimmerAnimation()
-    isLastPagePast = true
-  }
-
-  override fun findOngoingBookingParkingZoneFailed(response: String) {
-    binding.shimmerOngoing.visibility = View.GONE
-    binding.shimmerOngoing.stopShimmerAnimation()
-    isLastPageOngoing = true
+  override fun onFailed(message: String) {
+    when (message) {
+      PAST -> {
+        binding.shimmerPast.visibility = View.GONE
+        binding.shimmerPast.stopShimmerAnimation()
+        isLastPagePast = true
+      }
+      ONGOING -> {
+        binding.shimmerOngoing.visibility = View.GONE
+        binding.shimmerOngoing.stopShimmerAnimation()
+        isLastPageOngoing = true
+      }
+      NO_CONNECTION -> {
+        Toast.makeText(context, getString(R.string.no_network_connection),
+            Toast.LENGTH_SHORT).show()
+      }
+    }
   }
 
   private fun injectDependency() {

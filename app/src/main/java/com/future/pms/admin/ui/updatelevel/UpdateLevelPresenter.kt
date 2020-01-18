@@ -1,22 +1,17 @@
 package com.future.pms.admin.ui.updatelevel
 
 import com.future.pms.admin.R
+import com.future.pms.admin.di.base.BasePresenter
 import com.future.pms.admin.model.request.LevelDetailsRequest
-import com.future.pms.admin.network.ApiServiceInterface
-import com.future.pms.admin.network.RetrofitClient
 import com.future.pms.admin.util.Constants.Companion.DELETE_LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.LEVEL_AVAILABLE
 import com.future.pms.admin.util.Constants.Companion.LEVEL_TAKE_OUT
 import com.future.pms.admin.util.Constants.Companion.LEVEL_UNAVAILABLE
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class UpdateLevelPresenter @Inject constructor() {
-  private val subscriptions = CompositeDisposable()
-  private val api: ApiServiceInterface = RetrofitClient.create()
-  private lateinit var view: UpdateLevelContract
+class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelContract>() {
 
   fun updateParkingLevel(accessToken: String, idLevel: String, levelName: String, status: Int) {
     val statusStr: String = when (status) {
@@ -29,13 +24,13 @@ class UpdateLevelPresenter @Inject constructor() {
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       if (null != it) {
         if (it.raw().code() == 400) {
-          view.showErrorMessage()
+          view?.onFailed(it.message())
         } else {
-          view.updateParkingLevelSuccess(it)
+          view?.updateParkingLevelSuccess(it)
         }
       }
     }, {
-      it.message?.let { _ -> view.showErrorMessage() }
+      it.message?.let { _ -> view?.onFailed(it.toString()) }
     })
     subscriptions.add(subscribe)
   }

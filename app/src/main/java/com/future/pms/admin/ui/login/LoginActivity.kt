@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginContract {
 
   override fun onSuccess() {
     presenter.loadData(Gson().fromJson(
-        this.getSharedPreferences(Constants.AUTHENTCATION, Context.MODE_PRIVATE)?.getString(
+        this.getSharedPreferences(Constants.AUTHENTICATION, Context.MODE_PRIVATE)?.getString(
             Constants.TOKEN, null), Token::class.java).accessToken)
   }
 
@@ -84,11 +84,6 @@ class LoginActivity : AppCompatActivity(), LoginContract {
   override fun onFailed(e: String) {
     loading(false)
     Toast.makeText(this, e, Toast.LENGTH_LONG).show()
-  }
-
-  override fun onError() {
-    loading(false)
-    Toast.makeText(this, getString(R.string.email_password_incorect), Toast.LENGTH_LONG).show()
   }
 
   override fun onBackPressed() {

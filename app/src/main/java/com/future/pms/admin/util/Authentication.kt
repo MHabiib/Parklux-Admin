@@ -2,20 +2,20 @@ package com.future.pms.admin.util
 
 import android.content.Context
 import com.future.pms.admin.model.Token
-import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
+import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.google.gson.Gson
 import java.util.*
 
 object Authentication {
   private fun put(context: Context, obj: Token): Boolean {
-    val preferences = context.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)
+    val preferences = context.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)
     val editor = preferences.edit()
     return editor.putString(TOKEN, Gson().toJson(obj)).commit()
   }
 
   fun get(context: Context?): Token? {
-    val preferences = context?.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)
+    val preferences = context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)
     val json = preferences?.getString(TOKEN, null)
     if (json != null) return Gson().fromJson(json, Token::class.java)
     return null
@@ -24,12 +24,12 @@ object Authentication {
   fun save(context: Context, obj: Token): Boolean {
     val calendar = GregorianCalendar.getInstance()
     var expiresIn: Long = calendar.time.time
-    expiresIn += obj.expiresIn * 24 * 60 * 60
+    expiresIn += obj.expiresIn
     obj.expiresIn = expiresIn
     return put(context, obj)
   }
 
-  fun isExpired(context: Context?): Boolean {
+  private fun isExpired(context: Context?): Boolean {
     val token = get(context)
     if (token != null) {
       val calendar = GregorianCalendar.getInstance()
@@ -56,7 +56,7 @@ object Authentication {
   }
 
   fun delete(context: Context) {
-    val preferences = context.getSharedPreferences(AUTHENTCATION, Context.MODE_PRIVATE)
+    val preferences = context.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)
     val editor = preferences.edit()
     println(TOKEN + preferences.all[TOKEN])
     editor.remove(TOKEN).apply()

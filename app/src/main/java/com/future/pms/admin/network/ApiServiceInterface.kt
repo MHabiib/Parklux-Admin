@@ -1,6 +1,5 @@
 package com.future.pms.admin.network
 
-import com.future.pms.admin.model.profile.ParkingZone
 import com.future.pms.admin.model.request.LevelDetailsRequest
 import com.future.pms.admin.model.response.ListLevel
 import com.future.pms.admin.model.response.ParkingZoneResponse
@@ -14,7 +13,7 @@ import retrofit2.http.*
 
 interface ApiServiceInterface {
   @GET("api2/parking-zone/detail") fun getParkingZoneDetail(@Query("access_token")
-  accessToken: String?): Observable<ParkingZone>
+  accessToken: String?): Observable<ParkingZoneResponse>
 
   @GET("api2/parking-zone/{idLevel}/level-layout") fun getParkingLayout(@Path("idLevel")
   idLevel: String, @Query("access_token") accessToken: String?): Observable<String>

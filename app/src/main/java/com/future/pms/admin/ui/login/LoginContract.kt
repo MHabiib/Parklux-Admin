@@ -1,10 +1,8 @@
 package com.future.pms.admin.ui.login
 
-import com.future.pms.admin.di.base.BaseMVPView
+import com.future.pms.admin.di.base.BaseView
 
-interface LoginContract : BaseMVPView {
+interface LoginContract : BaseView {
   fun onSuccess()
   fun onAuthorized()
-  fun onFailed(e: String)
-  fun onError()
 }

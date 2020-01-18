@@ -1,13 +1,10 @@
 package com.future.pms.admin.ui.activitylist
 
+import com.future.pms.admin.di.base.BaseView
 import com.future.pms.admin.model.response.ongoingpastbooking.Booking
 
-interface ActivityListContract {
+interface ActivityListContract : BaseView {
   fun findPastBookingParkingZoneSuccess(booking: Booking)
-
-  fun findPastBookingParkingZoneFailed(response: String)
-
-  fun findOngoingBookingParkingZoneFailed(response: String)
 
   fun findOngoingBookingParkingZoneSuccess(booking: Booking)
 }

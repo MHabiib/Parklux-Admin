@@ -17,7 +17,7 @@ import com.future.pms.admin.di.module.FragmentModule
 import com.future.pms.admin.model.Token
 import com.future.pms.admin.model.response.ParkingZoneResponse
 import com.future.pms.admin.util.Constants
-import com.future.pms.admin.util.Constants.Companion.AUTHENTCATION
+import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.BARCODE_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Utils
@@ -61,7 +61,7 @@ class BarcodeFragment : Fragment(), BarcodeContract {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     accessToken = Gson().fromJson(
-        context?.getSharedPreferences(AUTHENTCATION, MODE_PRIVATE)?.getString(TOKEN, null),
+        context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
     presenter.apply {
@@ -154,24 +154,22 @@ class BarcodeFragment : Fragment(), BarcodeContract {
     }
   }
 
-  override fun showErrorMessage(error: String) {
-    binding.btnGenerateQr.isEnabled = true
-    binding.btnGenerateQr.text = getString(R.string.generate_qr)
-    activity?.let {
-      Snackbar.make(it.findViewById(android.R.id.content), getString(R.string.parking_slot_full),
-          Snackbar.LENGTH_SHORT).show()
-    }
-    Timber.tag(Constants.ERROR).e(error)
-  }
-
-  override fun showError(error: String) {
-    if (error.contains(Constants.NO_CONNECTION)) {
+  override fun onFailed(message: String) {
+    if (message.contains(Constants.NO_CONNECTION)) {
       Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
-    }
-    binding.ibRefresh.visibility = View.VISIBLE
-    binding.ibRefresh.setOnClickListener {
-      presenter.loadData(accessToken)
-      binding.ibRefresh.visibility = View.GONE
+      binding.ibRefresh.visibility = View.VISIBLE
+      binding.ibRefresh.setOnClickListener {
+        presenter.loadData(accessToken)
+        binding.ibRefresh.visibility = View.GONE
+      }
+    } else {
+      binding.btnGenerateQr.isEnabled = true
+      binding.btnGenerateQr.text = getString(R.string.generate_qr)
+      activity?.let {
+        Snackbar.make(it.findViewById(android.R.id.content), getString(R.string.parking_slot_full),
+            Snackbar.LENGTH_SHORT).show()
+      }
+      Timber.tag(Constants.ERROR).e(message)
     }
   }
 
