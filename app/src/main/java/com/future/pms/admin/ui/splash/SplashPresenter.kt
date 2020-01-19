@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.splash
 
-import com.future.pms.admin.di.base.BasePresenter
+import com.future.pms.admin.ui.base.BasePresenter
 import com.future.pms.admin.util.Authentication
 import javax.inject.Inject
 

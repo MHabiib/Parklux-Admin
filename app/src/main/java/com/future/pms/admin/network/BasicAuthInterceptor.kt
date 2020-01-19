@@ -1,6 +1,6 @@
 package com.future.pms.admin.network
 
-import com.future.pms.admin.network.NetworkConstant.AUTHORIZATION
+import com.future.pms.admin.util.Constants.Companion.AUTHORIZATION
 import okhttp3.Credentials
 import okhttp3.Interceptor
 

@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/twelve_dp"
                         android:gravity="center"
-                        android:text="Delete level"
+                        android:text="@string/delete_level"
                         android:textColor="@color/red"
                         android:textSize="@dimen/h_medium"
                         app:layout_constraintTop_toBottomOf="@id/line" />

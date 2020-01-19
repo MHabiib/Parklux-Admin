@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.activitylist
 
-import com.future.pms.admin.di.base.BasePresenter
+import com.future.pms.admin.ui.base.BasePresenter
 import com.future.pms.admin.util.Constants.Companion.ONGOING
 import com.future.pms.admin.util.Constants.Companion.PAST
 import io.reactivex.android.schedulers.AndroidSchedulers

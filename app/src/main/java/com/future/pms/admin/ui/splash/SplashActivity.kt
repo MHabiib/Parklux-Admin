@@ -9,14 +9,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.future.pms.admin.R
 import com.future.pms.admin.di.component.DaggerActivityComponent
+import com.future.pms.admin.di.module.APICreator
 import com.future.pms.admin.di.module.ActivityModule
 import com.future.pms.admin.model.Token
-import com.future.pms.admin.network.APICreator
-import com.future.pms.admin.network.AuthAPI
-import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE_REFRESH
+import com.future.pms.admin.network.ApiServiceInterface
 import com.future.pms.admin.ui.login.LoginActivity
 import com.future.pms.admin.ui.main.MainActivity
 import com.future.pms.admin.util.Authentication
+import com.future.pms.admin.util.Constants.Companion.GRANT_TYPE_REFRESH
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -57,7 +57,7 @@ class SplashActivity : AppCompatActivity(), SplashContract {
   }
 
   override fun refreshFetcher() {
-    val authFetcher = APICreator(AuthAPI::class.java).generate()
+    val authFetcher = APICreator(ApiServiceInterface::class.java).generate()
     val subscribe = authFetcher.refresh(GRANT_TYPE_REFRESH,
         Authentication.getRefresh(applicationContext)).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({ token: Token ->

@@ -1,8 +1,8 @@
 package com.future.pms.admin.ui.home
 
-import com.future.pms.admin.di.base.BaseView
 import com.future.pms.admin.model.response.ListLevel
 import com.future.pms.admin.model.response.SectionDetails
+import com.future.pms.admin.ui.base.BaseView
 
 interface HomeContract : BaseView {
   fun getLayoutSuccess(slotsLayout: String)

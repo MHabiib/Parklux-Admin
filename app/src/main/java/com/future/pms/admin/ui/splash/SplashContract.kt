@@ -1,7 +1,7 @@
 package com.future.pms.admin.ui.splash
 
 import android.content.Context
-import com.future.pms.admin.di.base.BaseView
+import com.future.pms.admin.ui.base.BaseView
 
 interface SplashContract : BaseView {
   fun onSuccess()

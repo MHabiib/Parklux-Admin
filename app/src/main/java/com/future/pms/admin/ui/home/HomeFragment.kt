@@ -44,13 +44,6 @@ import com.future.pms.admin.util.Constants.Companion.SLOT_READY
 import com.future.pms.admin.util.Constants.Companion.SLOT_ROAD
 import com.future.pms.admin.util.Constants.Companion.SLOT_SCAN_ME
 import com.future.pms.admin.util.Constants.Companion.SLOT_TAKEN
-import com.future.pms.admin.util.Constants.Companion.STATUS_AVAILABLE
-import com.future.pms.admin.util.Constants.Companion.STATUS_BLOCK
-import com.future.pms.admin.util.Constants.Companion.STATUS_BOOKED
-import com.future.pms.admin.util.Constants.Companion.STATUS_IN
-import com.future.pms.admin.util.Constants.Companion.STATUS_OUT
-import com.future.pms.admin.util.Constants.Companion.STATUS_RESERVED
-import com.future.pms.admin.util.Constants.Companion.STATUS_ROAD
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Constants.Companion.parkMargin
 import com.future.pms.admin.util.Constants.Companion.parkPadding
@@ -115,7 +108,7 @@ class HomeFragment : Fragment(), HomeContract {
     with(bindingHome.home) {
       val adapter = context?.let { CustomAdapter(it, R.layout.spinner_style, spinnerItems) }
       adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-      spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "", true)) // First item
+      spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "")) // First item
       levelName.adapter = adapter
       levelName.setSelection(0)
       levelName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -281,45 +274,38 @@ class HomeFragment : Fragment(), HomeContract {
 
       when {
         slotsLayout[index] == SLOT_NULL -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
-              R.drawable.ic_blank)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_blank)
         }
         slotsLayout[index] == SLOT_SCAN_ME || slotsLayout[index] == SLOT_TAKEN -> {
           totalTakenSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_BOOKED,
-              R.drawable.ic_car)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_car)
         }
         slotsLayout[index] == SLOT_EMPTY -> {
           totalEmptySlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_AVAILABLE,
-              R.drawable.ic_park)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_park)
         }
         slotsLayout[index] == SLOT_DISABLE -> {
           totalDisableSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_RESERVED,
-              R.drawable.ic_disable)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_disable)
         }
         slotsLayout[index] == SLOT_ROAD || slotsLayout[index] == SLOT_READY -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_ROAD,
-              R.color.transparent)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.color.transparent)
         }
         slotsLayout[index] == SLOT_IN -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_IN, R.drawable.ic_in)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_in)
         }
         slotsLayout[index] == SLOT_OUT -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_OUT, R.drawable.ic_out)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_out)
         }
         slotsLayout[index] == SLOT_BLOCK -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], STATUS_BLOCK,
-              R.drawable.ic_road)
+          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_road)
         }
       }
     }
     showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
   }
 
-  private fun setupParkingView(count: Int, layout: LinearLayout?, code: Char, tags: Int,
-      icon: Int): TextView {
+  private fun setupParkingView(count: Int, layout: LinearLayout?, code: Char, icon: Int): TextView {
     val view = TextView(context)
     view.apply {
       layoutParams = LinearLayout.LayoutParams(parkSize, parkSize).apply {
@@ -341,9 +327,7 @@ class HomeFragment : Fragment(), HomeContract {
       setOnClickListener { onClick(view) }
     }
 
-    layout?.let {
-      it.addView(view)
-    }
+    layout?.addView(view)
 
     parkViewList.add(view)
     return view
@@ -468,10 +452,10 @@ class HomeFragment : Fragment(), HomeContract {
 
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     spinnerItems.clear()
-    spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "", true)) // First item
+    spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "")) // First item
     for (index in 0 until listLevel.size) {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
-          listLevel[index].levelStatus, false))
+          listLevel[index].levelStatus))
     }
     bindingHome.home.ivSelectLevel.visibility = View.VISIBLE
     bindingHome.home.tvSelectLevel.visibility = View.VISIBLE
@@ -620,9 +604,14 @@ class HomeFragment : Fragment(), HomeContract {
     }
   }
 
+  override fun onDestroyView() {
+    presenter.detach()
+    super.onDestroyView()
+  }
+
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-        FragmentModule()).build()
+        FragmentModule(this)).build()
     profileComponent.inject(this)
   }
 }

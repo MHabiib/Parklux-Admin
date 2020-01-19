@@ -1,7 +1,9 @@
 package com.future.pms.admin.ui.main
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.future.pms.admin.R
@@ -204,6 +206,20 @@ class MainActivity : AppCompatActivity(), MainContract {
     supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG)?.let {
       supportFragmentManager.beginTransaction().remove(it).commit()
     }
+  }
+
+  private var doubleBackToExitPressedOnce = false
+
+  override fun onBackPressed() {
+    if (doubleBackToExitPressedOnce) {
+      finishAffinity()
+      return
+    }
+
+    this.doubleBackToExitPressedOnce = true
+    Toast.makeText(this, "Please click back again to exit", Toast.LENGTH_SHORT).show()
+
+    Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
   }
 
   private fun injectDependency() {

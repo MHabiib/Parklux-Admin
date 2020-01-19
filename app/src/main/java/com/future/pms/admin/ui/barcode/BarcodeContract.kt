@@ -1,7 +1,7 @@
 package com.future.pms.admin.ui.barcode
 
-import com.future.pms.admin.di.base.BaseView
 import com.future.pms.admin.model.response.ParkingZoneResponse
+import com.future.pms.admin.ui.base.BaseView
 
 interface BarcodeContract : BaseView {
   fun getDateNow()

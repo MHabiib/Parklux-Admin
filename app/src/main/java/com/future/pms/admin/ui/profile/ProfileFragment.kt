@@ -147,7 +147,7 @@ class ProfileFragment : Fragment(), ProfileContract {
     val os: OutputStream
     return try {
       os = FileOutputStream(imageFile)
-      bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os)
+      bitmap.compress(Bitmap.CompressFormat.JPEG, 30, os)
       os.flush()
       os.close()
       imageFile
@@ -280,9 +280,14 @@ class ProfileFragment : Fragment(), ProfileContract {
     activity?.finish()
   }
 
+  override fun onDestroyView() {
+    presenter.detach()
+    super.onDestroyView()
+  }
+
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-        FragmentModule()).build()
+        FragmentModule(this)).build()
     profileComponent.inject(this)
   }
 }

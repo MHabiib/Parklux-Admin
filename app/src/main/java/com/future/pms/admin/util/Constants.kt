@@ -2,6 +2,15 @@ package com.future.pms.admin.util
 
 class Constants {
   companion object {
+    const val BASE = "https://pms-future.herokuapp.com/"
+    const val USERNAME = "pms-client"
+    const val PASSWORD = "pms-secret"
+    const val GRANT_TYPE = "password"
+    const val GRANT_TYPE_REFRESH = "refresh_token"
+    const val AUTHORIZATION = "Authorization"
+    const val WRITE_TIMEOUT = 30L
+    const val READ_TIMEOUT = 30L
+
     const val AUTHENTICATION = "authentication"
     const val HOME_FRAGMENT = "HomeFragment"
     const val PROFILE_FRAGMENT = "ProfileFragment"
@@ -33,16 +42,13 @@ class Constants {
     const val SECTION_ONE = "Section 1"
     const val SECTION_TWO = "Section 2"
     const val SECTION_THREE = "Section 3"
-    const val SECTION_FOUR = "Section 4"
 
-    const val NOT_ACTIVE = "NOT_ACTIVE"
     const val ACTIVE = "ACTIVE"
 
     const val TOKEN = "token"
     const val ERROR = "Error"
 
     const val NOT_FOUND_CODE = "404"
-    const val UNAUTHORIZED_CODE = "401"
     const val BAD_REQUEST_CODE = "400"
     const val NO_CONNECTION = "No address associated with hostname"
 

@@ -201,7 +201,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/four_dp"
-                            android:text="Opening hours"
+                            android:text="@string/opening_hours"
                             android:textColor="@color/colorPrimary"
                             app:layout_constraintTop_toBottomOf="@id/price" />
 

@@ -1,11 +1,11 @@
 package com.future.pms.admin.ui.login
 
-import com.future.pms.admin.di.base.BasePresenter
+import com.future.pms.admin.di.module.APICreator
 import com.future.pms.admin.model.Token
-import com.future.pms.admin.network.APICreator
-import com.future.pms.admin.network.AuthAPI
-import com.future.pms.admin.network.NetworkConstant.GRANT_TYPE
+import com.future.pms.admin.network.ApiServiceInterface
+import com.future.pms.admin.ui.base.BasePresenter
 import com.future.pms.admin.util.Authentication
+import com.future.pms.admin.util.Constants.Companion.GRANT_TYPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -17,7 +17,7 @@ class LoginPresenter @Inject constructor() : BasePresenter<LoginContract>() {
   }
 
   fun login(username: String, password: String) {
-    val authFetcher = APICreator(AuthAPI::class.java).generate()
+    val authFetcher = APICreator(ApiServiceInterface::class.java).generate()
     val subscribe = authFetcher.auth(username, password, GRANT_TYPE).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({ token: Token ->
       getContext()?.let { Authentication.save(it, token) }

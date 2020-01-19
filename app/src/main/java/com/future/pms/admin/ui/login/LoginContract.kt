@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.login
 
-import com.future.pms.admin.di.base.BaseView
+import com.future.pms.admin.ui.base.BaseView
 
 interface LoginContract : BaseView {
   fun onSuccess()

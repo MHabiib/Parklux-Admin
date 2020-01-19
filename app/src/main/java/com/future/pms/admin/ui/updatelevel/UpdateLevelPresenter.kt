@@ -1,8 +1,8 @@
 package com.future.pms.admin.ui.updatelevel
 
 import com.future.pms.admin.R
-import com.future.pms.admin.di.base.BasePresenter
 import com.future.pms.admin.model.request.LevelDetailsRequest
+import com.future.pms.admin.ui.base.BasePresenter
 import com.future.pms.admin.util.Constants.Companion.DELETE_LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.LEVEL_AVAILABLE
 import com.future.pms.admin.util.Constants.Companion.LEVEL_TAKE_OUT

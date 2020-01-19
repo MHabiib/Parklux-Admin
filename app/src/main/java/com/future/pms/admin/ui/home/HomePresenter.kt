@@ -1,6 +1,6 @@
 package com.future.pms.admin.ui.home
 
-import com.future.pms.admin.di.base.BasePresenter
+import com.future.pms.admin.ui.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

@@ -113,9 +113,14 @@ class UpdateLevelFragment : Fragment(), UpdateLevelContract {
     Toast.makeText(context, getString(R.string.success_high), Toast.LENGTH_SHORT).show()
   }
 
+  override fun onDestroyView() {
+    presenter.detach()
+    super.onDestroyView()
+  }
+
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-        FragmentModule()).build()
+        FragmentModule(this)).build()
     profileComponent.inject(this)
   }
 }

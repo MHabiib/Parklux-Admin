@@ -3,9 +3,6 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="email_password_incorect">The email or password is incorrect.</string>
-    <string name="park_is_booked">Park %d is Booked</string>
-    <string name="park_is_reserved">Park %d is Reserved</string>
     <string name="qr_announce">Please be safety and park on your slot. Have a nice day !</string>
     <string name="generate_qr">Generate QR</string>
     <string name="scan">Scan</string>
@@ -17,7 +14,6 @@
     <string name="name">Name</string>
     <string name="phone_number">Phone number</string>
     <string name="price_hour">Price/hour</string>
-    <string name="open_hour">Open hour</string>
     <string name="address">Address</string>
     <string name="save">Save</string>
     <string name="date_now">It\'s %s</string>
@@ -28,9 +24,6 @@
     <string name="deactivate">D\ne\na\nc\nt\ni\nv\na\nt\ne</string>
     <string name="activate">A\nc\nt\ni\nv\na\nt\ne</string>
     <string name="exit_edit_mode">Exit edit mode</string>
-    <string name="image_url">%sqr/%s</string>
-    <string name="picture_url">%simg/%s</string>
-    <string name="add_level">Add level</string>
     <string name="cancel">Cancel</string>
     <string name="i_have_read">I have read the About Level of Parking Management System</string>
     <string name="about_level">About Level</string>
@@ -38,7 +31,6 @@
     <string name="level_name">Level name</string>
     <string name="new_level">New level</string>
     <string name="create">Create</string>
-    <string name="range">%s -> %s</string>
     <string name="range2">%s - %s</string>
     <string name="idr_price">IDR %s</string>
     <string name="expires_in">Expires in: %s : %s</string>
@@ -60,7 +52,6 @@
     <string name="automatically_refresh_5s">Automatically refresh Parking Layout every 5 seconds</string>
     <string name="fill_all_the_entries">Fill all the entries</string>
     <string name="activate_this_section">Activate the section first to edit this slot</string>
-    <string name="cant_update_slot">Can\'t update this slot</string>
     <string name="success_create_level">Success create level</string>
     <string name="deactivate_section">Deactivate section</string>
     <string name="deactivate_section_confirmation">Are you sure you want to deactivate this section?</string>
@@ -87,4 +78,9 @@
     <string name="image_jpeg">image/jpeg</string>
     <string name="file">file</string>
     <string name="no_network_connection">No network connection</string>
+    <string name="opening_hours">Opening hours</string>
+    <string name="delete_level">Delete level</string>
+    <string name="empty_slot">Empty slot</string>
+    <string name="taken_slot">Taken slot</string>
+    <string name="disable_slot">Disable slot</string>
 </resources>

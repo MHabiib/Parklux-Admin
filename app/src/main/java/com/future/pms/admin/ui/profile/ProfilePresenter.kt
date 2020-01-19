@@ -1,7 +1,7 @@
 package com.future.pms.admin.ui.profile
 
-import com.future.pms.admin.di.base.BasePresenter
 import com.future.pms.admin.model.response.ParkingZoneResponse
+import com.future.pms.admin.ui.base.BasePresenter
 import com.future.pms.admin.util.Authentication
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

@@ -173,9 +173,14 @@ class BarcodeFragment : Fragment(), BarcodeContract {
     }
   }
 
+  override fun onDestroyView() {
+    presenter.detach()
+    super.onDestroyView()
+  }
+
   private fun injectDependency() {
     val profileComponent = DaggerFragmentComponent.builder().fragmentModule(
-        FragmentModule()).build()
+        FragmentModule(this)).build()
     profileComponent.inject(this)
   }
 }
