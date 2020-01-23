@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
+import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.databinding.FragmentUpdateLevelBinding
 import com.future.pms.admin.home.view.HomeFragment
@@ -34,7 +35,7 @@ import com.google.gson.Gson
 import retrofit2.Response
 import javax.inject.Inject
 
-class UpdateLevelFragment : Fragment(), UpdateLevelContract {
+class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
   private var daggerBuild: UpdateLevelComponent = DaggerUpdateLevelComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 

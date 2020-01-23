@@ -25,12 +25,12 @@ class LoginPresenter @Inject constructor() : BasePresenter<LoginContract>() {
     subscriptions.add(
         loginApi.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
         AndroidSchedulers.mainThread()).subscribe({
-      view?.onAuthorized()
-    }, {
-      getContext()?.let {
-        Authentication.delete(it)
-        view?.onFailed(it.toString())
-      }
+          view?.onAuthorized()
+        }, {
+          getContext()?.let {
+            Authentication.delete(it)
+            view?.onFailed(it.toString())
+          }
         }))
   }
 }

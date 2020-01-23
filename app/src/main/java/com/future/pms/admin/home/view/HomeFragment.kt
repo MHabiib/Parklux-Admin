@@ -11,9 +11,9 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
+import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ListLevel
 import com.future.pms.admin.core.model.response.SectionDetails
@@ -60,7 +60,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-class HomeFragment : Fragment(), HomeContract {
+class HomeFragment : BaseFragment(), HomeContract {
   private var daggerBuild: HomeComponent = DaggerHomeComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 

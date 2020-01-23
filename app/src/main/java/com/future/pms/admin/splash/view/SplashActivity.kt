@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
+import com.future.pms.admin.core.base.BaseActivity
 import com.future.pms.admin.login.view.LoginActivity
 import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.splash.injection.DaggerSplashComponent
@@ -16,7 +16,7 @@ import com.future.pms.admin.splash.injection.SplashComponent
 import com.future.pms.admin.splash.presenter.SplashPresenter
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity(), SplashContract {
+class SplashActivity : BaseActivity(), SplashContract {
   private var daggerBuild: SplashComponent = DaggerSplashComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 

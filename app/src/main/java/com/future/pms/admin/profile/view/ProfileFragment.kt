@@ -21,7 +21,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -29,6 +28,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.barcode.view.BarcodeFragment
+import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
 import com.future.pms.admin.databinding.FragmentProfileBinding
@@ -56,7 +56,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class ProfileFragment : Fragment(), ProfileContract {
+class ProfileFragment : BaseFragment(), ProfileContract {
   private var daggerBuild: ProfileComponent = DaggerProfileComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 

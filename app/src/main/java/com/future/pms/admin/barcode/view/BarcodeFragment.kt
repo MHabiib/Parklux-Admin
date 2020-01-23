@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.future.pms.admin.BaseApp
@@ -15,6 +14,7 @@ import com.future.pms.admin.R
 import com.future.pms.admin.barcode.injection.BarcodeComponent
 import com.future.pms.admin.barcode.injection.DaggerBarcodeComponent
 import com.future.pms.admin.barcode.presenter.BarcodePresenter
+import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
 import com.future.pms.admin.databinding.FragmentBarcodeBinding
@@ -34,7 +34,7 @@ import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
 
-class BarcodeFragment : Fragment(), BarcodeContract {
+class BarcodeFragment : BaseFragment(), BarcodeContract {
   private var daggerBuild: BarcodeComponent = DaggerBarcodeComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 

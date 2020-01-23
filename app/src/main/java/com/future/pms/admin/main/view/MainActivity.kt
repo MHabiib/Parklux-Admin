@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.activitylist.view.ActivityListFragment
 import com.future.pms.admin.barcode.view.BarcodeFragment
+import com.future.pms.admin.core.base.BaseActivity
 import com.future.pms.admin.databinding.ActivityMainBinding
 import com.future.pms.admin.home.view.HomeFragment
 import com.future.pms.admin.main.injection.DaggerMainComponent
@@ -22,7 +22,7 @@ import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MainContract {
+class MainActivity : BaseActivity(), MainContract {
   private var daggerBuild: MainComponent = DaggerMainComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 
@@ -252,5 +252,10 @@ class MainActivity : AppCompatActivity(), MainContract {
     Toast.makeText(this, "Please click back again to exit", Toast.LENGTH_SHORT).show()
 
     Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+  }
+
+  override fun onFailed(message: String) {
+    TODO(
+        "not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 }

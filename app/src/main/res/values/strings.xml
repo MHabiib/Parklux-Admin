@@ -83,4 +83,5 @@
     <string name="empty_slot">Empty slot</string>
     <string name="taken_slot">Taken slot</string>
     <string name="disable_slot">Disable slot</string>
+    <string name="email_password_incorrect">The email or password is incorrect.</string>
 </resources>

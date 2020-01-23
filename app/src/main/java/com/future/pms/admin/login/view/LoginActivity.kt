@@ -8,20 +8,21 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
+import com.future.pms.admin.core.base.BaseActivity
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.login.injection.DaggerLoginComponent
 import com.future.pms.admin.login.injection.LoginComponent
 import com.future.pms.admin.login.presenter.LoginPresenter
 import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.util.Constants
+import com.future.pms.admin.util.Constants.Companion.BAD_REQUEST_CODE
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), LoginContract {
+class LoginActivity : BaseActivity(), LoginContract {
   private var daggerBuild: LoginComponent = DaggerLoginComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 
@@ -91,7 +92,11 @@ class LoginActivity : AppCompatActivity(), LoginContract {
 
   override fun onFailed(e: String) {
     loading(false)
-    Toast.makeText(this, e, Toast.LENGTH_LONG).show()
+    if (e.contains(BAD_REQUEST_CODE) || e.contains("Login Activity")) {
+      Toast.makeText(this, R.string.email_password_incorrect, Toast.LENGTH_LONG).show()
+    } else {
+      Toast.makeText(this, e, Toast.LENGTH_LONG).show()
+    }
   }
 
   override fun onBackPressed() {

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
@@ -16,6 +15,7 @@ import com.future.pms.admin.activitylist.adapter.PaginationAdapterPast
 import com.future.pms.admin.activitylist.injection.ActivityListComponent
 import com.future.pms.admin.activitylist.injection.DaggerActivityListComponent
 import com.future.pms.admin.activitylist.presenter.ActivityListPresenter
+import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Booking
 import com.future.pms.admin.databinding.FragmentActivityListBinding
@@ -29,7 +29,7 @@ import com.future.pms.admin.util.PaginationScrollListener
 import com.google.gson.Gson
 import javax.inject.Inject
 
-class ActivityListFragment : Fragment(), ActivityListContract {
+class ActivityListFragment : BaseFragment(), ActivityListContract {
   private var daggerBuild: ActivityListComponent = DaggerActivityListComponent.builder().baseComponent(
       BaseApp.instance.baseComponent).build()
 
