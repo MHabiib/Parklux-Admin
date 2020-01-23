@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".splash.view.SplashActivity"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".login.view.LoginActivity"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".main.view.MainActivity"
             android:screenOrientation="sensorLandscape" />
     </application>
 
