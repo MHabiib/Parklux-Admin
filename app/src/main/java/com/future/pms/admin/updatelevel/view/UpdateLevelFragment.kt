@@ -10,7 +10,6 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.core.base.BaseFragment
@@ -32,7 +31,6 @@ import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Constants.Companion.UPDATE_LEVEL_FRAGMENT
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import retrofit2.Response
 import javax.inject.Inject
 
 class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
@@ -113,7 +111,7 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
         null).show()
   }
 
-  override fun updateParkingLevelSuccess(response: Response<Unit>) {
+  override fun updateParkingLevelSuccess(response: String) {
     val activity = activity as MainActivity?
     activity?.presenter?.onBackPressedUpdateLevel()
     val fm = fragmentManager

@@ -71,6 +71,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   @Inject lateinit var presenter: HomePresenter
   private var parkViewList: MutableList<TextView> = ArrayList()
   private val spinnerItems = ArrayList<SpinnerItem>()
+  private lateinit var adapter: CustomAdapter
   private val handler = Handler()
   private var isSyncOn = false
   private var mode = EXIT_EDIT_MODE
@@ -110,8 +111,10 @@ class HomeFragment : BaseFragment(), HomeContract {
     mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
 
     with(bindingHome.home) {
-      val adapter = context?.let { CustomAdapter(it, R.layout.spinner_style, spinnerItems) }
-      adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+      context?.let {
+        adapter = CustomAdapter(it, R.layout.spinner_style, spinnerItems)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+      }
       spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "")) // First item
       levelName.adapter = adapter
       levelName.setSelection(0)
@@ -584,6 +587,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
     ft?.detach(this)?.attach(this)?.commit()
     bindingHome.home.levelName.setSelection(0)
+    adapter.notifyDataSetChanged()
   }
 
   override fun showProgress(show: Boolean) {

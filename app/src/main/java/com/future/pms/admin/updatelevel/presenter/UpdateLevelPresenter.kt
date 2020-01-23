@@ -11,7 +11,6 @@ import com.future.pms.admin.util.Constants.Companion.LEVEL_TAKE_OUT
 import com.future.pms.admin.util.Constants.Companion.LEVEL_UNAVAILABLE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelContract>() {
@@ -27,14 +26,8 @@ class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelCont
     subscriptions.add(
         updateLevelApi.updateParkingLevel(accessToken, levelDetailsRequest).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-      if (null != it) {
-        if (it.raw().code() == 400) {
-          view?.onFailed(it.message())
-        } else {
           view?.updateParkingLevelSuccess(it)
-        }
-      }
-    }, {
+        }, {
       it.message?.let { _ -> view?.onFailed(it.toString()) }
         }))
   }

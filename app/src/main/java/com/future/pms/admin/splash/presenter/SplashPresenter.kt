@@ -14,23 +14,26 @@ class SplashPresenter @Inject constructor() : BasePresenter<SplashContract>() {
   @Inject lateinit var splashApi: SplashApi
 
   fun isAuthenticated() {
-    view?.apply {
-      try {
-        if (Authentication.isAuthenticated(isAuthenticated())) {
-          onSuccess()
-        } else {
-          getContext()?.let { Authentication.getRefresh(it) }?.let {
-            splashApi.refresh(Constants.GRANT_TYPE_REFRESH, it).subscribeOn(
-                Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                { token: Token ->
-                  getContext()?.let { Authentication.save(it, token) }
-                  onSuccess()
-                }, { onLogin() })
-          }?.let { subscriptions.add(it) }
+    try {
+      if (Authentication.isAuthenticated(view?.isAuthenticated())) {
+        view?.onSuccess()
+      } else {
+        getContext()?.let { Authentication.getRefresh(it) }?.let {
+          splashApi.refresh(Constants.GRANT_TYPE_REFRESH, it).subscribeOn(
+              Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({ token: Token ->
+            getContext()?.let { context ->
+              Authentication.save(context, token)
+            }
+            view?.onSuccess()
+          }, {
+            view?.onLogin()
+          })
+        }?.let {
+          subscriptions.add(it)
         }
-      } catch (e: Authentication.WithoutAuthenticatedException) {
-        onLogin()
       }
+    } catch (e: Authentication.WithoutAuthenticatedException) {
+      view?.onLogin()
     }
   }
 }

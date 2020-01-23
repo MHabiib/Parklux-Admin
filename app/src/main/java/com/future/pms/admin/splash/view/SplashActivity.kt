@@ -14,6 +14,7 @@ import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.splash.injection.DaggerSplashComponent
 import com.future.pms.admin.splash.injection.SplashComponent
 import com.future.pms.admin.splash.presenter.SplashPresenter
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity(), SplashContract {
@@ -27,6 +28,16 @@ class SplashActivity : BaseActivity(), SplashContract {
   @Inject lateinit var presenter: SplashPresenter
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    val settings = getSharedPreferences("prefs", 0)
+    val firstRun = settings.getBoolean("firstRun", false)
+    if (!firstRun) {
+      setContentView(R.layout.activity_splash)
+      presenter.attach(this)
+      initView()
+    } else {
+      val a = Intent(this, Dispatchers.Main::class.java)
+      startActivity(a)
+    }
     window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN)
     setContentView(R.layout.activity_splash)
