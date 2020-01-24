@@ -42,7 +42,6 @@ class SplashActivity : BaseActivity(), SplashContract {
         WindowManager.LayoutParams.FLAG_FULLSCREEN)
     setContentView(R.layout.activity_splash)
     presenter.attach(this)
-    initView()
   }
 
   private fun initView() {

@@ -31,6 +31,7 @@ import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Constants.Companion.UPDATE_LEVEL_FRAGMENT
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
 class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
@@ -118,6 +119,28 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
     val homeFragment = fm?.findFragmentByTag(HOME_FRAGMENT) as HomeFragment
     homeFragment.refreshPage()
     Toast.makeText(context, getString(R.string.success_high), Toast.LENGTH_SHORT).show()
+  }
+
+  override fun showProgress(show: Boolean) {
+    if (null != progressBar) {
+      with(binding) {
+        if (show) {
+          ibBack.isEnabled = false
+          btnUpdate.isEnabled = false
+          btnDelete.isEnabled = false
+          btnUpdate.setTextColor(resources.getColor(R.color.darkGrey))
+          btnDelete.setTextColor(resources.getColor(R.color.darkGrey))
+          progressBar.visibility = View.VISIBLE
+        } else {
+          ibBack.isEnabled = true
+          btnUpdate.isEnabled = true
+          btnDelete.isEnabled = true
+          btnUpdate.setTextColor(resources.getColor(R.color.colorAccent))
+          btnDelete.setTextColor(resources.getColor(R.color.red))
+          progressBar.visibility = View.GONE
+        }
+      }
+    }
   }
 
   override fun onDestroyView() {

@@ -17,6 +17,7 @@ class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelCont
   @Inject lateinit var updateLevelApi: UpdateLevelApi
 
   fun updateParkingLevel(accessToken: String, idLevel: String, levelName: String, status: Int) {
+    view?.showProgress(true)
     val statusStr: String = when (status) {
       DELETE_LEVEL_STATUS -> LEVEL_TAKE_OUT
       R.id.rb_available -> LEVEL_AVAILABLE
@@ -25,10 +26,12 @@ class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelCont
     val levelDetailsRequest = LevelDetailsRequest(idLevel, levelName, statusStr)
     subscriptions.add(
         updateLevelApi.updateParkingLevel(accessToken, levelDetailsRequest).subscribeOn(
-        Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+            Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+          view?.showProgress(false)
           view?.updateParkingLevelSuccess(it)
         }, {
-      it.message?.let { _ -> view?.onFailed(it.toString()) }
+          view?.showProgress(false)
+          it.message?.let { _ -> view?.onFailed(it.toString()) }
         }))
   }
 }

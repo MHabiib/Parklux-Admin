@@ -13,4 +13,5 @@ interface HomeContract : BaseView {
   fun addParkingLevelSuccess(response: String)
   fun editModeParkingLevelSuccess(response: String)
   fun showProgress(show: Boolean)
+  fun showProgressAddLevel(show: Boolean)
 }
