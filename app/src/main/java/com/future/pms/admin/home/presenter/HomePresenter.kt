@@ -35,11 +35,14 @@ class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
   }
 
   fun addParkingLevel(levelName: String, accessToken: String) {
+    view?.showProgressAddLevel(true)
     subscriptions.add(
         homeApi.addParkingLevel(levelName, accessToken).subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()).subscribe({
+          view?.showProgressAddLevel(false)
           view?.addParkingLevelSuccess(it)
         }, {
+          view?.showProgressAddLevel(false)
           view?.onFailed(it.message.toString())
         }))
   }

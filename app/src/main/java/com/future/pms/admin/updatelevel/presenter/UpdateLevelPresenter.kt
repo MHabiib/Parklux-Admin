@@ -12,11 +12,14 @@ class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelCont
   @Inject lateinit var updateLevelApi: UpdateLevelApi
 
   fun updateParkingLevel(accessToken: String, levelDetailsRequest: LevelDetailsRequest) {
+    view?.showProgress(true)
     subscriptions.add(
         updateLevelApi.updateParkingLevel(accessToken, levelDetailsRequest).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+          view?.showProgress(false)
           view?.updateParkingLevelSuccess(it)
         }, {
+          view?.showProgress(false)
           view?.onFailed(it.message.toString())
         }))
   }

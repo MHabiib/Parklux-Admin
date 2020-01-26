@@ -2,15 +2,19 @@ package com.future.pms.admin.splash.view
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.core.base.BaseActivity
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.network.Authentication
+import com.future.pms.admin.databinding.ActivitySplashBinding
 import com.future.pms.admin.login.view.LoginActivity
 import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.splash.injection.DaggerSplashComponent
@@ -28,14 +32,30 @@ class SplashActivity : BaseActivity(), SplashContract {
   }
 
   @Inject lateinit var presenter: SplashPresenter
+  private lateinit var binding: ActivitySplashBinding
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
     val settings = getSharedPreferences("prefs", 0)
     val firstRun = settings.getBoolean("firstRun", false)
     if (!firstRun) {
-      setContentView(R.layout.activity_splash)
       presenter.attach(this)
-      initView()
+      if (isOnline()) {
+        presenter.refreshToken(Authentication.getRefresh(this))
+      } else {
+        binding.ibRefresh.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.ibRefresh.setOnClickListener {
+          if (isOnline()) {
+            binding.ibRefresh.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+            presenter.refreshToken(Authentication.getRefresh(this))
+          } else {
+            Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_LONG).show()
+          }
+        }
+      }
     } else {
       val a = Intent(this, Dispatchers.Main::class.java)
       startActivity(a)
@@ -72,6 +92,12 @@ class SplashActivity : BaseActivity(), SplashContract {
       startActivity(intent)
       finish()
     }, 5000)
+  }
+
+  private fun isOnline(): Boolean {
+    val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+    val activeNetwork = cm?.activeNetworkInfo
+    return activeNetwork != null && activeNetwork.isConnected
   }
 
   override fun onFailed(message: String) {

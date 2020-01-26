@@ -4,4 +4,5 @@ import com.future.pms.admin.core.base.BaseView
 
 interface UpdateLevelContract : BaseView {
   fun updateParkingLevelSuccess(response: String)
+  fun showProgress(show: Boolean)
 }
