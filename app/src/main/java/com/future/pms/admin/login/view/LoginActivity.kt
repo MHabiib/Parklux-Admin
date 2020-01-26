@@ -12,6 +12,7 @@ import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.core.base.BaseActivity
 import com.future.pms.admin.core.model.Token
+import com.future.pms.admin.core.network.Authentication
 import com.future.pms.admin.login.injection.DaggerLoginComponent
 import com.future.pms.admin.login.injection.LoginComponent
 import com.future.pms.admin.login.presenter.LoginPresenter
@@ -54,7 +55,8 @@ class LoginActivity : BaseActivity(), LoginContract {
     return true
   }
 
-  override fun onSuccess() {
+  override fun onSuccess(token: Token) {
+    Authentication.save(this, token)
     presenter.loadData(Gson().fromJson(
         this.getSharedPreferences(Constants.AUTHENTICATION, Context.MODE_PRIVATE)?.getString(
             Constants.TOKEN, null), Token::class.java).accessToken)
@@ -92,6 +94,7 @@ class LoginActivity : BaseActivity(), LoginContract {
 
   override fun onFailed(e: String) {
     loading(false)
+    Authentication.delete(this)
     if (e.contains(BAD_REQUEST_CODE) || e.contains("Login Activity")) {
       Toast.makeText(this, R.string.email_password_incorrect, Toast.LENGTH_LONG).show()
     } else {

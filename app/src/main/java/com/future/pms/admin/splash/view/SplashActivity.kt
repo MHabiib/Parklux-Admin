@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.core.base.BaseActivity
+import com.future.pms.admin.core.model.Token
+import com.future.pms.admin.core.network.Authentication
 import com.future.pms.admin.login.view.LoginActivity
 import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.splash.injection.DaggerSplashComponent
@@ -46,15 +48,14 @@ class SplashActivity : BaseActivity(), SplashContract {
   }
 
   private fun initView() {
-    presenter.isAuthenticated()
+    presenter.refreshToken(Authentication.getRefresh(this))
   }
 
-  override fun onSuccess() {
-    Handler().postDelayed({
-      val intent = Intent(this, MainActivity::class.java)
-      startActivity(intent)
-      finish()
-    }, 1000)
+  override fun onSuccess(token: Token) {
+    Authentication.save(this, token)
+    val intent = Intent(this, MainActivity::class.java)
+    startActivity(intent)
+    finish()
   }
 
   override fun onLogin() {

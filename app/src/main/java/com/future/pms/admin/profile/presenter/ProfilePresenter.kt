@@ -2,7 +2,6 @@ package com.future.pms.admin.profile.presenter
 
 import com.future.pms.admin.core.base.BasePresenter
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
-import com.future.pms.admin.core.network.Authentication
 import com.future.pms.admin.profile.network.ProfileApi
 import com.future.pms.admin.profile.view.ProfileContract
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,17 +27,9 @@ class ProfilePresenter @Inject constructor() : BasePresenter<ProfileContract>() 
     }
   }
 
-  fun update(name: String, email: String, phoneNumber: String, price: String, openHour: String,
-      address: String, password: String, token: String) {
+  fun update(token: String, parkingZone: ParkingZoneResponse) {
     view?.apply {
       showProgress(true)
-      val priceInDouble: Double = if (price == "") {
-        0.0
-      } else {
-        price.toDouble()
-      }
-      val parkingZone = ParkingZoneResponse(address, email, name, openHour, password, phoneNumber,
-          priceInDouble, "")
       subscriptions.add(
           profileApi.updateParkingZone(token, parkingZone).subscribeOn(Schedulers.io()).observeOn(
               AndroidSchedulers.mainThread()).subscribe({
@@ -64,13 +55,5 @@ class ProfilePresenter @Inject constructor() : BasePresenter<ProfileContract>() 
       })
       subscriptions.add(subscribe)
     }
-  }
-
-  fun signOut() {
-    getContext()?.let { Authentication.delete(it) }
-  }
-
-  fun attach(view: ProfileContract) {
-    this.view = view
   }
 }

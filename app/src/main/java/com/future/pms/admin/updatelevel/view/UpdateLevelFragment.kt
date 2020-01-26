@@ -14,19 +14,21 @@ import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
+import com.future.pms.admin.core.model.request.LevelDetailsRequest
 import com.future.pms.admin.databinding.FragmentUpdateLevelBinding
 import com.future.pms.admin.home.view.HomeFragment
 import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.updatelevel.injection.DaggerUpdateLevelComponent
 import com.future.pms.admin.updatelevel.injection.UpdateLevelComponent
 import com.future.pms.admin.updatelevel.presenter.UpdateLevelPresenter
+import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
-import com.future.pms.admin.util.Constants.Companion.DELETE_LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.HOME_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
 import com.future.pms.admin.util.Constants.Companion.LEVEL_AVAILABLE
 import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
+import com.future.pms.admin.util.Constants.Companion.LEVEL_TAKE_OUT
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Constants.Companion.UPDATE_LEVEL_FRAGMENT
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -82,12 +84,18 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
         rgStatus.check(R.id.rb_unavailable)
       }
       btnUpdate.setOnClickListener {
-        presenter.updateParkingLevel(accessToken, idLevel, txtLevelName.text.toString(),
-            rgStatus.checkedRadioButtonId)
+        val statusStr: String = if (rgStatus.checkedRadioButtonId == R.id.rb_available) {
+          LEVEL_AVAILABLE
+        } else {
+          Constants.LEVEL_UNAVAILABLE
+        }
+
+        presenter.updateParkingLevel(accessToken,
+            LevelDetailsRequest(idLevel, txtLevelName.text.toString(), statusStr))
       }
       btnDelete.setOnClickListener {
-        presenter.updateParkingLevel(accessToken, idLevel, txtLevelName.text.toString(),
-            DELETE_LEVEL_STATUS)
+        presenter.updateParkingLevel(accessToken,
+            LevelDetailsRequest(idLevel, txtLevelName.text.toString(), LEVEL_TAKE_OUT))
       }
       ibBack.setOnClickListener {
         val activity = activity as MainActivity?

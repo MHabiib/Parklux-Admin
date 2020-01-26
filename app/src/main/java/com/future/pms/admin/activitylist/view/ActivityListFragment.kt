@@ -70,6 +70,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     binding.refreshOngoing.setOnRefreshListener {
       binding.shimmerOngoing.visibility = View.VISIBLE
       binding.shimmerOngoing.startShimmerAnimation()
+      binding.noOrder.visibility = View.GONE
       paginationAdapterOngoing.clear()
       paginationAdapterOngoing.notifyDataSetChanged()
       currentPageOngoing = 0
@@ -80,6 +81,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     binding.refreshPast.setOnRefreshListener {
       binding.shimmerPast.visibility = View.VISIBLE
       binding.shimmerPast.startShimmerAnimation()
+      binding.noPast.visibility = View.GONE
       paginationAdapterPast.clear()
       paginationAdapterPast.notifyDataSetChanged()
       currentPagePast = 0
@@ -141,6 +143,9 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
         isLastPagePast = true
       }
     } else {
+      if (booking.content.isEmpty()) {
+        binding.noPast.visibility = View.VISIBLE
+      }
       paginationAdapterPast.addAll(booking.content)
       if (currentPagePast >= booking.totalPages - 1) {
         isLastPagePast = true
@@ -163,6 +168,9 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       }
     } else {
       paginationAdapterOngoing.addAll(booking.content)
+      if (booking.content.isEmpty()) {
+        binding.noOrder.visibility = View.VISIBLE
+      }
       if (currentPageOngoing >= booking.totalPages - 1) {
         isLastPageOngoing = true
       } else {

@@ -31,6 +31,7 @@ import com.future.pms.admin.barcode.view.BarcodeFragment
 import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
+import com.future.pms.admin.core.network.Authentication
 import com.future.pms.admin.databinding.FragmentProfileBinding
 import com.future.pms.admin.login.view.LoginActivity
 import com.future.pms.admin.profile.injection.DaggerProfileComponent
@@ -83,15 +84,22 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     with(binding) {
       btnLogout.setOnClickListener {
         btnLogout.visibility = View.GONE
-        presenter.signOut()
+        context?.let { it1 -> Authentication.delete(it1) }
         onLogout()
       }
       btnSave.setOnClickListener {
-        presenter.update(binding.profileName.text.toString(), binding.profileEmail.text.toString(),
-            binding.profilePhoneNumber.text.toString(), binding.price.text.toString(),
+        val price = binding.price.text.toString()
+        val priceInDouble: Double = if (price == "") {
+          0.0
+        } else {
+          price.toDouble()
+        }
+        val parkingZone = ParkingZoneResponse(binding.address.text.toString(),
+            binding.profileEmail.text.toString(), binding.profileName.text.toString(),
             String.format(getString(R.string.range2), binding.openHour.text.toString(),
-                binding.openHour2.text.toString()), binding.address.text.toString(),
-            binding.password.text.toString(), accessToken)
+                binding.openHour2.text.toString()), binding.password.text.toString(),
+            binding.profilePhoneNumber.text.toString(), priceInDouble, "")
+        presenter.update(accessToken, parkingZone)
       }
       openHour.setOnClickListener { context?.let { context -> getDate(openHour, context) } }
       openHour2.setOnClickListener { context?.let { context -> getDate(openHour2, context) } }
@@ -174,7 +182,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       message.contains(BAD_REQUEST_CODE) -> Toast.makeText(context,
           "Failed to update profile, email already used !", Toast.LENGTH_SHORT).show()
       message.contains(NOT_FOUND_CODE) -> {
-        presenter.signOut()
+        context?.let { Authentication.delete(it) }
         onLogout()
       }
     }

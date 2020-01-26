@@ -14,11 +14,9 @@ class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
     subscriptions.add(
         homeApi.getParkingLayout(idLevel, accessToken).subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()).subscribe({
-          if (null != it) {
-            view?.getLayoutSuccess(it)
-          }
+          view?.getLayoutSuccess(it)
         }, {
-          it.message?.let { throwable -> view?.onFailed(throwable) }
+          view?.onFailed(it.message.toString())
         }))
   }
 
@@ -27,13 +25,11 @@ class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
       showProgress(true)
       subscriptions.add(homeApi.getLevels(accessToken).subscribeOn(Schedulers.io()).observeOn(
           AndroidSchedulers.mainThread()).subscribe({
-        if (null != it) {
-          showProgress(false)
-          getLevelsSuccess(it)
-        }
+        showProgress(false)
+        getLevelsSuccess(it)
       }, {
         showProgress(false)
-        it.message?.let { throwable -> onFailed(throwable) }
+        view?.onFailed(it.message.toString())
       }))
     }
   }
@@ -42,11 +38,9 @@ class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
     subscriptions.add(
         homeApi.addParkingLevel(levelName, accessToken).subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()).subscribe({
-          if (null != it) {
-            view?.addParkingLevelSuccess(it)
-          }
+          view?.addParkingLevelSuccess(it)
         }, {
-          it.message?.let { throwable -> view?.onFailed(throwable) }
+          view?.onFailed(it.message.toString())
         }))
   }
 
@@ -54,11 +48,9 @@ class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
     subscriptions.add(
         homeApi.getSectionDetails(idLevel, accessToken).subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()).subscribe({
-          if (null != it) {
-            view?.getSectionDetailsSuccess(it)
-          }
+          view?.getSectionDetailsSuccess(it)
         }, {
-          it.message?.let { throwable -> view?.onFailed(throwable) }
+          view?.onFailed(it.message.toString())
         }))
   }
 
@@ -66,33 +58,27 @@ class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
     subscriptions.add(
         homeApi.updateParkingSection(idSection, accessToken).subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()).subscribe({
-          if (null != it) {
-            view?.updateParkingSectionSuccess(it)
-          }
+          view?.updateParkingSectionSuccess(it)
         }, {
-          it.message?.let { throwable -> view?.onFailed(throwable) }
+          view?.onFailed(it.message.toString())
         }))
   }
 
   fun updateLevel(idLevel: String, slotsLayout: String, accessToken: String) {
     subscriptions.add(homeApi.updateLevel(idLevel, slotsLayout, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-      if (null != it) {
-        view?.updateParkingLayoutSuccess(it)
-      }
+      view?.updateParkingLayoutSuccess(it)
     }, {
-      it.message?.let { throwable -> view?.onFailed(throwable) }
+      view?.onFailed(it.message.toString())
     }))
   }
 
   fun editModeParkingLevel(idLevel: String, mode: String, accessToken: String) {
     subscriptions.add(homeApi.editModeParkingLevel(idLevel, mode, accessToken).subscribeOn(
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-      if (null != it) {
-        view?.editModeParkingLevelSuccess(it)
-      }
+      view?.editModeParkingLevelSuccess(it)
     }, {
-      it.message?.let { throwable -> view?.onFailed(throwable) }
+      view?.onFailed(it.message.toString())
     }))
   }
 }

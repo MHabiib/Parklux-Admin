@@ -149,8 +149,10 @@ class HomeFragment : BaseFragment(), HomeContract {
 
             if (levelStatus == LEVEL_UNAVAILABLE) {
               tvUnavailableTag.visibility = View.VISIBLE
+              btnEditMode.visibility = View.GONE
             } else {
               tvUnavailableTag.visibility = View.GONE
+              btnEditMode.visibility = View.VISIBLE
             }
           }
         }
@@ -172,7 +174,9 @@ class HomeFragment : BaseFragment(), HomeContract {
 
       btnViewLevel.setOnClickListener {
         parkingLayout.visibility = View.VISIBLE
-        btnEditMode.visibility = View.VISIBLE
+        if (levelStatus != LEVEL_UNAVAILABLE) {
+          btnEditMode.visibility = View.VISIBLE
+        }
         btnViewSection.visibility = View.VISIBLE
         sectionLayout.visibility = View.GONE
         btnViewLevel.visibility = View.GONE
@@ -224,6 +228,7 @@ class HomeFragment : BaseFragment(), HomeContract {
 
       addLevel.btnCreate.setOnClickListener {
         if (isValid()) {
+          addLevel.btnCreate.isEnabled = false
           presenter.addParkingLevel(bindingHome.addLevel.txtLevelName.text.toString(), accessToken)
         } else {
           Toast.makeText(context, getString(R.string.fill_all_the_entries),
@@ -450,6 +455,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     bindingHome.addLevel.txtLevelName.text?.clear()
     bindingHome.addLevel.cbIHaveRead.isChecked = false
+    bindingHome.addLevel.btnCreate.isEnabled = true
   }
 
   override fun getLayoutSuccess(slotsLayout: String) {
@@ -464,8 +470,12 @@ class HomeFragment : BaseFragment(), HomeContract {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus))
     }
+    if (listLevel.isEmpty()) {
+      bindingHome.home.tvAddLevel.visibility = View.VISIBLE
+    } else {
+      bindingHome.home.tvSelectLevel.visibility = View.VISIBLE
+    }
     bindingHome.home.ivSelectLevel.visibility = View.VISIBLE
-    bindingHome.home.tvSelectLevel.visibility = View.VISIBLE
   }
 
   override fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>) {
@@ -610,6 +620,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     if (message.contains(Constants.NO_CONNECTION)) {
       Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
     }
+    bindingHome.addLevel.btnCreate.isEnabled = true
   }
 
   override fun onDestroyView() {

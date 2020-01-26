@@ -16,11 +16,9 @@ class ActivityListPresenter @Inject constructor() : BasePresenter<ActivityListCo
     subscriptions.add(
         activityListPresenter.findPastBookingParkingZone(accessToken, page).subscribeOn(
             Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-          if (null != it) {
-            view?.findPastBookingParkingZoneSuccess(it)
-          }
+          view?.findPastBookingParkingZoneSuccess(it)
         }, {
-          it.message?.let { _ -> view?.onFailed(PAST) }
+          view?.onFailed(PAST)
         }))
   }
 
@@ -28,15 +26,9 @@ class ActivityListPresenter @Inject constructor() : BasePresenter<ActivityListCo
     subscriptions.add(
         activityListPresenter.findOngoingBookingParkingZone(accessToken, page).subscribeOn(
             Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-          if (null != it) {
-            view?.findOngoingBookingParkingZoneSuccess(it)
-          }
+          view?.findOngoingBookingParkingZoneSuccess(it)
         }, {
-          it.message?.let { _ -> view?.onFailed(ONGOING) }
+          view?.onFailed(ONGOING)
         }))
-  }
-
-  fun attach(view: ActivityListContract) {
-    this.view = view
   }
 }
