@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/twenty_four_dp"
         android:fontFamily="sans-serif-thin"
-        android:text="@string/parkiva"
+        android:text="@string/parklux"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/h1"
         app:layout_constraintLeft_toLeftOf="parent"

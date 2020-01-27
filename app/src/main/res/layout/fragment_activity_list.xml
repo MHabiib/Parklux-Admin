@@ -14,7 +14,7 @@
             android:layout_marginTop="@dimen/four_dp"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="@string/parkiva"
+            android:text="@string/parklux"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/h_medium"
             app:layout_constraintTop_toTopOf="parent" />

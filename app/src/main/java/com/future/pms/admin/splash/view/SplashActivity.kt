@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.future.pms.admin.BaseApp
@@ -42,15 +40,16 @@ class SplashActivity : BaseActivity(), SplashContract {
     if (!firstRun) {
       presenter.attach(this)
       if (isOnline()) {
-        presenter.refreshToken(Authentication.getRefresh(this))
+        checkAuthenticated()
       } else {
         binding.ibRefresh.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
+        Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_LONG).show()
         binding.ibRefresh.setOnClickListener {
           if (isOnline()) {
             binding.ibRefresh.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
-            presenter.refreshToken(Authentication.getRefresh(this))
+            checkAuthenticated()
           } else {
             Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_LONG).show()
           }
@@ -60,19 +59,18 @@ class SplashActivity : BaseActivity(), SplashContract {
       val a = Intent(this, Dispatchers.Main::class.java)
       startActivity(a)
     }
-    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN)
-    setContentView(R.layout.activity_splash)
-    presenter.attach(this)
-    initView()
-  }
-
-  private fun initView() {
-    presenter.refreshToken(Authentication.getRefresh(this))
   }
 
   override fun onSuccess(token: Token) {
     Authentication.save(this, token)
+    goToHomePage()
+  }
+
+  private fun onAuthenticated() {
+    goToHomePage()
+  }
+
+  private fun goToHomePage() {
     val intent = Intent(this, MainActivity::class.java)
     startActivity(intent)
     finish()
@@ -87,11 +85,25 @@ class SplashActivity : BaseActivity(), SplashContract {
   }
 
   private fun showLogin() {
-    Handler().postDelayed({
-      val intent = Intent(this, LoginActivity::class.java)
-      startActivity(intent)
-      finish()
-    }, 5000)
+    val intent = Intent(this, LoginActivity::class.java)
+    startActivity(intent)
+    finish()
+  }
+
+  private fun checkAuthenticated() {
+    try {
+      if (Authentication.isAuthenticated(isAuthenticated())) {
+        onAuthenticated()
+      } else {
+        refreshToken()
+      }
+    } catch (e: Authentication.WithoutAuthenticatedException) {
+      onLogin()
+    }
+  }
+
+  override fun refreshToken() {
+    presenter.refreshToken(Authentication.getRefresh(this))
   }
 
   private fun isOnline(): Boolean {

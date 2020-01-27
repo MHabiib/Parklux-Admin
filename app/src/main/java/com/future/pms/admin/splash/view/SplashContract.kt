@@ -8,4 +8,5 @@ interface SplashContract : BaseView {
   fun onSuccess(token: Token)
   fun onLogin()
   fun isAuthenticated(): Context?
+  fun refreshToken()
 }
