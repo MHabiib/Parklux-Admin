@@ -22,9 +22,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.signature.ObjectKey
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.barcode.view.BarcodeFragment
@@ -217,11 +217,13 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       openHour2.text = parkingZone.openHour.substring(8, 13)
       address.setText(parkingZone.address)
       password.hint = getString(R.string.password_hint)
+
       Glide.with(binding.root).load(parkingZone.imageUrl).transform(CenterCrop(),
-          RoundedCorners(80)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(
-          true).placeholder(R.drawable.ic_parking_zone_default).error(
+          RoundedCorners(80)).signature(ObjectKey(parkingZone.imageUrl)).placeholder(
+          R.drawable.ic_parking_zone_default).error(
           R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
           binding.ivParkingZoneImage)
+
       profileNameDisplay.addTextChangedListener(textWatcher())
       profileName.addTextChangedListener(textWatcher())
       profileEmail.addTextChangedListener(textWatcher())
