@@ -30,6 +30,7 @@ import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.LEVEL_TAKE_OUT
 import com.future.pms.admin.util.Constants.Companion.TOKEN
+import com.future.pms.admin.util.Constants.Companion.TOTAL_TAKEN_SLOT
 import com.future.pms.admin.util.Constants.Companion.UPDATE_LEVEL_FRAGMENT
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -49,6 +50,7 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
   private lateinit var idLevel: String
   private lateinit var levelName: String
   private lateinit var levelStatus: String
+  private var totalTakenSlot = 0
 
   companion object {
     const val TAG: String = UPDATE_LEVEL_FRAGMENT
@@ -68,6 +70,9 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
     idLevel = this.arguments?.getString(ID_LEVEL).toString()
     levelName = this.arguments?.getString(LEVEL_NAME).toString()
     levelStatus = this.arguments?.getString(LEVEL_STATUS).toString()
+    if (this.arguments?.getInt(TOTAL_TAKEN_SLOT) != null) {
+      totalTakenSlot = this.arguments?.getInt(TOTAL_TAKEN_SLOT).toString().toInt()
+    }
     return binding.root
   }
 
@@ -111,6 +116,14 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
           rgStatus.check(R.id.rb_available)
         }.show()
       }
+
+      if (totalTakenSlot > 0) {
+        btnDelete.visibility = View.GONE
+        tvDeleteDetails.text = getString(R.string.cant_delete_level_details)
+      } else {
+        btnDelete.visibility = View.VISIBLE
+        tvDeleteDetails.text = getString(R.string.delete_details)
+      }
     }
   }
 
@@ -147,6 +160,16 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
           btnDelete.setTextColor(resources.getColor(R.color.red))
           progressBar.visibility = View.GONE
         }
+      }
+    }
+  }
+
+  private fun levelNameValue(): String {
+    with(binding) {
+      return if (txtLevelName.text.toString() == "") {
+        txtLevelName.hint.toString()
+      } else {
+        txtLevelName.text.toString()
       }
     }
   }

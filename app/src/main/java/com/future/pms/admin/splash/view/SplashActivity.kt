@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.future.pms.admin.BaseApp
@@ -34,6 +35,8 @@ class SplashActivity : BaseActivity(), SplashContract {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN)
     binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
     val settings = getSharedPreferences("prefs", 0)
     val firstRun = settings.getBoolean("firstRun", false)

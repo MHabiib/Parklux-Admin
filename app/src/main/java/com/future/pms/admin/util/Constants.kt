@@ -69,6 +69,7 @@ class Constants {
     const val ID_LEVEL = "idLevel"
     const val LEVEL_STATUS = "levelStatus"
     const val LEVEL_NAME = "levelName"
+    const val TOTAL_TAKEN_SLOT = "totalTakenSlot"
 
     const val PAST = "past"
     const val ONGOING = "ongoing"

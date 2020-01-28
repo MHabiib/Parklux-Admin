@@ -20,4 +20,5 @@
     <dimen name="fourty_eight_dp">48dp</dimen>
     <dimen name="six_dp">6dp</dimen>
     <dimen name="twenty_eight_dp">28dp</dimen>
+    <dimen name="thirty_six">36dp</dimen>
 </resources>

@@ -26,8 +26,8 @@ class MainPresenter @Inject constructor() {
     view.showProfileFragment()
   }
 
-  fun showEditLevel(idLevel: String, nameLevel: String, levelStatus: String) {
-    view.showEditLevel(idLevel, nameLevel, levelStatus)
+  fun showEditLevel(idLevel: String, nameLevel: String, levelStatus: String, totalTakenSlot: Int) {
+    view.showEditLevel(idLevel, nameLevel, levelStatus, totalTakenSlot)
   }
 
   fun onBackPressedUpdateLevel() {

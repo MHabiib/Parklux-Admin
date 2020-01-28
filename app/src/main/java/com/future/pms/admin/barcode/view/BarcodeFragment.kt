@@ -81,12 +81,14 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   }
 
   override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
-    with(binding) {
-      tvParkingZoneName.text = getString(R.string.welcome_to_s, parkingZone.name)
-      tvAddressPhone.text = getString(R.string.two_value_comma, parkingZone.address,
-          parkingZone.phoneNumber)
-      tvOpenHourPrice.text = getString(R.string.two_value_newline, parkingZone.openHour,
-          Utils.thousandSeparator(parkingZone.price.toInt()))
+    if (activity != null) {
+      with(binding) {
+        tvParkingZoneName.text = getString(R.string.welcome_to_s, parkingZone.name)
+        tvAddressPhone.text = getString(R.string.two_value_comma, parkingZone.address,
+            parkingZone.phoneNumber)
+        tvOpenHourPrice.text = getString(R.string.two_value_newline, parkingZone.openHour,
+            Utils.thousandSeparator(parkingZone.price.toInt()))
+      }
     }
   }
 
@@ -167,13 +169,15 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
         binding.ibRefresh.visibility = View.GONE
       }
     } else {
-      binding.btnGenerateQr.isEnabled = true
-      binding.btnGenerateQr.text = getString(R.string.generate_qr)
-      activity?.let {
-        Snackbar.make(it.findViewById(android.R.id.content), getString(R.string.parking_slot_full),
-            Snackbar.LENGTH_SHORT).show()
+      if (activity != null) {
+        binding.btnGenerateQr.isEnabled = true
+        binding.btnGenerateQr.text = getString(R.string.generate_qr)
+        activity?.let {
+          Snackbar.make(it.findViewById(android.R.id.content),
+              getString(R.string.parking_slot_full), Snackbar.LENGTH_SHORT).show()
+        }
+        Timber.tag(Constants.ERROR).e(message)
       }
-      Timber.tag(Constants.ERROR).e(message)
     }
   }
 

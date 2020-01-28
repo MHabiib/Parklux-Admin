@@ -307,12 +307,13 @@
             <Spinner
                 android:id="@+id/level_name"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/twenty_eight_dp"
+                android:layout_height="@dimen/thirty_six"
                 android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
                 android:layout_marginTop="@dimen/twelve_dp"
                 android:textSize="@dimen/h_medium"
                 android:theme="@style/spinnerTheme"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/card_layout_white_accent"
                 android:popupBackground="@drawable/card_layout_white"
                 app:layout_constraintLeft_toRightOf="@id/btn_add_level"
                 app:layout_constraintRight_toLeftOf="@id/btn_edit_level"
@@ -325,12 +326,29 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/level_name">
 
+                <ImageButton
+                    android:id="@+id/ib_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:layout_marginRight="@dimen/twelve_dp"
+                    android:layout_marginBottom="@dimen/twenty_four_dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_sync"
+                    android:tint="@color/colorAccent"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
                 <ScrollView
                     android:id="@+id/sv_parking_slot"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipChildren="false"
                     android:clipToPadding="false"
+                    android:visibility="gone"
                     android:overScrollMode="never"
                     android:scrollbars="none">
 
@@ -367,7 +385,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/six_dp"
                             android:layout_marginTop="@dimen/twelve_dp"
-                            android:background="@drawable/card_layout_grey"
+                            android:background="@drawable/card_layout_white"
                             android:enabled="false"
                             android:fontFamily="sans-serif-light"
                             android:paddingLeft="@dimen/twelve_dp"
@@ -418,7 +436,6 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
 
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_slot_detail"
                             android:layout_width="match_parent"
@@ -427,22 +444,12 @@
                             android:padding="@dimen/twelve_dp"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
-                                android:id="@+id/tv_select_slot"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Select slot"
-                                android:textSize="@dimen/h_medium2"
-                                android:visibility="gone"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/edit_mode"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:visibility="gone">
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageButton
                                     android:id="@+id/status_road"
@@ -589,7 +596,10 @@
 
                             <include
                                 android:id="@+id/layout_slot_detail_level"
-                                layout="@layout/slot_detail" />
+                                layout="@layout/slot_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@id/edit_mode" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -614,22 +624,6 @@
             app:layout_constraintLeft_toRightOf="@id/guideline2"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/ib_refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/twelve_dp"
-                android:layout_marginRight="@dimen/twelve_dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_sync"
-                android:tint="@color/colorAccent"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
 
             <ImageView
                 android:id="@+id/iv_select_level"
@@ -658,7 +652,6 @@
                 android:id="@+id/tv_select_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/select_level"
                 android:textColor="@color/darkGrey"
                 android:textSize="@dimen/h_medium"
                 android:visibility="gone"

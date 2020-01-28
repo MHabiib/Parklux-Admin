@@ -20,6 +20,7 @@ import com.future.pms.admin.updatelevel.view.UpdateLevelFragment
 import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
 import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
+import com.future.pms.admin.util.Constants.Companion.TOTAL_TAKEN_SLOT
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract {
@@ -221,12 +222,14 @@ class MainActivity : BaseActivity(), MainContract {
     }
   }
 
-  override fun showEditLevel(idLevel: String, levelName: String, levelStatus: String) {
+  override fun showEditLevel(idLevel: String, levelName: String, levelStatus: String,
+      totalTakenSlot: Int) {
     val fragment = UpdateLevelFragment()
     val bundle = Bundle()
     bundle.putString(ID_LEVEL, idLevel)
     bundle.putString(LEVEL_NAME, levelName)
     bundle.putString(LEVEL_STATUS, levelStatus)
+    bundle.putInt(TOTAL_TAKEN_SLOT, totalTakenSlot)
     fragment.arguments = bundle
     if (supportFragmentManager.findFragmentByTag(UpdateLevelFragment.TAG) == null) {
       supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,

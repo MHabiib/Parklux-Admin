@@ -85,6 +85,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   private lateinit var levelStatus: String
   private lateinit var levelLayout: String
   private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+  private var totalTakenSlot = 0
 
   companion object {
     private val LETTER = ArrayList(
@@ -133,6 +134,7 @@ class HomeFragment : BaseFragment(), HomeContract {
           if (p2 != 0) {
             tvSelectLevel.visibility = View.GONE
             ivSelectLevel.visibility = View.GONE
+            svParkingSlot.visibility = View.VISIBLE
             btnViewSection.isEnabled = true
             btnViewSection.setTextColor(resources.getColor(R.color.colorAccent))
             btnEditMode.isEnabled = true
@@ -161,6 +163,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       layout = layoutPark
 
       btnEditMode.setOnClickListener {
+        btnEditMode.isEnabled = false
         editMode()
       }
 
@@ -181,12 +184,12 @@ class HomeFragment : BaseFragment(), HomeContract {
         btnViewSection.visibility = View.VISIBLE
         sectionLayout.visibility = View.GONE
         btnViewLevel.visibility = View.GONE
-        presenter.getParkingLayout(idLevel, accessToken)
       }
 
       btnEditLevel.setOnClickListener {
+        presenter.getParkingLayout(idLevel, accessToken)
         val activity = activity as MainActivity?
-        activity?.presenter?.showEditLevel(idLevel, nameLevel, levelStatus)
+        activity?.presenter?.showEditLevel(idLevel, nameLevel, levelStatus, totalTakenSlot)
       }
 
       btnSync.setOnClickListener {
@@ -261,10 +264,10 @@ class HomeFragment : BaseFragment(), HomeContract {
     bindingHome.home.layoutPark.invalidate()
 
     val layoutPark = LinearLayout(context)
+    totalTakenSlot = 0
     var parkingLayout: LinearLayout? = null
     var totalSlot = 0
     var totalEmptySlot = 0
-    var totalTakenSlot = 0
     var totalDisableSlot = 0
     val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -353,12 +356,8 @@ class HomeFragment : BaseFragment(), HomeContract {
             Toast.LENGTH_SHORT).show()
       } else {
         with(bindingHome.home, {
-          tvSelectSlot.visibility = View.GONE
-          layoutSlotDetailLevel.exitEditMode.visibility = View.GONE
-          editMode.visibility = View.VISIBLE
-          btnSave.visibility = View.VISIBLE
           slotName.text = slotName(view.id)
-
+          Toast.makeText(context, slotName(view.id), Toast.LENGTH_SHORT).show()
           if (levelLayout[view.id] == SLOT_TAKEN) {
             context?.let {
               Utils.simpleDialogMessage(it, String.format(getString(R.string.two_value_comma),
@@ -367,28 +366,28 @@ class HomeFragment : BaseFragment(), HomeContract {
             }
           }
           statusDisable.setOnClickListener {
-            changeSlot(levelLayout, SLOT_DISABLE, view.id)
             view.setBackgroundResource(R.drawable.ic_disable)
+            changeSlot(levelLayout, SLOT_DISABLE, view.id)
           }
           statusPark.setOnClickListener {
-            changeSlot(levelLayout, SLOT_EMPTY, view.id)
             view.setBackgroundResource(R.drawable.ic_park)
+            changeSlot(levelLayout, SLOT_EMPTY, view.id)
           }
           statusRoad.setOnClickListener {
-            changeSlot(levelLayout, SLOT_ROAD, view.id)
             view.setBackgroundResource(R.color.transparent)
+            changeSlot(levelLayout, SLOT_ROAD, view.id)
           }
           statusIn.setOnClickListener {
-            changeSlot(levelLayout, SLOT_IN, view.id)
             view.setBackgroundResource(R.drawable.ic_in)
+            changeSlot(levelLayout, SLOT_IN, view.id)
           }
           statusOut.setOnClickListener {
-            changeSlot(levelLayout, SLOT_OUT, view.id)
             view.setBackgroundResource(R.drawable.ic_out)
+            changeSlot(levelLayout, SLOT_OUT, view.id)
           }
           statusBlock.setOnClickListener {
-            changeSlot(levelLayout, SLOT_BLOCK, view.id)
             view.setBackgroundResource(R.drawable.ic_road)
+            changeSlot(levelLayout, SLOT_BLOCK, view.id)
           }
         })
       }
@@ -399,12 +398,24 @@ class HomeFragment : BaseFragment(), HomeContract {
     val levelLayoutStrBuilder = StringBuilder(levelLayout)
     levelLayoutStrBuilder.setCharAt(index, status)
     this@HomeFragment.levelLayout = levelLayoutStrBuilder.toString()
+    bindingHome.home.layoutSlotDetailLevel.emptySlotValue.text = (this@HomeFragment.levelLayout.count {
+      SLOT_EMPTY.toString().contains(it)
+    }).toString()
+    bindingHome.home.layoutSlotDetailLevel.disableSlotValue.text = (this@HomeFragment.levelLayout.count {
+      SLOT_DISABLE.toString().contains(it)
+    }).toString()
+    bindingHome.home.layoutSlotDetailLevel.takenSlotValue.text = (this@HomeFragment.levelLayout.count {
+      SLOT_TAKEN.toString().contains(it)
+    }).toString()
   }
 
   private fun editMode() {
+    presenter.getParkingLayout(idLevel, accessToken)
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
         btnSync.visibility = View.VISIBLE
+        btnAddLevel.visibility = View.VISIBLE
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         btnEditLevel.visibility = View.VISIBLE
         mode = EXIT_EDIT_MODE
         levelName.isEnabled = true
@@ -413,9 +424,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         btnViewSection.visibility = View.VISIBLE
         btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
         editMode.visibility = View.GONE
-        layoutSlotDetailLevel.exitEditMode.visibility = View.VISIBLE
         btnEditMode.visibility = View.VISIBLE
-        tvSelectSlot.visibility = View.GONE
         presenter.editModeParkingLevel(idLevel, mode, accessToken)
       } else {
         if (isSyncOn) {
@@ -424,18 +433,21 @@ class HomeFragment : BaseFragment(), HomeContract {
           handler.removeCallbacksAndMessages(null)
         }
         btnSync.visibility = View.INVISIBLE
+        btnAddLevel.visibility = View.INVISIBLE
         btnEditLevel.visibility = View.INVISIBLE
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         mode = EDIT_MODE
         levelName.isEnabled = false
         btnEditMode.text = getString(R.string.exit_edit_mode)
         btnViewSection.visibility = View.GONE
         btnEditMode.setTextColor(resources.getColor(R.color.red))
-        tvSelectSlot.visibility = View.VISIBLE
-        layoutSlotDetailLevel.exitEditMode.visibility = View.INVISIBLE
+        editMode.visibility = View.VISIBLE
+        btnSave.visibility = View.VISIBLE
+        slotName.text = getString(R.string.select_slot)
         presenter.editModeParkingLevel(idLevel, mode, accessToken)
       }
+      btnEditMode.isEnabled = true
     }
-    presenter.getParkingLayout(idLevel, accessToken)
   }
 
   private fun showTotalSlotDetail(totalDisableSlot: Int, totalEmptySlot: Int, totalTakenSlot: Int) {
@@ -471,6 +483,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus))
     }
+    bindingHome.home.svParkingSlot.visibility = View.GONE
     if (listLevel.isEmpty()) {
       bindingHome.home.tvAddLevel.visibility = View.VISIBLE
     } else {
