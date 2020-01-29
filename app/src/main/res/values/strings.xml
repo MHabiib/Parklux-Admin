@@ -96,4 +96,5 @@
     <string name="section_3">Section - 3</string>
     <string name="section_4">Section - 4</string>
     <string name="select_slot">Select slot</string>
+    <string name="edit_profile">Edit profile</string>
 </resources>

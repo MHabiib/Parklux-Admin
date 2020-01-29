@@ -132,8 +132,10 @@ class HomeFragment : BaseFragment(), HomeContract {
           levelStatus = level.itemStatus
 
           if (p2 != 0) {
-            tvSelectLevel.visibility = View.GONE
-            ivSelectLevel.visibility = View.GONE
+            tvAppName.visibility = View.GONE
+            tvAddLevel.visibility = View.GONE
+            ivAddLevel.visibility = View.GONE
+            ivSelectLevelLeft.visibility = View.GONE
             svParkingSlot.visibility = View.VISIBLE
             btnViewSection.isEnabled = true
             btnViewSection.setTextColor(resources.getColor(R.color.colorAccent))
@@ -213,6 +215,23 @@ class HomeFragment : BaseFragment(), HomeContract {
 
       btnAddLevel.setOnClickListener {
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+      }
+
+      ivAddLevel.setOnClickListener {
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+      }
+
+      ibInfo.setOnClickListener {
+        context?.let { it1 ->
+          AlertDialog.Builder(it1).apply {
+            setView(
+              layoutInflater.inflate(
+                R.layout.layout_info_dialog,
+                null
+              )
+            )
+          }.show()
+        }
       }
     }
 
@@ -411,42 +430,10 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   private fun editMode() {
     presenter.getParkingLayout(idLevel, accessToken)
-    with(bindingHome.home) {
-      if (mode == EDIT_MODE) {
-        btnSync.visibility = View.VISIBLE
-        btnAddLevel.visibility = View.VISIBLE
-        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        btnEditLevel.visibility = View.VISIBLE
-        mode = EXIT_EDIT_MODE
-        levelName.isEnabled = true
-        btnEditMode.text = getString(R.string.edit_mode)
-        btnSave.visibility = View.GONE
-        btnViewSection.visibility = View.VISIBLE
-        btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
-        editMode.visibility = View.GONE
-        btnEditMode.visibility = View.VISIBLE
-        presenter.editModeParkingLevel(idLevel, mode, accessToken)
-      } else {
-        if (isSyncOn) {
-          isSyncOn = false
-          btnSync.setImageResource(R.drawable.ic_sync_off)
-          handler.removeCallbacksAndMessages(null)
-        }
-        btnSync.visibility = View.INVISIBLE
-        btnAddLevel.visibility = View.INVISIBLE
-        btnEditLevel.visibility = View.INVISIBLE
-        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        mode = EDIT_MODE
-        levelName.isEnabled = false
-        btnEditMode.text = getString(R.string.exit_edit_mode)
-        btnViewSection.visibility = View.GONE
-        btnEditMode.setTextColor(resources.getColor(R.color.red))
-        editMode.visibility = View.VISIBLE
-        btnSave.visibility = View.VISIBLE
-        slotName.text = getString(R.string.select_slot)
-        presenter.editModeParkingLevel(idLevel, mode, accessToken)
-      }
-      btnEditMode.isEnabled = true
+    if (mode == EDIT_MODE) {
+      presenter.editModeParkingLevel(idLevel, mode, accessToken)
+    } else {
+      presenter.editModeParkingLevel(idLevel, mode, accessToken)
     }
   }
 
@@ -459,7 +446,41 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun editModeParkingLevelSuccess(response: String) {
-    Timber.tag(TAG).d(response)
+    with(bindingHome.home) {
+      if (mode == EDIT_MODE) {
+        mode = EXIT_EDIT_MODE
+        btnSync.visibility = View.VISIBLE
+        btnAddLevel.visibility = View.VISIBLE
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        btnEditLevel.visibility = View.VISIBLE
+        levelName.visibility = View.VISIBLE
+        btnEditMode.text = getString(R.string.edit_mode)
+        btnSave.visibility = View.GONE
+        btnViewSection.visibility = View.VISIBLE
+        btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
+        editMode.visibility = View.GONE
+        btnEditMode.visibility = View.VISIBLE
+      } else {
+        mode = EDIT_MODE
+        if (isSyncOn) {
+          isSyncOn = false
+          btnSync.setImageResource(R.drawable.ic_sync_off)
+          handler.removeCallbacksAndMessages(null)
+        }
+        btnSync.visibility = View.INVISIBLE
+        btnAddLevel.visibility = View.INVISIBLE
+        btnEditLevel.visibility = View.INVISIBLE
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        levelName.visibility = View.GONE
+        btnEditMode.text = getString(R.string.exit_edit_mode)
+        btnViewSection.visibility = View.GONE
+        btnEditMode.setTextColor(resources.getColor(R.color.red))
+        editMode.visibility = View.VISIBLE
+        btnSave.visibility = View.VISIBLE
+        slotName.text = getString(R.string.select_slot)
+      }
+      btnEditMode.isEnabled = true
+    }
   }
 
   override fun addParkingLevelSuccess(response: String) {
@@ -483,13 +504,16 @@ class HomeFragment : BaseFragment(), HomeContract {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus))
     }
-    bindingHome.home.svParkingSlot.visibility = View.GONE
-    if (listLevel.isEmpty()) {
-      bindingHome.home.tvAddLevel.visibility = View.VISIBLE
-    } else {
-      bindingHome.home.tvSelectLevel.visibility = View.VISIBLE
+    with(bindingHome.home) {
+      svParkingSlot.visibility = View.GONE
+      if (listLevel.isEmpty()) {
+        tvAddLevel.visibility = View.VISIBLE
+        ivAddLevel.visibility = View.VISIBLE
+      } else {
+        ivSelectLevelLeft.visibility = View.VISIBLE
+      }
+      tvAppName.visibility = View.VISIBLE
     }
-    bindingHome.home.ivSelectLevel.visibility = View.VISIBLE
   }
 
   override fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>) {

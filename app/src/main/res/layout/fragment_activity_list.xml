@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:paddingEnd="@dimen/twelve_dp"
                 android:text="@string/completed"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/darkGrey"
                 android:textSize="@dimen/h_medium"
                 android:textStyle="bold"
                 app:layout_constraintRight_toRightOf="parent"
@@ -135,7 +135,7 @@
                 android:layout_marginTop="@dimen/twelve_dp"
                 android:background="@drawable/card_layout_white_left"
                 android:padding="@dimen/fourty_dp"
-                android:src="@drawable/ic_toy_car"
+                android:src="@drawable/kids_car"
                 app:layout_constraintBottom_toTopOf="@id/guideline2"
                 app:layout_constraintTop_toBottomOf="@id/dont_have_ongoing_tag" />
 
@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/twelve_dp"
                 android:text="@string/ongoing"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/darkGrey"
                 android:textSize="@dimen/h_medium"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"

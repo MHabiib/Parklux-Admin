@@ -11,11 +11,13 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethod.SHOW_FORCED
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -82,27 +84,85 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       savedInstanceState: Bundle?): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
     with(binding) {
+
       btnLogout.setOnClickListener {
         btnLogout.visibility = View.GONE
         context?.let { it1 -> Authentication.delete(it1) }
         onLogout()
       }
-      btnSave.setOnClickListener {
-        val price = binding.price.text.toString()
-        val priceInDouble: Double = if (price == "") {
-          0.0
+
+      var profileNameTxt = ""
+      var profileEmailTxt = ""
+      var profilePhoneNumberTxt = ""
+      var priceTxt = ""
+      var openHourTxt = ""
+      var openHour2Txt = ""
+      var addressTxt = ""
+      val passwordTxt = ""
+
+      btnEditProfile.setOnClickListener {
+        if (btnSaveProfile.visibility != View.VISIBLE) {
+          btnSaveProfile.visibility = View.VISIBLE
+          btnEditProfile.text = getString(R.string.cancel)
+          profileNameTxt = profileName.text.toString()
+          profileEmailTxt = profileEmail.text.toString()
+          profilePhoneNumberTxt = profilePhoneNumber.text.toString()
+          priceTxt = price.text.toString()
+          openHourTxt = openHour.text.toString()
+          openHour2Txt = openHour2.text.toString()
+          addressTxt = address.text.toString()
+          profileName.isEnabled = true
+          profileName.isCursorVisible = true
+          profileName.requestFocus()
+          showKeyboard()
+          profileEmail.isEnabled = true
+          profilePhoneNumber.isEnabled = true
+          price.isEnabled = true
+          openHour.isEnabled = true
+          openHour2.isEnabled = true
+          address.isEnabled = true
+          password.isEnabled = true
         } else {
-          price.toDouble()
+          profileName.setText(profileNameTxt)
+          profileEmail.setText(profileEmailTxt)
+          profilePhoneNumber.setText(profilePhoneNumberTxt)
+          price.setText(priceTxt)
+          openHour.text = openHourTxt
+          openHour2.text = openHour2Txt
+          address.setText(addressTxt)
+          password.setText(passwordTxt)
+          exitEditMode()
         }
-        val parkingZone = ParkingZoneResponse(binding.address.text.toString(),
+      }
+
+      btnSaveProfile.setOnClickListener {
+        if (isValid()) {
+          exitEditMode()
+          val price = binding.price.text.toString()
+          val priceInDouble: Double = if (price == "") {
+            0.0
+          } else {
+            price.toDouble()
+          }
+          val parkingZone = ParkingZoneResponse(
+            binding.address.text.toString(),
             binding.profileEmail.text.toString(), binding.profileName.text.toString(),
             String.format(getString(R.string.range2), binding.openHour.text.toString(),
-                binding.openHour2.text.toString()), binding.password.text.toString(),
+              binding.openHour2.text.toString()
+            ), binding.password.text.toString(),
             binding.profilePhoneNumber.text.toString(), priceInDouble, "")
-        presenter.update(accessToken, parkingZone)
+          presenter.update(accessToken, parkingZone)
+        } else {
+          Toast.makeText(
+            context, "Please fill all the entries with valid input",
+            Toast.LENGTH_LONG
+          ).show()
+        }
       }
+
       openHour.setOnClickListener { context?.let { context -> getDate(openHour, context) } }
       openHour2.setOnClickListener { context?.let { context -> getDate(openHour2, context) } }
+
       ivParkingZoneImage.setOnClickListener {
         if (checkPermission()) {
           getImageFromGallery()
@@ -112,6 +172,30 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       }
       return root
     }
+  }
+
+  private fun showKeyboard() {
+    val view = activity?.currentFocus
+    view?.let {
+      val mInputMethodManager = activity?.getSystemService(
+        Activity.INPUT_METHOD_SERVICE
+      ) as InputMethodManager
+      mInputMethodManager.toggleSoftInput(SHOW_FORCED, 0)
+    }
+  }
+
+  private fun FragmentProfileBinding.exitEditMode() {
+    btnEditProfile.text = getString(R.string.edit_profile)
+    btnSaveProfile.visibility = View.GONE
+    btnEditProfile.setTextColor(resources.getColor(R.color.colorAccent))
+    profileName.isEnabled = false
+    profileEmail.isEnabled = false
+    profilePhoneNumber.isEnabled = false
+    price.isEnabled = false
+    openHour.isEnabled = false
+    openHour2.isEnabled = false
+    address.isEnabled = false
+    password.isEnabled = false
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -223,17 +307,23 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           R.drawable.ic_parking_zone_default).error(
           R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
           binding.ivParkingZoneImage)
-
-      profileNameDisplay.addTextChangedListener(textWatcher())
-      profileName.addTextChangedListener(textWatcher())
-      profileEmail.addTextChangedListener(textWatcher())
-      profilePhoneNumber.addTextChangedListener(textWatcher())
-      price.addTextChangedListener(textWatcher())
-      openHour.addTextChangedListener(textWatcher())
-      openHour2.addTextChangedListener(textWatcher())
-      address.addTextChangedListener(textWatcher())
-      password.addTextChangedListener(textWatcher())
     }
+  }
+
+  private fun isValid(): Boolean {
+    with(binding) {
+      if (profileName?.text.toString().isEmpty()) return false
+      if (!profileEmail?.text.toString().isEmailValid()) return false
+      if (profilePhoneNumber?.text.toString().isEmpty()) return false
+      if (openHour?.text.toString().isEmpty()) return false
+      if (openHour2?.text.toString().isEmpty()) return false
+      if (address?.text.toString().isEmpty()) return false
+    }
+    return true
+  }
+
+  private fun String.isEmailValid(): Boolean {
+    return !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
   }
 
   @SuppressLint("SimpleDateFormat") private fun getDate(textView: TextView, context: Context) {
@@ -247,18 +337,6 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     textView.setOnClickListener {
       TimePickerDialog(context, dateSetListener, cal.get(Calendar.HOUR_OF_DAY),
           cal.get(Calendar.MINUTE), true).show()
-    }
-  }
-
-  private fun textWatcher(): TextWatcher {
-    return object : TextWatcher {
-      override fun afterTextChanged(s: Editable?) {}
-      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        binding.btnSave.setBackgroundResource(R.drawable.card_layout_purple)
-        binding.btnSave.isEnabled = true
-      }
-
-      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
   }
 

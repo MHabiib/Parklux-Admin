@@ -107,20 +107,31 @@
                         app:layout_constraintVertical_bias="0.0">
 
                         <Button
-                            android:id="@+id/btnSave"
+                            android:id="@+id/btn_save_profile"
                             style="@style/NoCaps"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/twelve_dp"
-                            android:background="@drawable/card_layout_grey_gradient"
+                            android:background="@drawable/card_layout_white"
                             android:fontFamily="sans-serif-light"
-                            android:paddingLeft="@dimen/twenty_dp"
-                            android:paddingRight="@dimen/twenty_dp"
+                            android:padding="@dimen/sixteen_dp"
                             android:text="@string/save"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/h2"
+                            android:textColor="@color/colorPrimary"
+                            android:visibility="gone"
                             app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/password" />
+
+                        <Button
+                            android:id="@+id/btn_edit_profile"
+                            style="@style/NoCaps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:fontFamily="sans-serif-light"
+                            android:padding="@dimen/sixteen_dp"
+                            android:text="@string/edit_profile"
+                            android:textColor="@color/colorAccent"
+                            app:layout_constraintRight_toLeftOf="@id/btn_save_profile"
                             app:layout_constraintTop_toBottomOf="@id/password" />
 
                         <Button
@@ -130,6 +141,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:hint="@string/open_hours"
+                            android:enabled="false"
                             android:textColor="@color/darkGrey"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/iv_open_hour"
@@ -143,6 +155,7 @@
                             android:background="@android:color/transparent"
                             android:hint="@string/close_hours"
                             android:textColor="@color/darkGrey"
+                            android:enabled="false"
                             app:layout_constraintLeft_toRightOf="@id/iv_open_hour"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/open_hour_tag" />
@@ -231,6 +244,7 @@
                             android:imeOptions="flagNoExtractUi"
                             android:maxLines="1"
                             android:paddingBottom="@dimen/twelve_dp"
+                            android:enabled="false"
                             android:singleLine="true"
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
@@ -246,6 +260,7 @@
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:paddingBottom="@dimen/twelve_dp"
+                            android:enabled="false"
                             android:singleLine="true"
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
@@ -262,6 +277,7 @@
                             android:maxLines="1"
                             android:paddingBottom="@dimen/twelve_dp"
                             android:singleLine="true"
+                            android:enabled="false"
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
                             app:layout_constraintTop_toBottomOf="@id/profile_phone_number_tag"
@@ -277,6 +293,7 @@
                             android:maxLines="1"
                             android:paddingBottom="@dimen/twelve_dp"
                             android:singleLine="true"
+                            android:enabled="false"
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
                             app:layout_constraintTop_toBottomOf="@id/price_tag" />
@@ -290,6 +307,7 @@
                             android:inputType="textNoSuggestions"
                             android:maxLines="4"
                             android:paddingBottom="@dimen/twelve_dp"
+                            android:enabled="false"
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
                             app:layout_constraintTop_toBottomOf="@id/address_tag" />
@@ -302,6 +320,7 @@
                             android:imeOptions="flagNoExtractUi"
                             android:inputType="textPassword"
                             android:maxLines="1"
+                            android:enabled="false"
                             android:paddingBottom="@dimen/twelve_dp"
                             android:singleLine="true"
                             android:textColor="@color/darkGrey"

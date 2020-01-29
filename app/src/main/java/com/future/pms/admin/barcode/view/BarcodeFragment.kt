@@ -19,10 +19,13 @@ import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
 import com.future.pms.admin.databinding.FragmentBarcodeBinding
 import com.future.pms.admin.util.Constants
+import com.future.pms.admin.util.Constants.Companion.ADMIN_MODE
 import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.BARCODE_FRAGMENT
+import com.future.pms.admin.util.Constants.Companion.DISPLAY_MODE
 import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Utils
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_barcode.*
@@ -45,6 +48,9 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   @Inject lateinit var presenter: BarcodePresenter
   private lateinit var binding: FragmentBarcodeBinding
   private lateinit var accessToken: String
+  private var count = 0
+  private var startMillis: Long = 0
+  private var mode: String = ""
 
   companion object {
     const val TAG: String = BARCODE_FRAGMENT
@@ -78,6 +84,35 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
       presenter.getQrImage(accessToken)
     }
     getDateNow()
+
+    binding.dateNow.setOnClickListener {
+      val time = System.currentTimeMillis()
+      if (startMillis == 0L || (time - startMillis > 3000)) {
+        startMillis = time
+        count = 1
+      } else {
+        count++
+      }
+      if (count == 5) {
+        if (mode == DISPLAY_MODE) {
+          mode = ADMIN_MODE
+          val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
+          navigationView.visibility = View.GONE
+        } else {
+          mode = DISPLAY_MODE
+          val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
+          navigationView.visibility = View.VISIBLE
+        }
+      }
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    if (mode == ADMIN_MODE) {
+      val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
+      navigationView.visibility = View.GONE
+    }
   }
 
   override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {

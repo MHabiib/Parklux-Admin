@@ -2,6 +2,7 @@ package com.future.pms.admin.main.view
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -41,6 +42,9 @@ class MainActivity : BaseActivity(), MainContract {
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     presenter.attach(this)
     val navView = binding.navView
+    if (savedInstanceState == null) {
+      presenter.onHomeIconClick()
+    }
     navView.setOnNavigationItemSelectedListener { item ->
       when (item.itemId) {
         R.id.navigation_home -> {
@@ -58,7 +62,6 @@ class MainActivity : BaseActivity(), MainContract {
       }
       return@setOnNavigationItemSelectedListener true
     }
-    presenter.onHomeIconClick()
   }
 
   override fun showHomeFragment() {

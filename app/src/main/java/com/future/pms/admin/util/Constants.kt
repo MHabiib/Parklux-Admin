@@ -38,6 +38,9 @@ class Constants {
     const val LEVEL_TAKE_OUT = "Z"
     const val DELETE_LEVEL_STATUS = 99
 
+    const val DISPLAY_MODE = "displayMode"
+    const val ADMIN_MODE = "adminMode"
+
     const val SELECT_LEVEL = "Select level"
     const val SECTION_ONE = "Section 1"
     const val SECTION_TWO = "Section 2"
