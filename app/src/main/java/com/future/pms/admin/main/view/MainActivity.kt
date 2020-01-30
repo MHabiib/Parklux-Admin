@@ -2,7 +2,6 @@ package com.future.pms.admin.main.view
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -22,6 +21,7 @@ import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
 import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.TOTAL_TAKEN_SLOT
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract {
@@ -255,13 +255,10 @@ class MainActivity : BaseActivity(), MainContract {
     }
 
     this.doubleBackToExitPressedOnce = true
-    Toast.makeText(this, "Please click back again to exit", Toast.LENGTH_SHORT).show()
+    Toast.makeText(this, getString(R.string.click_again_exit), Toast.LENGTH_SHORT).show()
 
     Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
   }
 
-  override fun onFailed(message: String) {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun onFailed(message: String) = Timber.e(message)
 }

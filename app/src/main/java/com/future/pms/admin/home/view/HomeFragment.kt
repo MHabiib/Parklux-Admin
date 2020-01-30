@@ -70,6 +70,8 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   @Inject lateinit var presenter: HomePresenter
+    @Inject
+    lateinit var gson: Gson
   private var parkViewList: MutableList<TextView> = ArrayList()
   private val spinnerItems = ArrayList<SpinnerItem>()
   private lateinit var adapter: CustomAdapter
@@ -94,9 +96,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     const val TAG: String = HOME_FRAGMENT
   }
 
-  fun newInstance(): HomeFragment {
-    return HomeFragment()
-  }
+    fun newInstance(): HomeFragment = HomeFragment()
 
   override fun onPause() {
     if (mode == EDIT_MODE) {
@@ -258,8 +258,8 @@ class HomeFragment : BaseFragment(), HomeContract {
               Toast.LENGTH_LONG).show()
         }
       }
-      return root
     }
+      return bindingHome.root
   }
 
   private fun isValid(): Boolean {
@@ -270,7 +270,7 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    accessToken = Gson().fromJson(
+      accessToken = gson.fromJson(
         context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)

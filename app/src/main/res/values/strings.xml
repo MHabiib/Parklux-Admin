@@ -97,4 +97,9 @@
     <string name="section_4">Section - 4</string>
     <string name="select_slot">Select slot</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="login_activity">Login Activity</string>
+    <string name="click_again_exit">Please click back again to exit</string>
+    <string name="email_already_used">Failed to update profile, email already used !</string>
+    <string name="updated">Updated</string>
+    <string name="fill_all_entried">Please fill all the entries with valid input</string>
 </resources>

@@ -69,9 +69,7 @@ class SplashActivity : BaseActivity(), SplashContract {
     goToHomePage()
   }
 
-  private fun onAuthenticated() {
-    goToHomePage()
-  }
+  private fun onAuthenticated() = goToHomePage()
 
   private fun goToHomePage() {
     val intent = Intent(this, MainActivity::class.java)
@@ -79,13 +77,9 @@ class SplashActivity : BaseActivity(), SplashContract {
     finish()
   }
 
-  override fun onLogin() {
-    showLogin()
-  }
+  override fun onLogin() = showLogin()
 
-  override fun isAuthenticated(): Context? {
-    return applicationContext
-  }
+  override fun isAuthenticated(): Context? = applicationContext
 
   private fun showLogin() {
     val intent = Intent(this, LoginActivity::class.java)
@@ -105,9 +99,7 @@ class SplashActivity : BaseActivity(), SplashContract {
     }
   }
 
-  override fun refreshToken() {
-    presenter.refreshToken(Authentication.getRefresh(this))
-  }
+  override fun refreshToken() = presenter.refreshToken(Authentication.getRefresh(this))
 
   private fun isOnline(): Boolean {
     val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

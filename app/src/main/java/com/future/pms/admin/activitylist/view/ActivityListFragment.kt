@@ -38,6 +38,8 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   }
 
   @Inject lateinit var presenter: ActivityListPresenter
+  @Inject
+  lateinit var gson: Gson
   private lateinit var binding: FragmentActivityListBinding
   private lateinit var paginationAdapterPast: PaginationAdapterPast
   private lateinit var paginationAdapterOngoing: PaginationAdapterOngoing
@@ -52,15 +54,10 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     const val TAG: String = ACTIVITY_LIST_FRAGMENT
   }
 
-  fun newInstance(): ActivityListFragment {
-    return ActivityListFragment()
-  }
+  fun newInstance(): ActivityListFragment = ActivityListFragment()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    accessToken = Gson().fromJson(
-        context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
-        Token::class.java).accessToken
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
     binding.shimmerOngoing.startShimmerAnimation()
     binding.shimmerPast.startShimmerAnimation()
@@ -114,23 +111,25 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
         }
       }
     })
-    presenter.findPastBookingParkingZone(accessToken, currentPagePast)
-    presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
     return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     presenter.attach(this)
-  }
-
-  private fun loadOngoingNextPage() {
+    accessToken = gson.fromJson(
+      context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
+      Token::class.java
+    ).accessToken
+    presenter.findPastBookingParkingZone(accessToken, currentPagePast)
     presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
   }
 
-  private fun loadPastNextPage() {
+  private fun loadOngoingNextPage() =
+    presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
+
+  private fun loadPastNextPage() =
     presenter.findPastBookingParkingZone(accessToken, currentPagePast)
-  }
 
   override fun findPastBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerPast.visibility = View.GONE

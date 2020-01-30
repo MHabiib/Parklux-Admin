@@ -46,6 +46,8 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
   }
 
   @Inject lateinit var presenter: UpdateLevelPresenter
+    @Inject
+    lateinit var gson: Gson
   private lateinit var binding: FragmentUpdateLevelBinding
   private lateinit var idLevel: String
   private lateinit var levelName: String
@@ -78,7 +80,7 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val accessToken = Gson().fromJson(
+      val accessToken = gson.fromJson(
         context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
@@ -160,16 +162,6 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
           btnDelete.setTextColor(resources.getColor(R.color.red))
           progressBar.visibility = View.GONE
         }
-      }
-    }
-  }
-
-  private fun levelNameValue(): String {
-    with(binding) {
-      return if (txtLevelName.text.toString() == "") {
-        txtLevelName.hint.toString()
-      } else {
-        txtLevelName.text.toString()
       }
     }
   }

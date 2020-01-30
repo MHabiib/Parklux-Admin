@@ -66,6 +66,11 @@ class Constants {
     const val STATUS_OUT = 6
     const val STATUS_BLOCK = 7
 
+      const val QR_EXPIRED = 20000L
+      const val COUNT_DOWN_INTERVAL = 1000L
+      const val MILLIS_IN_A_MINUTES = 60000
+      const val MILLIS_TO_SECOND = 1000
+
     const val EDIT_MODE = "EditMode"
     const val EXIT_EDIT_MODE = "ExitEditMode"
 

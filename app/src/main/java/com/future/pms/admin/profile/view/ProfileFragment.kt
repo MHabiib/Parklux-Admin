@@ -68,6 +68,8 @@ class ProfileFragment : BaseFragment(), ProfileContract {
   }
 
   @Inject lateinit var presenter: ProfilePresenter
+  @Inject
+  lateinit var gson: Gson
   private lateinit var binding: FragmentProfileBinding
   private lateinit var accessToken: String
 
@@ -76,9 +78,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     const val TAG: String = PROFILE_FRAGMENT
   }
 
-  fun newInstance(): ProfileFragment {
-    return ProfileFragment()
-  }
+  fun newInstance(): ProfileFragment = ProfileFragment()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -154,7 +154,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           presenter.update(accessToken, parkingZone)
         } else {
           Toast.makeText(
-            context, "Please fill all the entries with valid input",
+            context, getString(R.string.fill_all_entried),
             Toast.LENGTH_LONG
           ).show()
         }
@@ -170,38 +170,14 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           requestPermission()
         }
       }
-      return root
     }
-  }
-
-  private fun showKeyboard() {
-    val view = activity?.currentFocus
-    view?.let {
-      val mInputMethodManager = activity?.getSystemService(
-        Activity.INPUT_METHOD_SERVICE
-      ) as InputMethodManager
-      mInputMethodManager.toggleSoftInput(SHOW_FORCED, 0)
-    }
-  }
-
-  private fun FragmentProfileBinding.exitEditMode() {
-    btnEditProfile.text = getString(R.string.edit_profile)
-    btnSaveProfile.visibility = View.GONE
-    btnEditProfile.setTextColor(resources.getColor(R.color.colorAccent))
-    profileName.isEnabled = false
-    profileEmail.isEnabled = false
-    profilePhoneNumber.isEnabled = false
-    price.isEnabled = false
-    openHour.isEnabled = false
-    openHour2.isEnabled = false
-    address.isEnabled = false
-    password.isEnabled = false
+    return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     presenter.attach(this)
-    accessToken = Gson().fromJson(
+    accessToken = gson.fromJson(
         context?.getSharedPreferences(Constants.AUTHENTICATION, Context.MODE_PRIVATE)?.getString(
             Constants.TOKEN, null), Token::class.java).accessToken
     presenter.apply {
@@ -252,10 +228,34 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     }
   }
 
+  private fun showKeyboard() {
+    val view = activity?.currentFocus
+    view?.let {
+      val mInputMethodManager = activity?.getSystemService(
+        Activity.INPUT_METHOD_SERVICE
+      ) as InputMethodManager
+      mInputMethodManager.toggleSoftInput(SHOW_FORCED, 0)
+    }
+  }
+
+  private fun FragmentProfileBinding.exitEditMode() {
+    btnEditProfile.text = getString(R.string.edit_profile)
+    btnSaveProfile.visibility = View.GONE
+    btnEditProfile.setTextColor(resources.getColor(R.color.colorAccent))
+    profileName.isEnabled = false
+    profileEmail.isEnabled = false
+    profilePhoneNumber.isEnabled = false
+    price.isEnabled = false
+    openHour.isEnabled = false
+    openHour2.isEnabled = false
+    address.isEnabled = false
+    password.isEnabled = false
+  }
+
   override fun onSuccess() {
     val barcodeFragment = fragmentManager?.findFragmentByTag(BarcodeFragment.TAG) as BarcodeFragment
     barcodeFragment.presenter.loadData(accessToken)
-    Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, getString(R.string.updated), Toast.LENGTH_SHORT).show()
     presenter.loadData(accessToken)
   }
 
@@ -264,7 +264,8 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       message.contains(NO_CONNECTION) -> Toast.makeText(context,
           getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
       message.contains(BAD_REQUEST_CODE) -> Toast.makeText(context,
-          "Failed to update profile, email already used !", Toast.LENGTH_SHORT).show()
+        getString(R.string.email_already_used), Toast.LENGTH_SHORT
+      ).show()
       message.contains(NOT_FOUND_CODE) -> {
         context?.let { Authentication.delete(it) }
         onLogout()
@@ -322,9 +323,8 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     return true
   }
 
-  private fun String.isEmailValid(): Boolean {
-    return !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
-  }
+  private fun String.isEmailValid(): Boolean =
+    !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
   @SuppressLint("SimpleDateFormat") private fun getDate(textView: TextView, context: Context) {
     val cal = Calendar.getInstance()
