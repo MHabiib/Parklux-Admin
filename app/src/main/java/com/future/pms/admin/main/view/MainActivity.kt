@@ -303,7 +303,7 @@ class MainActivity : BaseActivity(), MainContract {
     val dialog = MaterialAlertDialogBuilder(this).setTitle(title).setMessage(body).show()
     Handler().postDelayed({
       dialog?.dismiss()
-    }, 5000)
+    }, 7000)
   }
 
   override fun onPause() {
