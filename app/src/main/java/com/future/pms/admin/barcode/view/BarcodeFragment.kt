@@ -31,6 +31,7 @@ import com.future.pms.admin.util.Constants.Companion.TOKEN
 import com.future.pms.admin.util.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_barcode.*
 import timber.log.Timber
@@ -57,6 +58,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   private var count = 0
   private var startMillis: Long = 0
   private var mode: String = ""
+  private lateinit var fcmToken: String
 
   companion object {
     const val TAG: String = BARCODE_FRAGMENT
@@ -83,7 +85,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     binding.btnGenerateQr.setOnClickListener {
       binding.btnGenerateQr.isEnabled = false
       binding.btnGenerateQr.text = ""
-      presenter.getQrImage(accessToken)
+      presenter.getQrImage(accessToken, fcmToken)
     }
     getDateNow()
 
@@ -105,6 +107,12 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
           val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
           navigationView.visibility = View.VISIBLE
         }
+      }
+    }
+
+    FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        fcmToken = task.result?.token.toString()
       }
     }
   }

@@ -26,10 +26,11 @@ class BarcodePresenter @Inject constructor() : BasePresenter<BarcodeContract>() 
     }
   }
 
-  fun getQrImage(accessToken: String) {
+  fun getQrImage(accessToken: String, fcmToken: String) {
     view?.apply {
       showProgress(true)
-      subscriptions.add(barcodeApi.getQrImage(accessToken).subscribeOn(Schedulers.io()).observeOn(
+      subscriptions.add(
+          barcodeApi.getQrImage(fcmToken, accessToken).subscribeOn(Schedulers.io()).observeOn(
           AndroidSchedulers.mainThread()).subscribe({
         showProgress(false)
         getQrImageSuccess(it.string())

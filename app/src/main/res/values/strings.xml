@@ -102,4 +102,6 @@
     <string name="email_already_used">Failed to update profile, email already used !</string>
     <string name="updated">Updated</string>
     <string name="fill_all_entried">Please fill all the entries with valid input</string>
+    <string name="thanks_using_dialog">Welcome to %s, your slot at level %s. Thanks for using Parklux apps!</string>
+    <string name="hi_dialog">Hi, %s !</string>
 </resources>

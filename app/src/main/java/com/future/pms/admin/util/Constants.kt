@@ -81,5 +81,10 @@ class Constants {
 
     const val PAST = "past"
     const val ONGOING = "ongoing"
+
+    const val MY_FIREBASE_MESSAGING = "firebaseMessaging"
+    const val FCM_CUSTOMER_NAME = "cusotomerName"
+    const val FCM_PARKING_ZONE = "parkingZoneName"
+    const val FCM_LEVEL_NAME = "levelName"
   }
 }

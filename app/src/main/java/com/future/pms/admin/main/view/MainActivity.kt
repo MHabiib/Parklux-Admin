@@ -1,10 +1,16 @@
 package com.future.pms.admin.main.view
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
+import android.speech.tts.TextToSpeech
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.activitylist.view.ActivityListFragment
@@ -17,11 +23,17 @@ import com.future.pms.admin.main.injection.MainComponent
 import com.future.pms.admin.main.presenter.MainPresenter
 import com.future.pms.admin.profile.view.ProfileFragment
 import com.future.pms.admin.updatelevel.view.UpdateLevelFragment
+import com.future.pms.admin.util.Constants.Companion.FCM_CUSTOMER_NAME
+import com.future.pms.admin.util.Constants.Companion.FCM_LEVEL_NAME
+import com.future.pms.admin.util.Constants.Companion.FCM_PARKING_ZONE
 import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
 import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
+import com.future.pms.admin.util.Constants.Companion.MY_FIREBASE_MESSAGING
 import com.future.pms.admin.util.Constants.Companion.TOTAL_TAKEN_SLOT
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract {
@@ -34,6 +46,7 @@ class MainActivity : BaseActivity(), MainContract {
 
   @Inject lateinit var presenter: MainPresenter
   private lateinit var binding: ActivityMainBinding
+  private lateinit var mTTS: TextToSpeech
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -62,6 +75,11 @@ class MainActivity : BaseActivity(), MainContract {
       }
       return@setOnNavigationItemSelectedListener true
     }
+    mTTS = TextToSpeech(applicationContext, TextToSpeech.OnInitListener { status ->
+      if (status != TextToSpeech.ERROR) {
+        mTTS.language = Locale.US
+      }
+    })
   }
 
   override fun showHomeFragment() {
@@ -258,6 +276,39 @@ class MainActivity : BaseActivity(), MainContract {
     Toast.makeText(this, getString(R.string.click_again_exit), Toast.LENGTH_SHORT).show()
 
     Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+  }
+
+  override fun onResume() {
+    super.onResume()
+
+    LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+        IntentFilter(MY_FIREBASE_MESSAGING))
+  }
+
+  private val mMessageReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+      val customerName = intent.getStringExtra(FCM_CUSTOMER_NAME)
+      val parkingZoneName = intent.getStringExtra(FCM_PARKING_ZONE)
+      val levelName = intent.getStringExtra(FCM_LEVEL_NAME)
+
+      val title = String.format(getString(R.string.hi_dialog), customerName)
+      val message = String.format(getString(R.string.thanks_using_dialog), parkingZoneName,
+          levelName)
+      showDialog(title, message)
+      mTTS.speak(title + message, TextToSpeech.QUEUE_FLUSH, null)
+    }
+  }
+
+  private fun showDialog(title: String, body: String) {
+    val dialog = MaterialAlertDialogBuilder(this).setTitle(title).setMessage(body).show()
+    Handler().postDelayed({
+      dialog?.dismiss()
+    }, 5000)
+  }
+
+  override fun onPause() {
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver)
+    super.onPause()
   }
 
   override fun onFailed(message: String) = Timber.e(message)
