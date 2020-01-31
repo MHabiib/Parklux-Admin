@@ -430,10 +430,10 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   private fun editMode() {
     presenter.getParkingLayout(idLevel, accessToken)
-    if (mode == EDIT_MODE) {
-      presenter.editModeParkingLevel(idLevel, mode, accessToken)
+    if (bindingHome.home.btnEditMode.text != getString(R.string.exit_edit_mode)) {
+      presenter.editModeParkingLevel(idLevel, EDIT_MODE, accessToken)
     } else {
-      presenter.editModeParkingLevel(idLevel, mode, accessToken)
+      presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     }
   }
 
