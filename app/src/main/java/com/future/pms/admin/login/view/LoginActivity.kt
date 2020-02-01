@@ -19,6 +19,7 @@ import com.future.pms.admin.login.presenter.LoginPresenter
 import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.BAD_REQUEST_CODE
+import com.future.pms.admin.util.Constants.Companion.FORBIDDEN_CODE
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
@@ -98,7 +99,7 @@ class LoginActivity : BaseActivity(), LoginContract {
   override fun onFailed(e: String) {
     loading(false)
     Authentication.delete(this)
-    if (e.contains(BAD_REQUEST_CODE) || e.contains(getString(R.string.login_activity))) {
+    if (e.contains(BAD_REQUEST_CODE) || e.contains(FORBIDDEN_CODE) || e.contains(getString(R.string.login_activity))) {
       Toast.makeText(this, R.string.email_password_incorrect, Toast.LENGTH_LONG).show()
     } else {
       Toast.makeText(this, e, Toast.LENGTH_LONG).show()

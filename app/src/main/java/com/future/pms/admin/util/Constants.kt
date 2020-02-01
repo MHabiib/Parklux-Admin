@@ -52,6 +52,7 @@ class Constants {
     const val ERROR = "Error"
 
     const val NOT_FOUND_CODE = "404"
+    const val FORBIDDEN_CODE = "403"
     const val BAD_REQUEST_CODE = "400"
     const val NO_CONNECTION = "No address associated with hostname"
 
