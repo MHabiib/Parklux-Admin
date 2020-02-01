@@ -20,6 +20,7 @@ open class BaseTest {
 
   protected val ACCESS_TOKEN = "accessToken"
   protected val REFRESH_TOKEN = "refreshToken"
+  protected val FCM_TOKEN = "fcmToken"
   protected val SUCCESS = "success"
   protected val ERROR = "error"
   protected val ID = "id"

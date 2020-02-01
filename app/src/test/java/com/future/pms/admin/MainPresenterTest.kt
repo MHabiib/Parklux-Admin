@@ -32,7 +32,7 @@ class MainPresenterTest : BaseTest() {
   }
 
   @Test fun showEditLevel() {
-    mainPresenter.showEditLevel(ID, LEVEL_NAME, STR)
+    mainPresenter.showEditLevel(ID, LEVEL_NAME, STR, 1)
   }
 
   @Test fun onBackPressedUpdateLevel() {

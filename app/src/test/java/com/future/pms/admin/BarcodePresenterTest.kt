@@ -31,16 +31,16 @@ class BarcodePresenterTest : BaseTest() {
   }
 
   @Test fun getQrImageSuccess() {
-    `when`(barcodeApi.getQrImage(ACCESS_TOKEN)).thenReturn(
+    `when`(barcodeApi.getQrImage(ACCESS_TOKEN, FCM_TOKEN)).thenReturn(
         Observable.just(ResponseBody.create(MediaType.parse(""), "")))
 
-    barcodePresenter.getQrImage(ACCESS_TOKEN)
+    barcodePresenter.getQrImage(FCM_TOKEN, ACCESS_TOKEN)
   }
 
   @Test fun getQrImageFailed() {
-    `when`(barcodeApi.getQrImage(ACCESS_TOKEN)).thenReturn(Observable.error(Exception(ERROR)))
+    `when`(barcodeApi.getQrImage(ACCESS_TOKEN, FCM_TOKEN)).thenReturn(Observable.error(Exception(ERROR)))
 
-    barcodePresenter.getQrImage(ACCESS_TOKEN)
+    barcodePresenter.getQrImage(FCM_TOKEN, ACCESS_TOKEN)
   }
 
 }
