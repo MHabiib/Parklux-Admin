@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exit_edit_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/twelve_dp">
+
+        <ImageView
+            android:id="@+id/empty_slot_iv"
+            android:layout_width="@dimen/twenty_dp"
+            android:layout_height="@dimen/twenty_dp"
+            android:src="@drawable/ic_park"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/taken_slot_iv"
+            android:layout_width="@dimen/twenty_dp"
+            android:layout_height="@dimen/twenty_dp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:src="@drawable/ic_car"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line1" />
+
+        <ImageView
+            android:id="@+id/disable_slot_iv"
+            android:layout_width="@dimen/twenty_dp"
+            android:layout_height="@dimen/twenty_dp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:src="@drawable/ic_disable"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line2" />
+
+        <TextView
+            android:id="@+id/empty_slot_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:text="@string/empty_slot"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/h2"
+            app:layout_constraintLeft_toRightOf="@id/empty_slot_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/empty_slot_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="20" />
+
+        <TextView
+            android:id="@+id/taken_slot_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:text="@string/taken_slot"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/h2"
+            app:layout_constraintLeft_toRightOf="@id/empty_slot_iv"
+            app:layout_constraintTop_toTopOf="@id/taken_slot_iv" />
+
+        <TextView
+            android:id="@+id/taken_slot_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/taken_slot_iv"
+            tools:text="7" />
+
+        <TextView
+            android:id="@+id/disable_slot_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:text="@string/disable_slot"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/h2"
+            app:layout_constraintLeft_toRightOf="@id/empty_slot_iv"
+            app:layout_constraintTop_toTopOf="@id/disable_slot_iv" />
+
+        <TextView
+            android:id="@+id/disable_slot_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:textColor="@color/red"
+            android:textSize="@dimen/h2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/disable_slot_iv"
+            tools:text="10" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintTop_toBottomOf="@id/empty_slot_value" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintTop_toBottomOf="@id/taken_slot_value" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

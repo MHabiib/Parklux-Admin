@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseWhite">
+
+        <!-- include main content -->
+        <include
+            android:id="@+id/home"
+            layout="@layout/fragment_home" />
+
+        <!-- include bottom sheet -->
+        <include
+            android:id="@+id/add_level"
+            layout="@layout/fragment_add_level" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

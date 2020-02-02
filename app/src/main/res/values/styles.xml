@@ -10,4 +10,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="NoCaps" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="spinnerTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

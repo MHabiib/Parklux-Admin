@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/section_layout"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/zero_dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:layout_marginBottom="@dimen/twelve_dp"
+                android:background="@color/lightGrey"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/six_dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline9"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guideline8"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/section_one_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
+                    android:layout_marginBottom="@dimen/six_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_one_tag">
+
+                    <Button
+                        android:id="@+id/btn_section_1"
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/card_layout_blue_primary_right_radius"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <include
+                        android:id="@+id/detail_section1"
+                        layout="@layout/slot_detail_short"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btn_section_1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/six_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline9"
+                app:layout_constraintLeft_toRightOf="@id/guideline8"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/section_two_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 2"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
+                    android:layout_marginBottom="@dimen/six_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_two_tag">
+
+                    <Button
+                        android:id="@+id/btn_section_2"
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/card_layout_blue_primary_right_radius"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <include
+                        android:id="@+id/detail_section2"
+                        layout="@layout/slot_detail_short"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btn_section_2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/six_dp"
+                android:layout_marginRight="@dimen/six_dp"
+                android:layout_marginBottom="@dimen/twenty_eight_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/guideline8"
+                app:layout_constraintTop_toBottomOf="@id/guideline9">
+
+                <TextView
+                    android:id="@+id/section_three_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 3"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_three_tag">
+
+                    <Button
+                        android:id="@+id/btn_section_3"
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/card_layout_blue_primary_right_radius"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <include
+                        android:id="@+id/detail_section3"
+                        layout="@layout/slot_detail_short"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btn_section_3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:layout_marginLeft="@dimen/six_dp"
+                android:layout_marginTop="@dimen/six_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                android:layout_marginBottom="@dimen/twenty_eight_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/guideline8"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guideline9">
+
+                <TextView
+                    android:id="@+id/section_four_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Section - 4"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/h_medium2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/zero_dp"
+                    android:layout_marginTop="@dimen/eight_dp"
+                    android:background="@drawable/card_layout_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/section_four_tag">
+
+                    <Button
+                        android:id="@+id/btn_section_4"
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/card_layout_blue_primary_right_radius"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/h5"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <include
+                        android:id="@+id/detail_section4"
+                        layout="@layout/slot_detail_short"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btn_section_4"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.47" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/zero_dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_add_level"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/card_layout_white_right_bottom_radius"
+                android:paddingLeft="@dimen/twelve_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:src="@drawable/ic_add"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/level_name"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/level_name" />
+
+            <ImageButton
+                android:id="@+id/btn_edit_level"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:background="@drawable/card_layout_white"
+                android:padding="@dimen/eight_dp"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/colorPrimary"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/level_name"
+                app:layout_constraintRight_toLeftOf="@id/btn_sync"
+                app:layout_constraintTop_toTopOf="@id/level_name" />
+
+            <ImageButton
+                android:id="@+id/btn_sync"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/card_layout_white"
+                android:padding="@dimen/eight_dp"
+                android:src="@drawable/ic_sync_off"
+                android:tint="@color/colorAccent"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/level_name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/level_name" />
+
+            <Spinner
+                android:id="@+id/level_name"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/thirty_six"
+                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginRight="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/twelve_dp"
+                android:textSize="@dimen/h_medium"
+                android:theme="@style/spinnerTheme"
+                android:background="@drawable/card_layout_white_accent"
+                android:popupBackground="@drawable/card_layout_white"
+                app:layout_constraintLeft_toRightOf="@id/btn_add_level"
+                app:layout_constraintRight_toLeftOf="@id/btn_edit_level"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:paddingTop="@dimen/twelve_dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/level_name">
+
+                <ImageView
+                    android:id="@+id/iv_add_level"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/add"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_select_level_left"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/up"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_add_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_level"
+                    android:textColor="@color/darkGrey"
+                    android:textSize="@dimen/h_medium"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_add_level" />
+
+                <ImageButton
+                    android:id="@+id/ib_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twelve_dp"
+                    android:layout_marginRight="@dimen/twelve_dp"
+                    android:layout_marginBottom="@dimen/twenty_four_dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_sync"
+                    android:tint="@color/colorAccent"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
+                <ScrollView
+                    android:id="@+id/sv_parking_slot"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:visibility="gone"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/twelve_dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:paddingBottom="@dimen/fourty_eight_dp">
+
+                        <Button
+                            android:id="@+id/btn_edit_mode"
+                            style="@style/NoCaps"
+                            android:layout_width="@dimen/zero_dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:layout_marginRight="@dimen/six_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:enabled="false"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twelve_dp"
+                            android:paddingRight="@dimen/twelve_dp"
+                            android:text="@string/edit_mode"
+                            android:textColor="@color/darkGrey"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/guideline5"
+                            app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
+
+                        <Button
+                            android:id="@+id/btn_view_section"
+                            style="@style/NoCaps"
+                            android:layout_width="@dimen/zero_dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:enabled="false"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twelve_dp"
+                            android:paddingRight="@dimen/twelve_dp"
+                            android:text="@string/view_section"
+                            android:textColor="@color/darkGrey"
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintLeft_toRightOf="@id/guideline5"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
+
+                        <Button
+                            android:id="@+id/btn_save"
+                            style="@style/NoCaps"
+                            android:layout_width="@dimen/zero_dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twelve_dp"
+                            android:paddingRight="@dimen/twelve_dp"
+                            android:text="@string/save"
+                            android:textColor="@color/colorAccent"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintLeft_toRightOf="@id/guideline5"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
+
+
+                        <Button
+                            android:id="@+id/btn_view_level"
+                            style="@style/NoCaps"
+                            android:layout_width="@dimen/zero_dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginTop="@dimen/twelve_dp"
+                            android:background="@drawable/card_layout_white"
+                            android:fontFamily="sans-serif-light"
+                            android:paddingLeft="@dimen/twelve_dp"
+                            android:paddingRight="@dimen/twelve_dp"
+                            android:text="View level layout"
+                            android:textColor="@color/colorSecondary"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_slot_detail" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_slot_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/card_layout_white"
+                            android:padding="@dimen/twelve_dp"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/edit_mode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageButton
+                                    android:id="@+id/status_road"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_blank"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline7"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <ImageButton
+                                    android:id="@+id/status_disable"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_disable"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline6"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline7"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <ImageButton
+                                    android:id="@+id/status_park"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_park"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline6"
+                                    app:layout_constraintTop_toBottomOf="@id/set_status" />
+
+                                <ImageButton
+                                    android:id="@+id/status_in"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_in"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline6"
+                                    app:layout_constraintTop_toBottomOf="@id/status_park" />
+
+                                <ImageButton
+                                    android:id="@+id/status_block"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_road"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline6"
+                                    app:layout_constraintRight_toLeftOf="@id/guideline7"
+                                    app:layout_constraintTop_toBottomOf="@id/status_disable" />
+
+                                <ImageButton
+                                    android:id="@+id/status_out"
+                                    android:layout_width="@dimen/zero_dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:background="@drawable/card_layout_purple"
+                                    android:padding="@dimen/four_dp"
+                                    android:src="@drawable/ic_out"
+                                    android:tint="@color/white"
+                                    app:layout_constraintLeft_toRightOf="@id/guideline7"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/status_park" />
+
+                                <TextView
+                                    android:id="@+id/slot_name_tag"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="@string/slot_name"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatImageButton
+                                    android:id="@+id/ib_info"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/transparent"
+                                    android:src="@drawable/info"
+                                    android:tint="@color/darkGrey"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/set_status"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/twelve_dp"
+                                    android:gravity="center"
+                                    android:text="Set slot status"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintTop_toBottomOf="@id/slot_name" />
+
+                                <TextView
+                                    android:id="@+id/slot_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:imeOptions="flagNoExtractUi"
+                                    android:inputType="textEmailAddress"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:text="LG - 1"
+                                    android:textColor="@color/darkGrey"
+                                    android:textSize="@dimen/h2"
+                                    app:layout_constraintTop_toBottomOf="@id/slot_name_tag" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.5" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.66" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.33" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <include
+                                android:id="@+id/layout_slot_detail_level"
+                                layout="@layout/slot_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@id/edit_mode" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.5" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parking_layout"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="0dp"
+            android:background="@drawable/card_layout_parking_layout"
+            app:layout_constraintBottom_toTopOf="@id/guideline10"
+            app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-thin"
+                android:text="@string/parklux"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/custom_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:paddingStart="@dimen/twelve_dp"
+                android:paddingTop="@dimen/twelve_dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ScrollView
+                        android:id="@+id/scroll_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:overScrollMode="never"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <HorizontalScrollView
+                            android:id="@+id/layoutPark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </ScrollView>
+
+                    <include layout="@layout/numbering_left" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_unavailable_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/this_level_status_is_unavailable"
+            android:textSize="@dimen/h1"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.42" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/twenty_four_dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

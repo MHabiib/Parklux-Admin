@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseWhite"
+        android:clipToPadding="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/twenty_four_dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <ImageView
+            android:id="@+id/iv_add_level"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/add_level"
+            app:layout_constraintBottom_toBottomOf="@id/guideline3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+
+        <TextView
+            android:id="@+id/swipe_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/twelve_dp"
+            android:text="@string/swipe_up_to_add_level"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/h4"
+            android:textStyle="italic"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:layout_marginEnd="@dimen/twelve_dp"
+            android:layout_marginBottom="@dimen/twelve_dp"
+            android:background="@drawable/card_layout_white"
+            android:padding="@dimen/twelve_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+            <Button
+                android:id="@+id/btn_create"
+                style="@style/NoCaps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/twelve_dp"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginBottom="@dimen/four_dp"
+                android:background="@drawable/card_layout_white"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/create"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/guideline_level_layout"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/about_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sixteen_dp"
+                android:layout_marginTop="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/sixteen_dp"
+                android:fadeScrollbars="false"
+                android:maxLines="4"
+                android:scrollbars="vertical"
+                android:text="@string/about_pms"
+                android:textColor="@color/darkGrey"
+                android:textSize="@dimen/h3"
+                app:layout_constraintTop_toBottomOf="@id/about_level_tag" />
+
+            <TextView
+                android:id="@+id/tx_ihave_read"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/four_dp"
+                android:text="@string/i_have_read"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/cb_i_have_read"
+                app:layout_constraintLeft_toRightOf="@id/cb_i_have_read"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cb_i_have_read"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/about_level_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sixteen_dp"
+                android:layout_marginEnd="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp"
+                android:text="@string/about_level"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/h3"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/input_layout_level_name" />
+
+            <TextView
+                android:id="@+id/tv_level_name_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/new_level"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h_medium"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_level_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_i_have_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/twelve_dp"
+                android:layout_marginTop="@dimen/twelve_dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/about_level" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_level_name"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/sixteen_dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_level_name_tag"
+                tools:ignore="RtlSymmetry">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_level_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/level_name"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="@dimen/h2"
+                    app:backgroundTint="@color/colorPrimary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBarAddLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:visibility="gone"
+                app:layout_constraintVertical_bias="0.8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.42" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/four_dp"
+            android:layout_marginStart="@dimen/hundred_margin"
+            android:layout_marginEnd="@dimen/four_dp"
+            android:background="@drawable/card_layout_blue_primary"
+            app:elevation="@dimen/zero_dp"
+            app:layout_constraintBottom_toBottomOf="@id/swipe_up"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/swipe_up"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

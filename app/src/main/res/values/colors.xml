@@ -8,8 +8,10 @@
     <color name="white">#FCFCFC</color>
     <color name="black">#000000</color>
     <color name="red">#CE0000</color>
+    <color name="redLight">#ff4f30</color>
+    <color name="goldDark">#B3832D</color>
     <color name="darkGrey">#7A7A7A</color>
     <color name="lightGrey">#F7F7F7</color>
-    <color name="qr_code_reader_square">#914CD2</color>
     <color name="baseWhite">#F2F2F2</color>
+    <color name="transparent">#00000000</color>
 </resources>
