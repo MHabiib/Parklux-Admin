@@ -25,6 +25,16 @@
                 android:background="@color/lightGrey"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <ProgressBar
+                android:id="@+id/progressBarSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="@dimen/zero_dp"
@@ -604,13 +614,14 @@
                                     android:layout_height="wrap_content"
                                     android:background="@android:color/transparent"
                                     android:gravity="center"
+                                    android:textStyle="bold"
                                     android:imeOptions="flagNoExtractUi"
                                     android:inputType="textEmailAddress"
                                     android:maxLines="1"
                                     android:singleLine="true"
                                     android:text="LG - 1"
                                     android:textColor="@color/darkGrey"
-                                    android:textSize="@dimen/h2"
+                                    android:textSize="@dimen/h_medium"
                                     app:layout_constraintTop_toBottomOf="@id/slot_name_tag" />
 
                                 <androidx.constraintlayout.widget.Guideline

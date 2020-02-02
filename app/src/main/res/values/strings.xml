@@ -104,4 +104,8 @@
     <string name="fill_all_entried">Please fill all the entries with valid input</string>
     <string name="thanks_using_dialog">Welcome to %s, your slot at level %s. Thanks for using Parklux apps!</string>
     <string name="hi_dialog">Hi, %s !</string>
+    <string name="success_add_location">Success add location</string>
+    <string name="fill_drop_point">Add the drop point by clicking button right of address on edit mode</string>
+    <string name="exit_edit_mode_title">Exit edit mode ?</string>
+    <string name="exit_edit_mode_descritption">Do you want to exit edit mode?\nYour changes will be gone</string>
 </resources>

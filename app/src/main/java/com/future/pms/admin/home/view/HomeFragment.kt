@@ -70,8 +70,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   @Inject lateinit var presenter: HomePresenter
-    @Inject
-    lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private var parkViewList: MutableList<TextView> = ArrayList()
   private val spinnerItems = ArrayList<SpinnerItem>()
   private lateinit var adapter: CustomAdapter
@@ -96,11 +95,11 @@ class HomeFragment : BaseFragment(), HomeContract {
     const val TAG: String = HOME_FRAGMENT
   }
 
-    fun newInstance(): HomeFragment = HomeFragment()
+  fun newInstance(): HomeFragment = HomeFragment()
 
   override fun onPause() {
     if (mode == EDIT_MODE) {
-      editMode()
+      presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     }
     super.onPause()
   }
@@ -148,7 +147,7 @@ class HomeFragment : BaseFragment(), HomeContract {
             layoutPark.invalidate()
             sectionLayout.refreshDrawableState()
             sectionLayout.invalidate()
-
+            showProgress(true)
             presenter.getParkingLayout(idLevel, accessToken)
             presenter.getSectionDetails(idLevel, accessToken)
 
@@ -165,7 +164,6 @@ class HomeFragment : BaseFragment(), HomeContract {
       layout = layoutPark
 
       btnEditMode.setOnClickListener {
-        btnEditMode.isEnabled = false
         editMode()
       }
 
@@ -224,12 +222,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       ibInfo.setOnClickListener {
         context?.let { it1 ->
           AlertDialog.Builder(it1).apply {
-            setView(
-              layoutInflater.inflate(
-                R.layout.layout_info_dialog,
-                null
-              )
-            )
+            setView(layoutInflater.inflate(R.layout.layout_info_dialog, null))
           }.show()
         }
       }
@@ -246,6 +239,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       home.btnSave.setOnClickListener {
+        presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
         presenter.updateLevel(idLevel, levelLayout, accessToken)
       }
 
@@ -259,7 +253,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         }
       }
     }
-      return bindingHome.root
+    return bindingHome.root
   }
 
   private fun isValid(): Boolean {
@@ -270,7 +264,7 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-      accessToken = gson.fromJson(
+    accessToken = gson.fromJson(
         context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
@@ -429,11 +423,22 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   private fun editMode() {
-    presenter.getParkingLayout(idLevel, accessToken)
-    if (bindingHome.home.btnEditMode.text != getString(R.string.exit_edit_mode)) {
-      presenter.editModeParkingLevel(idLevel, EDIT_MODE, accessToken)
+    if (bindingHome.home.btnEditMode.text != "Edit mode") {
+      context?.let {
+        AlertDialog.Builder(it).setTitle(getString(R.string.exit_edit_mode_title)).setMessage(
+            getString(R.string.exit_edit_mode_descritption)).setPositiveButton(
+            android.R.string.yes) { _, _ ->
+          showProgress(true)
+          bindingHome.home.btnEditMode.isEnabled = false
+          presenter.getParkingLayout(idLevel, accessToken)
+          presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
+        }.setNegativeButton(android.R.string.no, null).setIcon(R.drawable.ic_arrow).show()
+      }
     } else {
-      presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
+      bindingHome.home.btnEditMode.isEnabled = false
+      showProgress(true)
+      presenter.getParkingLayout(idLevel, accessToken)
+      presenter.editModeParkingLevel(idLevel, EDIT_MODE, accessToken)
     }
   }
 
@@ -446,6 +451,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun editModeParkingLevelSuccess(response: String) {
+    showProgress(false)
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
         mode = EXIT_EDIT_MODE
@@ -493,6 +499,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun getLayoutSuccess(slotsLayout: String) {
+    showProgress(false)
     levelLayout = slotsLayout
     showParkingLayout(slotsLayout)
   }
@@ -586,6 +593,7 @@ class HomeFragment : BaseFragment(), HomeContract {
           showConfirmationDialog(listSectionDetails, index)
         }
       } else {
+        showProgressSection(true)
         presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
       }
     }
@@ -596,6 +604,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       AlertDialog.Builder(it).setTitle(getString(R.string.deactivate_section)).setMessage(
           getString(R.string.deactivate_section_confirmation)).setPositiveButton(
           android.R.string.yes) { _, _ ->
+        showProgressSection(true)
         presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
       }.setNegativeButton(android.R.string.no, null).setIcon(R.drawable.ic_arrow).show()
     }
@@ -610,11 +619,11 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun updateParkingLayoutSuccess(response: String) {
-    editMode()
     Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }
 
   override fun updateParkingSectionSuccess(response: String) {
+    showProgressSection(false)
     presenter.getSectionDetails(idLevel, accessToken)
     presenter.getParkingLayout(idLevel, accessToken)
   }
@@ -645,6 +654,14 @@ class HomeFragment : BaseFragment(), HomeContract {
       } else {
         progressBar.visibility = View.GONE
       }
+    }
+  }
+
+  private fun showProgressSection(show: Boolean) {
+    if (show) {
+      bindingHome.home.progressBarSection.visibility = View.VISIBLE
+    } else {
+      bindingHome.home.progressBarSection.visibility = View.GONE
     }
   }
 

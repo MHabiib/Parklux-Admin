@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
-import com.future.pms.admin.activitylist.adapter.PaginationAdapterOngoing
-import com.future.pms.admin.activitylist.adapter.PaginationAdapterPast
+import com.future.pms.admin.activitylist.adapter.PaginationOngoingAdapter
+import com.future.pms.admin.activitylist.adapter.PaginationPastAdapter
 import com.future.pms.admin.activitylist.injection.ActivityListComponent
 import com.future.pms.admin.activitylist.injection.DaggerActivityListComponent
 import com.future.pms.admin.activitylist.presenter.ActivityListPresenter
@@ -41,8 +41,8 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   @Inject
   lateinit var gson: Gson
   private lateinit var binding: FragmentActivityListBinding
-  private lateinit var paginationAdapterPast: PaginationAdapterPast
-  private lateinit var paginationAdapterOngoing: PaginationAdapterOngoing
+  private lateinit var paginationPastAdapter: PaginationPastAdapter
+  private lateinit var paginationOngoingAdapter: PaginationOngoingAdapter
   private lateinit var accessToken: String
   private var currentPagePast = 0
   private var currentPageOngoing = 0
@@ -68,8 +68,8 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       binding.shimmerOngoing.visibility = View.VISIBLE
       binding.shimmerOngoing.startShimmerAnimation()
       binding.noOrder.visibility = View.GONE
-      paginationAdapterOngoing.clear()
-      paginationAdapterOngoing.notifyDataSetChanged()
+      paginationOngoingAdapter.clear()
+      paginationOngoingAdapter.notifyDataSetChanged()
       currentPageOngoing = 0
       isLastPageOngoing = false
       presenter.findOngoingBookingParkingZone(accessToken, currentPageOngoing)
@@ -79,18 +79,18 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       binding.shimmerPast.visibility = View.VISIBLE
       binding.shimmerPast.startShimmerAnimation()
       binding.noPast.visibility = View.GONE
-      paginationAdapterPast.clear()
-      paginationAdapterPast.notifyDataSetChanged()
+      paginationPastAdapter.clear()
+      paginationPastAdapter.notifyDataSetChanged()
       currentPagePast = 0
       isLastPagePast = false
       presenter.findPastBookingParkingZone(accessToken, currentPagePast)
       binding.refreshPast.isRefreshing = false
     }
-    paginationAdapterPast = PaginationAdapterPast()
-    paginationAdapterOngoing = PaginationAdapterOngoing()
+    paginationPastAdapter = PaginationPastAdapter()
+    paginationOngoingAdapter = PaginationOngoingAdapter()
 
     binding.rvPast.layoutManager = linearLayoutManagerPast
-    binding.rvPast.adapter = this.paginationAdapterPast
+    binding.rvPast.adapter = this.paginationPastAdapter
     binding.rvPast.addOnScrollListener(object :
         PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
       override fun loadMoreItems() {
@@ -101,7 +101,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       }
     })
     binding.rvOngoing.layoutManager = linearLayoutManagerOngoing
-    binding.rvOngoing.adapter = this.paginationAdapterOngoing
+    binding.rvOngoing.adapter = this.paginationOngoingAdapter
     binding.rvOngoing.addOnScrollListener(object :
         PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
       override fun loadMoreItems() {
@@ -136,7 +136,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     binding.shimmerPast.stopShimmerAnimation()
     if (currentPagePast != 0) {
       if (currentPagePast <= booking.totalPages - 1) {
-        paginationAdapterPast.addAll(booking.content)
+        paginationPastAdapter.addAll(booking.content)
         currentPagePast += 1
       } else {
         isLastPagePast = true
@@ -145,7 +145,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       if (booking.content.isEmpty()) {
         binding.noPast.visibility = View.VISIBLE
       }
-      paginationAdapterPast.addAll(booking.content)
+      paginationPastAdapter.addAll(booking.content)
       if (currentPagePast >= booking.totalPages - 1) {
         isLastPagePast = true
       } else {
@@ -160,13 +160,13 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     binding.shimmerOngoing.stopShimmerAnimation()
     if (currentPageOngoing != 0) {
       if (currentPageOngoing <= booking.totalPages - 1) {
-        paginationAdapterOngoing.addAll(booking.content)
+        paginationOngoingAdapter.addAll(booking.content)
         currentPageOngoing += 1
       } else {
         isLastPageOngoing = true
       }
     } else {
-      paginationAdapterOngoing.addAll(booking.content)
+      paginationOngoingAdapter.addAll(booking.content)
       if (booking.content.isEmpty()) {
         binding.noOrder.visibility = View.VISIBLE
       }
