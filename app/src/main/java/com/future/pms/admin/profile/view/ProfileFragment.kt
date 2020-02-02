@@ -301,7 +301,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     }
   }
 
-  override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
+  override fun loadParkingZoneDetailSuccess(parkingZone: ParkingZoneResponse) {
     with(binding) {
       profileNameDisplay.text = parkingZone.name
       profileName.setText(parkingZone.name)
@@ -323,6 +323,8 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           true).placeholder(R.drawable.ic_parking_zone_default).error(
           R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
           binding.ivParkingZoneImage)
+
+      btnEditProfile.isEnabled = true
     }
   }
 

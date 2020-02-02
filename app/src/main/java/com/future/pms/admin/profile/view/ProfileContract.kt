@@ -6,6 +6,6 @@ import com.future.pms.admin.core.model.response.ParkingZoneResponse
 interface ProfileContract : BaseView {
   fun onSuccess()
   fun showProgress(show: Boolean)
-  fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse)
+  fun loadParkingZoneDetailSuccess(parkingZone: ParkingZoneResponse)
   fun onLogout()
 }

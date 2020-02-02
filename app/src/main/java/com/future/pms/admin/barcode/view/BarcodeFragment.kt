@@ -51,14 +51,14 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   }
 
   @Inject lateinit var presenter: BarcodePresenter
-  @Inject
-  lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private lateinit var binding: FragmentBarcodeBinding
   private lateinit var accessToken: String
   private var count = 0
   private var startMillis: Long = 0
   private var mode: String = ""
   private lateinit var fcmToken: String
+  private var countDownTimer: CountDownTimer? = null
 
   companion object {
     const val TAG: String = BARCODE_FRAGMENT
@@ -160,13 +160,12 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     Glide.with(binding.root).load(imageName).transform(CenterCrop()).placeholder(
         R.drawable.generate_qr).error(R.drawable.generate_qr).fallback(R.drawable.generate_qr).into(
         binding.ivQrcode)
-    val countDownTimer = object : CountDownTimer(QR_EXPIRED, COUNT_DOWN_INTERVAL) {
+    countDownTimer = object : CountDownTimer(QR_EXPIRED, COUNT_DOWN_INTERVAL) {
       override fun onTick(millisUntilFinished: Long) {
         val countdown = ((millisUntilFinished % MILLIS_IN_A_MINUTES) / MILLIS_TO_SECOND).toInt()
         binding.btnGenerateQr.text = String.format(getString(R.string.expires_in),
-          String.format("%02d", millisUntilFinished / MILLIS_IN_A_MINUTES),
-          String.format("%02d", countdown)
-        )
+            String.format("%02d", millisUntilFinished / MILLIS_IN_A_MINUTES),
+            String.format("%02d", countdown))
       }
 
       override fun onFinish() {
@@ -174,7 +173,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
         binding.btnGenerateQr.isEnabled = true
       }
     }
-    countDownTimer.start()
+    (countDownTimer as CountDownTimer).start()
     Handler().postDelayed({
       with(binding) {
         btnGenerateQr.refreshDrawableState()
@@ -231,5 +230,10 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   override fun onDestroyView() {
     presenter.detach()
     super.onDestroyView()
+  }
+
+  override fun onPause() {
+    countDownTimer?.cancel()
+    super.onPause()
   }
 }

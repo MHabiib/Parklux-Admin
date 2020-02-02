@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.future.pms.admin.BaseApp
@@ -124,7 +125,6 @@ class MapsActivity : BaseActivity(), MapsContract, OnMapReadyCallback {
   }
 
   override fun onFailed(message: String) {
-    TODO(
-        "not implemented") //To change body of created functions use File | Settings | File Templates.
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
   }
 }

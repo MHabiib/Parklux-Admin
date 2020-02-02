@@ -129,9 +129,22 @@
                             android:background="@drawable/card_layout_white"
                             android:fontFamily="sans-serif-light"
                             android:padding="@dimen/sixteen_dp"
+                            android:enabled="false"
                             android:text="@string/edit_profile"
                             android:textColor="@color/colorAccent"
                             app:layout_constraintRight_toLeftOf="@id/btn_save_profile"
+                            app:layout_constraintTop_toBottomOf="@id/password" />
+
+                        <ImageButton
+                            android:id="@+id/ib_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/card_layout_purple"
+                            android:padding="@dimen/twelve_dp"
+                            android:visibility="invisible"
+                            android:src="@drawable/ic_location"
+                            android:tint="@color/white"
+                            app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/password" />
 
                         <Button
@@ -243,6 +256,7 @@
                             android:background="@android:color/transparent"
                             android:imeOptions="flagNoExtractUi"
                             android:maxLines="1"
+                            android:digits="@string/digits"
                             android:paddingBottom="@dimen/twelve_dp"
                             android:enabled="false"
                             android:singleLine="true"
@@ -300,8 +314,8 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/address"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:imeOptions="flagNoExtractUi"
                             android:inputType="textNoSuggestions"
@@ -311,21 +325,6 @@
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
                             android:layout_marginRight="@dimen/eight_dp"
-                            app:layout_constraintBottom_toBottomOf="@id/ib_location"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/ib_location"
-                            app:layout_constraintTop_toBottomOf="@id/address_tag" />
-
-                        <ImageButton
-                            android:id="@+id/ib_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/card_layout_purple"
-                            android:padding="@dimen/twelve_dp"
-                            android:visibility="invisible"
-                            android:src="@drawable/ic_location"
-                            android:tint="@color/white"
-                            app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/address_tag" />
 
                         <com.google.android.material.textfield.TextInputEditText

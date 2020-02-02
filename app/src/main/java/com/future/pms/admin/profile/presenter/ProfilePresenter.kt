@@ -19,7 +19,7 @@ class ProfilePresenter @Inject constructor() : BasePresenter<ProfileContract>() 
           profileApi.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
               AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZoneResponse ->
             showProgress(false)
-            loadCustomerDetailSuccess(parkingZone)
+            loadParkingZoneDetailSuccess(parkingZone)
           }, { error ->
             showProgress(false)
             onFailed(error.toString())
