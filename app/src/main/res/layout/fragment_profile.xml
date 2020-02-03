@@ -316,16 +316,19 @@
                             android:id="@+id/address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/eight_dp"
                             android:background="@android:color/transparent"
-                            android:imeOptions="flagNoExtractUi"
-                            android:inputType="textNoSuggestions"
-                            android:maxLines="4"
-                            android:paddingBottom="@dimen/twelve_dp"
                             android:enabled="false"
+                            android:imeOptions="flagNoExtractUi"
+                            android:inputType="textMultiLine"
+                            android:maxLines="8"
+                            android:paddingBottom="@dimen/twelve_dp"
+                            android:scrollbars="vertical"
+                            android:singleLine="false"
                             android:textColor="@color/darkGrey"
                             android:textSize="@dimen/h2"
-                            android:layout_marginRight="@dimen/eight_dp"
-                            app:layout_constraintTop_toBottomOf="@id/address_tag" />
+                            app:layout_constraintTop_toBottomOf="@id/address_tag"
+                            tools:text="Jl. M.H. Thamrin No.1, RT.1/RW.5, Menteng, Kec. Menteng, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10310"/>
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password"

@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -50,7 +51,6 @@ import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.RESULT_LOCATION
 import com.future.pms.admin.util.Utils
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -218,8 +218,12 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       }
     } else if (resultCode == RESULT_LOCATION) {
       if (data?.getDoubleExtra(LONGITUDE, 0.0) != null) {
+        binding.address.isEnabled = true
         longitude = data.getDoubleExtra(LONGITUDE, 0.0)
         latitude = data.getDoubleExtra(LATITUDE, 0.0)
+        val geocoder = Geocoder(context, Locale.getDefault())
+        val address = geocoder.getFromLocation(latitude, longitude, 1)
+        binding.address.setText(String.format("%s", address[0].getAddressLine(0)))
         Toast.makeText(context, getString(R.string.success_add_location), Toast.LENGTH_LONG).show()
       }
     }
@@ -266,8 +270,11 @@ class ProfileFragment : BaseFragment(), ProfileContract {
   }
 
   override fun onSuccess() {
-    val barcodeFragment = fragmentManager?.findFragmentByTag(BarcodeFragment.TAG) as BarcodeFragment
-    barcodeFragment.presenter.loadData(accessToken)
+    val barcodeFragment = fragmentManager?.findFragmentByTag(BarcodeFragment.TAG)
+    if (barcodeFragment != null) {
+      barcodeFragment as BarcodeFragment
+      barcodeFragment.presenter.loadData(accessToken)
+    }
     Toast.makeText(context, getString(R.string.updated), Toast.LENGTH_SHORT).show()
     presenter.loadData(accessToken)
   }
@@ -292,12 +299,10 @@ class ProfileFragment : BaseFragment(), ProfileContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
+    if (show) {
+      binding.progressBar.visibility = View.VISIBLE
+    } else {
+      binding.progressBar.visibility = View.GONE
     }
   }
 

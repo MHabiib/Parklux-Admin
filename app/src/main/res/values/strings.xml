@@ -3,7 +3,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="qr_announce">Please be safety and park on your slot. Have a nice day !</string>
+    <string name="qr_announce">Please be safe and park on your slot. Have a nice day!</string>
     <string name="generate_qr">Generate QR</string>
     <string name="scan">Scan</string>
     <string name="me">Me …</string>
@@ -41,7 +41,7 @@
     <string name="unavailable">Unavailable</string>
     <string name="update_parking_level">Update parking level</string>
     <string name="status">Status</string>
-    <string name="delete_details">Once you delete your parking level, there is no going back. Please be certain. You can\'t delete level when still have ongoing parking on there are </string>
+    <string name="delete_details">Once you delete your parking level, there is no going back. Please be certain. You can\'t delete level when still have ongoing parking on there</string>
     <string name="unavailable_details">"When set this level into \"Unavailable\" this level won\'t be able to edit and booking until you set this level into Available. You can\'t set this level into \"Unavailable\" when there are still ongoin parking in this level"</string>
     <string name="ok">Ok</string>
     <string name="caution">Caution</string>
@@ -49,7 +49,7 @@
     <string name="still_ongoing_parking">There are still ongoing parking on this level</string>
     <string name="success_high">Success !</string>
     <string name="nothing_selected">Nothing selected</string>
-    <string name="automatically_refresh_5s">Automatically refresh Parking Layout every 5 seconds</string>
+    <string name="automatically_refresh_5s">Automatically refresh parking layout every 5 seconds</string>
     <string name="fill_all_the_entries">Fill all the entries</string>
     <string name="activate_this_section">Activate the section first to edit this slot</string>
     <string name="success_create_level">Success create level</string>
@@ -61,7 +61,7 @@
     <string name="close_hours">Close hours</string>
     <string name="open_hours">Open hours</string>
     <string name="slot_number">Slot number</string>
-    <string name="force_update_message">You will force update this slot, if you change this slot state, the booking of this parking slot will completed after you press Save button</string>
+    <string name="force_update_message">You will force update this slot, if you change this slot state, the booking of this parking slot will be completed after you press Save button</string>
     <string name="home">Home</string>
     <string name="qr">QR</string>
     <string name="activity">Activity</string>
@@ -90,7 +90,7 @@
     <string name="you_dont_t_have_any_completed_order">You dont\'t have any completed order</string>
     <string name="select_level">Select level</string>
     <string name="add_level">Add level</string>
-    <string name="cant_delete_level_details">You can\'t delete this level when there are still ongoing parking on this level, of you cant force complete the ongoing paring from edit level menu and change the taken slot with another slot status</string>
+    <string name="cant_delete_level_details">You can\'t delete this level when there are still ongoing parking on this level, or you can force complete the ongoing paring from the edit level menu and change the taken slot with another slot status</string>
     <string name="section_1">Section - 1</string>
     <string name="section_2">Section - 2</string>
     <string name="section_3">Section - 3</string>
@@ -99,14 +99,14 @@
     <string name="edit_profile">Edit profile</string>
     <string name="login_activity">Login Activity</string>
     <string name="click_again_exit">Please click back again to exit</string>
-    <string name="email_already_used">Failed to update profile, email already used !</string>
+    <string name="email_already_used">Failed to update profile, email already used!</string>
     <string name="updated">Updated</string>
     <string name="fill_all_entried">Please fill all the entries with valid input</string>
     <string name="thanks_using_dialog">Welcome to %s, your slot at level %s. Thanks for using Parklux apps!</string>
     <string name="hi_dialog">Hi, %s !</string>
     <string name="success_add_location">Success add location</string>
-    <string name="fill_drop_point">Add the drop point by clicking location button in edit mode</string>
-    <string name="exit_edit_mode_title">Exit edit mode ?</string>
+    <string name="fill_drop_point">Add the drop point by clicking the location button in edit mode</string>
+    <string name="exit_edit_mode_title">Exit edit mode?</string>
     <string name="exit_edit_mode_descritption">Do you want to exit edit mode?\nYour changes will be gone</string>
     <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.()-</string>
 </resources>

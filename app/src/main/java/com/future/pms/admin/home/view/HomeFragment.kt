@@ -55,8 +55,6 @@ import com.future.pms.admin.util.SpinnerItem
 import com.future.pms.admin.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_add_level.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -648,12 +646,10 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
+    if (show) {
+      bindingHome.home.progressBar.visibility = View.VISIBLE
+    } else {
+      bindingHome.home.progressBar.visibility = View.GONE
     }
   }
 
@@ -666,12 +662,12 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun showProgressAddLevel(show: Boolean) {
-    if (null != progressBarAddLevel) {
+    with(bindingHome.addLevel) {
       if (show) {
-        bindingHome.addLevel.btnCreate.isEnabled = false
+        btnCreate.isEnabled = false
         progressBarAddLevel.visibility = View.VISIBLE
       } else {
-        bindingHome.addLevel.btnCreate.isEnabled = false
+        btnCreate.isEnabled = false
         progressBarAddLevel.visibility = View.GONE
       }
     }

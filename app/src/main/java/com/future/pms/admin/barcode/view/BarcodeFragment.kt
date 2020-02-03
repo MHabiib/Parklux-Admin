@@ -33,7 +33,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_barcode.*
 import timber.log.Timber
 import java.text.DateFormat
 import java.time.LocalDate
@@ -112,7 +111,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
 
     FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
       if (task.isSuccessful) {
-        fcmToken = task.result?.token.toString()
+        fcmToken = task.result?.token.toString() //asyc
       }
     }
   }
@@ -187,22 +186,18 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
+    if (show) {
+      binding.progressBar.visibility = View.VISIBLE
+    } else {
+      binding.progressBar.visibility = View.GONE
     }
   }
 
   override fun showProgressTop(show: Boolean) {
-    if (null != progressBarTop) {
-      if (show) {
-        progressBarTop.visibility = View.VISIBLE
-      } else {
-        progressBarTop.visibility = View.GONE
-      }
+    if (show) {
+      binding.progressBarTop.visibility = View.VISIBLE
+    } else {
+      binding.progressBarTop.visibility = View.GONE
     }
   }
 
