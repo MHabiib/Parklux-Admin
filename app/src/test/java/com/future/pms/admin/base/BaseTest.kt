@@ -45,7 +45,7 @@ open class BaseTest {
 
   protected fun parkingZone(): ParkingZoneResponse {
     return ParkingZoneResponse("address", "emailAdmin", "name", "openHour", "password",
-        "phoneNumber", 0.0, "imageUrl")
+        "phoneNumber", 0.0, "imageUrl", 0.0, 0.0)
   }
 
   protected fun levelDetailsRequest(): LevelDetailsRequest {

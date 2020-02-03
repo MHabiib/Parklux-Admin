@@ -7,8 +7,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class HomePresenter @Inject constructor() : BasePresenter<HomeContract>() {
-  @Inject lateinit var homeApi: HomeApi
+class HomePresenter @Inject constructor(private val homeApi: HomeApi) :
+    BasePresenter<HomeContract>() {
 
   fun getParkingLayout(idLevel: String, accessToken: String) {
     subscriptions.add(

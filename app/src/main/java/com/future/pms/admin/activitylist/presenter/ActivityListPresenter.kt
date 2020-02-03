@@ -9,8 +9,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ActivityListPresenter @Inject constructor() : BasePresenter<ActivityListContract>() {
-  @Inject lateinit var activityListPresenter: ActivityListApi
+class ActivityListPresenter @Inject constructor(
+    private val activityListPresenter: ActivityListApi) : BasePresenter<ActivityListContract>() {
 
   fun findPastBookingParkingZone(accessToken: String, page: Int) {
     subscriptions.add(

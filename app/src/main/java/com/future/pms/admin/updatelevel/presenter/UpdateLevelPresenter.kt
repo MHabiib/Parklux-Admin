@@ -8,8 +8,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class UpdateLevelPresenter @Inject constructor() : BasePresenter<UpdateLevelContract>() {
-  @Inject lateinit var updateLevelApi: UpdateLevelApi
+class UpdateLevelPresenter @Inject constructor(private val updateLevelApi: UpdateLevelApi) :
+    BasePresenter<UpdateLevelContract>() {
 
   fun updateParkingLevel(accessToken: String, levelDetailsRequest: LevelDetailsRequest) {
     view?.showProgress(true)

@@ -65,12 +65,15 @@ class MapsActivity : BaseActivity(), MapsContract, OnMapReadyCallback {
     map = googleMap
     enableMyLocation()
     val zoomLevel = 15f
-    map.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLocation, zoomLevel))
     map.uiSettings.isRotateGesturesEnabled = false
-    map.addMarker(MarkerOptions().position(selectedLocation).icon(
-        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+    if (selectedLocation != LatLng(-6.175392, 106.827153)) {
+      map.addMarker(MarkerOptions().position(selectedLocation).icon(
+          BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)))
+    }
+    map.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLocation, zoomLevel))
     presenter.setMapLongClick(map)
     presenter.setMapStyle(map)
+    Toast.makeText(this, "Long click on map to select position", Toast.LENGTH_LONG).show()
   }
 
   override fun setMapLongClick(map: GoogleMap) {
@@ -79,7 +82,7 @@ class MapsActivity : BaseActivity(), MapsContract, OnMapReadyCallback {
           latLng.longitude)
       map.clear()
       map.addMarker(MarkerOptions().position(latLng).title("Dropped pin").snippet(snippet).icon(
-          BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+          BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)))
       btnSave.visibility = View.VISIBLE
       btnSave.setOnClickListener {
         val returnIntent = Intent()
