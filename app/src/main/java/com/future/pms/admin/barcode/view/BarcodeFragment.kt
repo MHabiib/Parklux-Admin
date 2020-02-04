@@ -228,7 +228,8 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   }
 
   override fun onPause() {
-    countDownTimer?.cancel()
+    binding.btnGenerateQr.text = getString(R.string.generate_qr)
+    binding.btnGenerateQr.isEnabled = true
     super.onPause()
   }
 }
