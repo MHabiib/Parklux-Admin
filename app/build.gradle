@@ -95,6 +95,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
 
+    //scanner
+    api 'com.google.android.gms:play-services-vision:19.0.0'
+
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.0.0"
 
