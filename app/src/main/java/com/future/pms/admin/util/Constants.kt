@@ -2,7 +2,7 @@ package com.future.pms.admin.util
 
 class Constants {
   companion object {
-    const val BASE = "https://parklux-improvements.herokuapp.com/"
+    const val BASE = "https://pms-future.herokuapp.com/"
     const val USERNAME = "pms-client"
     const val PASSWORD = "pms-secret"
     const val GRANT_TYPE = "password"

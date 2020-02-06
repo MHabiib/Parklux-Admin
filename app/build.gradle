@@ -105,7 +105,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
 
     //shimmer loading
-    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.facebook.shimmer:shimmer:0.3.0@aar'
 
     //maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'

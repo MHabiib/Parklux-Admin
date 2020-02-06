@@ -240,7 +240,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       home.btnSave.setOnClickListener {
-        presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
+        showProgress(true)
         presenter.updateLevel(idLevel, levelLayout, accessToken)
       }
 
@@ -620,6 +620,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun updateParkingLayoutSuccess(response: String) {
+    presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }
 
@@ -677,6 +678,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun onFailed(message: String) {
+    showProgress(false)
     Timber.tag(ERROR).e(message)
     bindingHome.home.ibRefresh.visibility = VISIBLE
     bindingHome.home.ibRefresh.setOnClickListener {
@@ -685,6 +687,8 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
     if (message.contains(Constants.NO_CONNECTION)) {
       Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
+    } else {
+      Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
     bindingHome.addLevel.btnCreate.isEnabled = true
   }

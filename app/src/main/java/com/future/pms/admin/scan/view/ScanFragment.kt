@@ -3,9 +3,6 @@ package com.future.pms.admin.scan.view
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
@@ -151,8 +148,8 @@ class ScanFragment : Fragment(), ScanContract {
   override fun bookingSuccess(customerBooking: CustomerBooking) {
     showProgress(false)
     context?.let {
-      val totalPrice = Utils.thousandSeparator(customerBooking.price.toString().substring(0,
-          customerBooking.price.toString().length - 2).toInt())
+      val totalPrice = Utils.thousandSeparator(customerBooking.totalPrice.toString().substring(0,
+          customerBooking.totalPrice.toString().length - 2).toInt())
       Utils.simpleDialogMessage(it, getString(R.string.checkout_booking_success),
           "Total price is IDR $totalPrice")
     }
