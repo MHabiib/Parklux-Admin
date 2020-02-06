@@ -17,6 +17,9 @@ class Constants {
     const val ACTIVITY_LIST_FRAGMENT = "ActivityListFragment"
     const val BARCODE_FRAGMENT = "BarcodeFragment"
     const val UPDATE_LEVEL_FRAGMENT = "UpdateLevelFragmentFragment"
+    const val SCAN_FRAGMENT = "ScanFragment"
+
+    const val REQUEST_CAMERA_PERMISSION = 2020
 
     const val TIME_FORMAT = "HH:mm"
     const val SHORT_MONTH_DATE_TIME_FORMAT = "HH:mm - dd MMM yy"

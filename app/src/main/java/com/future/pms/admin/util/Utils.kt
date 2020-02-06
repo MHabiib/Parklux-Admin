@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import com.future.pms.admin.R
 import com.future.pms.admin.util.Constants.Companion.FULL_DATE_TIME_FORMAT
 import com.future.pms.admin.util.Constants.Companion.SHORT_MONTH_DATE_TIME_FORMAT
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
 import java.util.*
 
@@ -39,7 +40,7 @@ class Utils {
 
     fun simpleDialogMessage(context: Context, title: String, message: String) {
       context.let {
-        AlertDialog.Builder(it).setTitle(title).setMessage(message).setPositiveButton(
+        MaterialAlertDialogBuilder(it).setTitle(title).setMessage(message).setPositiveButton(
             android.R.string.yes, null).setIcon(R.drawable.logo_blue).show()
       }
     }

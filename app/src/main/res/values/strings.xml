@@ -27,7 +27,7 @@
     <string name="cancel">Cancel</string>
     <string name="i_have_read">I have read the About Level of Parking Management System</string>
     <string name="about_level">About Level</string>
-    <string name="about_pms">- The level have 4 sections\n- Each section have 64 slots\n- Total slots on one level are 256 slots\n- The slots can be set as Parking Slot / Disable Slot / Road\n- You can activate/deactivate section on view section page\n- You can edit the slot on the section after the section is activated\n- You can\'t deactivate the section  edit the slot with ongoing parking on there</string>
+    <string name="about_pms">- The level have 4 sections\n- Each section have 169 slots\n- Total slots on one level are 676 slots\n- The slots can be set as Parking Slot / Disable Slot / Road\n- You can activate/deactivate section on view section page\n- You can edit the slot on the section after the section is activated\n- You can\'t deactivate the section  edit the slot with ongoing parking on there</string>
     <string name="level_name">Level name</string>
     <string name="new_level">New level</string>
     <string name="create">Create</string>
@@ -109,4 +109,9 @@
     <string name="exit_edit_mode_title">Exit edit mode?</string>
     <string name="exit_edit_mode_descritption">Do you want to exit edit mode?\nYour changes will be gone</string>
     <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.()-</string>
+    <string name="scan_the_qr">The QR code will be detected automatically once you have positioned the code within the scan.</string>
+    <string name="checkout_booking_success">Checkout booking success!</string>
+    <string name="checkout_booking_failed">Checkout booking failed!</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="go_to_generate_qr_page">Go to generate QR page</string>
 </resources>

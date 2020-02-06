@@ -18,6 +18,7 @@ import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
 import com.future.pms.admin.databinding.FragmentBarcodeBinding
+import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.ADMIN_MODE
 import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
@@ -88,7 +89,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     }
     getDateNow()
 
-    binding.dateNow.setOnClickListener {
+    binding.pleaseBeSafe.setOnClickListener {
       val time = System.currentTimeMillis()
       if (startMillis == 0L || (time - startMillis > 3000)) {
         startMillis = time
@@ -106,6 +107,20 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
           val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
           navigationView.visibility = View.VISIBLE
         }
+      }
+    }
+
+    binding.ivQrcode.setOnClickListener {
+      val time = System.currentTimeMillis()
+      if (startMillis == 0L || (time - startMillis > 3000)) {
+        startMillis = time
+        count = 1
+      } else {
+        count++
+      }
+      if (count == 5) {
+        val activity = activity as MainActivity?
+        activity?.presenter?.onScanIconClick()
       }
     }
 
@@ -224,6 +239,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
 
   override fun onDestroyView() {
     presenter.detach()
+    countDownTimer?.cancel()
     super.onDestroyView()
   }
 
