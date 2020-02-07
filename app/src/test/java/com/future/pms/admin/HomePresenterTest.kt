@@ -3,7 +3,6 @@ package com.future.pms.admin
 import com.future.pms.admin.base.BaseTest
 import com.future.pms.admin.home.network.HomeApi
 import com.future.pms.admin.home.presenter.HomePresenter
-import com.future.pms.admin.home.view.HomeContract
 import io.reactivex.Observable
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -13,7 +12,6 @@ import org.mockito.Mockito.`when`
 
 class HomePresenterTest : BaseTest() {
   @Mock lateinit var homeApi: HomeApi
-  @Mock lateinit var homeContract: HomeContract
   @InjectMocks lateinit var homePresenter: HomePresenter
 
   @Test fun getParkingLayoutSuccess() {

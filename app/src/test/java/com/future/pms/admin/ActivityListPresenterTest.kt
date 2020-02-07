@@ -2,7 +2,6 @@ package com.future.pms.admin
 
 import com.future.pms.admin.activitylist.network.ActivityListApi
 import com.future.pms.admin.activitylist.presenter.ActivityListPresenter
-import com.future.pms.admin.activitylist.view.ActivityListContract
 import com.future.pms.admin.base.BaseTest
 import io.reactivex.Observable
 import org.junit.Test
@@ -12,7 +11,6 @@ import org.mockito.Mockito.`when`
 
 class ActivityListPresenterTest : BaseTest() {
   @Mock lateinit var activityListApi: ActivityListApi
-  @Mock lateinit var activityListContract: ActivityListContract
   @InjectMocks lateinit var activityListPresenter: ActivityListPresenter
 
   @Test fun findPastBookingParkingZoneSuccess() {

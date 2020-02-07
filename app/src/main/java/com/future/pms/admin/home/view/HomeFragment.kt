@@ -8,6 +8,7 @@ import android.os.Handler
 import android.text.method.ScrollingMovementMethod
 import android.util.TypedValue
 import android.view.*
+import android.view.View.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -88,8 +89,9 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   companion object {
     private val LETTER = ArrayList(
-        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"))
-    private const val TOTAL_SLOTS_IN_ROW = 16
+        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+            "R", "S", "T", "U", "V", "W", "X", "Y", "Z"))
+    private const val TOTAL_SLOTS_IN_ROW = 26
     const val TAG: String = HOME_FRAGMENT
   }
 
@@ -129,17 +131,17 @@ class HomeFragment : BaseFragment(), HomeContract {
           levelStatus = level.itemStatus
 
           if (p2 != 0) {
-            tvAppName.visibility = View.GONE
-            tvAddLevel.visibility = View.GONE
-            ivAddLevel.visibility = View.GONE
-            ivSelectLevelLeft.visibility = View.GONE
-            svParkingSlot.visibility = View.VISIBLE
+            tvAppName.visibility = GONE
+            tvAddLevel.visibility = GONE
+            ivAddLevel.visibility = GONE
+            ivSelectLevelLeft.visibility = GONE
+            svParkingSlot.visibility = VISIBLE
             btnViewSection.isEnabled = true
             btnViewSection.setTextColor(resources.getColor(R.color.colorAccent))
             btnEditMode.isEnabled = true
             btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
-            btnSync.visibility = View.VISIBLE
-            btnEditLevel.visibility = View.VISIBLE
+            btnSync.visibility = VISIBLE
+            btnEditLevel.visibility = VISIBLE
             layoutPark.removeAllViews()
             layoutPark.refreshDrawableState()
             layoutPark.invalidate()
@@ -150,11 +152,11 @@ class HomeFragment : BaseFragment(), HomeContract {
             presenter.getSectionDetails(idLevel, accessToken)
 
             if (levelStatus == LEVEL_UNAVAILABLE) {
-              tvUnavailableTag.visibility = View.VISIBLE
-              btnEditMode.visibility = View.GONE
+              tvUnavailableTag.visibility = VISIBLE
+              btnEditMode.visibility = GONE
             } else {
-              tvUnavailableTag.visibility = View.GONE
-              btnEditMode.visibility = View.VISIBLE
+              tvUnavailableTag.visibility = GONE
+              btnEditMode.visibility = VISIBLE
             }
           }
         }
@@ -166,22 +168,22 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       btnViewSection.setOnClickListener {
-        parkingLayout.visibility = View.GONE
-        btnEditMode.visibility = View.GONE
-        btnViewSection.visibility = View.GONE
-        sectionLayout.visibility = View.VISIBLE
-        btnViewLevel.visibility = View.VISIBLE
+        parkingLayout.visibility = GONE
+        btnEditMode.visibility = GONE
+        btnViewSection.visibility = GONE
+        sectionLayout.visibility = VISIBLE
+        btnViewLevel.visibility = VISIBLE
         presenter.getSectionDetails(idLevel, accessToken)
       }
 
       btnViewLevel.setOnClickListener {
-        parkingLayout.visibility = View.VISIBLE
+        parkingLayout.visibility = VISIBLE
         if (levelStatus != LEVEL_UNAVAILABLE) {
-          btnEditMode.visibility = View.VISIBLE
+          btnEditMode.visibility = VISIBLE
         }
-        btnViewSection.visibility = View.VISIBLE
-        sectionLayout.visibility = View.GONE
-        btnViewLevel.visibility = View.GONE
+        btnViewSection.visibility = VISIBLE
+        sectionLayout.visibility = GONE
+        btnViewLevel.visibility = GONE
       }
 
       btnEditLevel.setOnClickListener {
@@ -218,9 +220,9 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       ibInfo.setOnClickListener {
-        context?.let { it1 ->
-          AlertDialog.Builder(it1).apply {
-            setView(layoutInflater.inflate(R.layout.layout_info_dialog, null))
+        context?.let { context ->
+          AlertDialog.Builder(context).apply {
+            setView(inflate(context, R.layout.layout_info_dialog, null))
           }.show()
         }
       }
@@ -237,7 +239,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       home.btnSave.setOnClickListener {
-        presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
+        showProgress(true)
         presenter.updateLevel(idLevel, levelLayout, accessToken)
       }
 
@@ -290,9 +292,9 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
 
     layout.addView(layoutPark)
-    for (index in 0 until slotsLayout.length) {
+    for (index in slotsLayout.indices) {
       totalSlot++
-      if (index == 0 || totalSlot == 16) {
+      if (index == 0 || totalSlot == 26) {
         totalSlot = 0
         parkingLayout = LinearLayout(context)
         parkingLayout.orientation = LinearLayout.HORIZONTAL
@@ -348,7 +350,7 @@ class HomeFragment : BaseFragment(), HomeContract {
 
       if (icon == R.color.transparent) {
         setTextColor(resources.getColor(R.color.colorPrimaryDark))
-        text = ((id % 16) + 1).toString()
+        text = ((id % 26) + 1).toString()
       }
       setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
       setOnClickListener { onClick(view) }
@@ -453,17 +455,17 @@ class HomeFragment : BaseFragment(), HomeContract {
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
         mode = EXIT_EDIT_MODE
-        btnSync.visibility = View.VISIBLE
-        btnAddLevel.visibility = View.VISIBLE
+        btnSync.visibility = VISIBLE
+        btnAddLevel.visibility = VISIBLE
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        btnEditLevel.visibility = View.VISIBLE
-        levelName.visibility = View.VISIBLE
+        btnEditLevel.visibility = VISIBLE
+        levelName.visibility = VISIBLE
         btnEditMode.text = getString(R.string.edit_mode)
-        btnSave.visibility = View.GONE
-        btnViewSection.visibility = View.VISIBLE
+        btnSave.visibility = GONE
+        btnViewSection.visibility = VISIBLE
         btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
-        editMode.visibility = View.GONE
-        btnEditMode.visibility = View.VISIBLE
+        editMode.visibility = GONE
+        btnEditMode.visibility = VISIBLE
       } else {
         mode = EDIT_MODE
         if (isSyncOn) {
@@ -471,16 +473,16 @@ class HomeFragment : BaseFragment(), HomeContract {
           btnSync.setImageResource(R.drawable.ic_sync_off)
           handler.removeCallbacksAndMessages(null)
         }
-        btnSync.visibility = View.INVISIBLE
-        btnAddLevel.visibility = View.INVISIBLE
-        btnEditLevel.visibility = View.INVISIBLE
+        btnSync.visibility = INVISIBLE
+        btnAddLevel.visibility = INVISIBLE
+        btnEditLevel.visibility = INVISIBLE
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        levelName.visibility = View.GONE
+        levelName.visibility = GONE
         btnEditMode.text = getString(R.string.exit_edit_mode)
-        btnViewSection.visibility = View.GONE
+        btnViewSection.visibility = GONE
         btnEditMode.setTextColor(resources.getColor(R.color.red))
-        editMode.visibility = View.VISIBLE
-        btnSave.visibility = View.VISIBLE
+        editMode.visibility = VISIBLE
+        btnSave.visibility = VISIBLE
         slotName.text = getString(R.string.select_slot)
       }
       btnEditMode.isEnabled = true
@@ -505,24 +507,24 @@ class HomeFragment : BaseFragment(), HomeContract {
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     spinnerItems.clear()
     spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "")) // First item
-    for (index in 0 until listLevel.size) {
+    for (index in listLevel.indices) {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus))
     }
     with(bindingHome.home) {
-      svParkingSlot.visibility = View.GONE
+      svParkingSlot.visibility = GONE
       if (listLevel.isEmpty()) {
-        tvAddLevel.visibility = View.VISIBLE
-        ivAddLevel.visibility = View.VISIBLE
+        tvAddLevel.visibility = VISIBLE
+        ivAddLevel.visibility = VISIBLE
       } else {
-        ivSelectLevelLeft.visibility = View.VISIBLE
+        ivSelectLevelLeft.visibility = VISIBLE
       }
-      tvAppName.visibility = View.VISIBLE
+      tvAppName.visibility = VISIBLE
     }
   }
 
   override fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>) {
-    for (index in 0 until listSectionDetails.size) {
+    for (index in listSectionDetails.indices) {
       when {
         listSectionDetails[index].sectionName == SECTION_ONE -> {
           with(bindingHome.home) {
@@ -617,6 +619,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun updateParkingLayoutSuccess(response: String) {
+    presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }
 
@@ -647,17 +650,17 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   override fun showProgress(show: Boolean) {
     if (show) {
-      bindingHome.home.progressBar.visibility = View.VISIBLE
+      bindingHome.home.progressBar.visibility = VISIBLE
     } else {
-      bindingHome.home.progressBar.visibility = View.GONE
+      bindingHome.home.progressBar.visibility = GONE
     }
   }
 
   private fun showProgressSection(show: Boolean) {
     if (show) {
-      bindingHome.home.progressBarSection.visibility = View.VISIBLE
+      bindingHome.home.progressBarSection.visibility = VISIBLE
     } else {
-      bindingHome.home.progressBarSection.visibility = View.GONE
+      bindingHome.home.progressBarSection.visibility = GONE
     }
   }
 
@@ -665,23 +668,26 @@ class HomeFragment : BaseFragment(), HomeContract {
     with(bindingHome.addLevel) {
       if (show) {
         btnCreate.isEnabled = false
-        progressBarAddLevel.visibility = View.VISIBLE
+        progressBarAddLevel.visibility = VISIBLE
       } else {
         btnCreate.isEnabled = false
-        progressBarAddLevel.visibility = View.GONE
+        progressBarAddLevel.visibility = GONE
       }
     }
   }
 
   override fun onFailed(message: String) {
+    showProgress(false)
     Timber.tag(ERROR).e(message)
-    bindingHome.home.ibRefresh.visibility = View.VISIBLE
+    bindingHome.home.ibRefresh.visibility = VISIBLE
     bindingHome.home.ibRefresh.setOnClickListener {
       presenter.getLevels(accessToken)
-      bindingHome.home.ibRefresh.visibility = View.GONE
+      bindingHome.home.ibRefresh.visibility = GONE
     }
     if (message.contains(Constants.NO_CONNECTION)) {
       Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
+    } else {
+      Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
     bindingHome.addLevel.btnCreate.isEnabled = true
   }

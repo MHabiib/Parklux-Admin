@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseWhite"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <Button
+            android:id="@+id/btn_display_mode_qr"
+            style="@style/NoCaps"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/hundred_margin"
+            android:layout_marginBottom="@dimen/twenty_four_dp"
+            android:background="@drawable/card_layout_blue_top_left"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/twenty_dp"
+            android:text="@string/go_to_generate_qr_page"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h_medium2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/btn_scan_qr"
+            style="@style/NoCaps"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/zero_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginBottom="@dimen/twenty_four_dp"
+            android:background="@drawable/card_layout_grey_button_generate"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/twenty_dp"
+            android:text="@string/scan_qr"
+            android:textColor="@color/white"
+            android:textSize="@dimen/h_medium"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="@id/guideline3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/btn_display_mode_qr" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/custom_progressbar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"  />
+
+        <ImageView
+            android:id="@+id/iv_scan"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_scan"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/camera_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintLeft_toRightOf="@id/guideline2"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <SurfaceView
+                android:id="@+id/surfaceView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:background="@drawable/transparent_layout"
+                app:layout_constraintBottom_toTopOf="@id/bottom_transparent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/frame_qr"
+                app:layout_constraintTop_toBottomOf="@id/top_transparent" />
+
+            <FrameLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="@dimen/zero_dp"
+                android:background="@drawable/transparent_layout"
+                app:layout_constraintBottom_toTopOf="@id/bottom_transparent"
+                app:layout_constraintLeft_toRightOf="@id/frame_qr"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/top_transparent" />
+
+            <FrameLayout
+                android:id="@+id/bottom_transparent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:background="@drawable/transparent_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/frame_qr" />
+
+            <FrameLayout
+                android:id="@+id/top_transparent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero_dp"
+                android:background="@drawable/transparent_layout"
+                app:layout_constraintBottom_toTopOf="@id/frame_qr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/frame_qr"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:background="@drawable/qr_code_scan_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.7" />
+
+            <TextView
+                android:id="@+id/txtBarcodeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="@dimen/twelve_dp"
+                android:paddingRight="@dimen/twelve_dp"
+                android:text="@string/scan_the_qr"
+                android:textColor="@color/white"
+                android:textSize="@dimen/h3"
+                app:layout_constraintBottom_toTopOf="@id/frame_qr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.42" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -21,20 +21,13 @@ open class BaseTest {
   protected val ACCESS_TOKEN = "accessToken"
   protected val REFRESH_TOKEN = "refreshToken"
   protected val FCM_TOKEN = "fcmToken"
-  protected val SUCCESS = "success"
   protected val ERROR = "error"
   protected val ID = "id"
-  protected val PARKING_LAYOUT = "parkingLayout"
   protected val USERNAME = "username"
-  protected val EMAIL = "email"
   protected val PASSWORD = "password"
   protected val NAME = "name"
-  protected val PHONE_NUMBER = "phoneNumber"
-  protected val ROLE = "role"
   protected val LEVEL_NAME = "levelName"
-  protected val LAYOUT = "layout"
   protected val PAGE = 0
-  protected val FILTER = "filter"
   protected val STR = "empty"
 
   protected fun booking(): Booking {

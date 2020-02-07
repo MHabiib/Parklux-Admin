@@ -2,7 +2,6 @@ package com.future.pms.admin
 
 import com.future.pms.admin.barcode.network.BarcodeApi
 import com.future.pms.admin.barcode.presenter.BarcodePresenter
-import com.future.pms.admin.barcode.view.BarcodeContract
 import com.future.pms.admin.base.BaseTest
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -14,7 +13,6 @@ import org.mockito.Mockito.`when`
 
 class BarcodePresenterTest : BaseTest() {
   @Mock lateinit var barcodeApi: BarcodeApi
-  @Mock lateinit var barcodeContract: BarcodeContract
   @InjectMocks lateinit var barcodePresenter: BarcodePresenter
 
   @Test fun loadDataSuccess() {
@@ -38,7 +36,8 @@ class BarcodePresenterTest : BaseTest() {
   }
 
   @Test fun getQrImageFailed() {
-    `when`(barcodeApi.getQrImage(ACCESS_TOKEN, FCM_TOKEN)).thenReturn(Observable.error(Exception(ERROR)))
+    `when`(barcodeApi.getQrImage(ACCESS_TOKEN, FCM_TOKEN)).thenReturn(
+        Observable.error(Exception(ERROR)))
 
     barcodePresenter.getQrImage(FCM_TOKEN, ACCESS_TOKEN)
   }

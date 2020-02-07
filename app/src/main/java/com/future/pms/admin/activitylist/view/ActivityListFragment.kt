@@ -38,8 +38,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   }
 
   @Inject lateinit var presenter: ActivityListPresenter
-  @Inject
-  lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private lateinit var binding: FragmentActivityListBinding
   private lateinit var paginationPastAdapter: PaginationPastAdapter
   private lateinit var paginationOngoingAdapter: PaginationOngoingAdapter
@@ -59,14 +58,14 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
-    binding.shimmerOngoing.startShimmerAnimation()
-    binding.shimmerPast.startShimmerAnimation()
+    binding.shimmerOngoing.startShimmer()
+    binding.shimmerPast.startShimmer()
     val linearLayoutManagerPast = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     val linearLayoutManagerOngoing = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
         false)
     binding.refreshOngoing.setOnRefreshListener {
       binding.shimmerOngoing.visibility = View.VISIBLE
-      binding.shimmerOngoing.startShimmerAnimation()
+      binding.shimmerOngoing.startShimmer()
       binding.noOrder.visibility = View.GONE
       paginationOngoingAdapter.clear()
       paginationOngoingAdapter.notifyDataSetChanged()
@@ -77,7 +76,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     }
     binding.refreshPast.setOnRefreshListener {
       binding.shimmerPast.visibility = View.VISIBLE
-      binding.shimmerPast.startShimmerAnimation()
+      binding.shimmerPast.startShimmer()
       binding.noPast.visibility = View.GONE
       paginationPastAdapter.clear()
       paginationPastAdapter.notifyDataSetChanged()
@@ -118,22 +117,21 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     super.onViewCreated(view, savedInstanceState)
     presenter.attach(this)
     accessToken = gson.fromJson(
-      context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
-      Token::class.java
-    ).accessToken
+        context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
+        Token::class.java).accessToken
     presenter.findPastBookingParkingZone(accessToken, currentPagePast)
     presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
   }
 
-  private fun loadOngoingNextPage() =
-    presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
+  private fun loadOngoingNextPage() = presenter.findOngoingBookingParkingZone(accessToken,
+      currentPagePast)
 
-  private fun loadPastNextPage() =
-    presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+  private fun loadPastNextPage() = presenter.findPastBookingParkingZone(accessToken,
+      currentPagePast)
 
   override fun findPastBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerPast.visibility = View.GONE
-    binding.shimmerPast.stopShimmerAnimation()
+    binding.shimmerPast.stopShimmer()
     if (currentPagePast != 0) {
       if (currentPagePast <= booking.totalPages - 1) {
         paginationPastAdapter.addAll(booking.content)
@@ -157,7 +155,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
 
   override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerOngoing.visibility = View.GONE
-    binding.shimmerOngoing.stopShimmerAnimation()
+    binding.shimmerOngoing.stopShimmer()
     if (currentPageOngoing != 0) {
       if (currentPageOngoing <= booking.totalPages - 1) {
         paginationOngoingAdapter.addAll(booking.content)
@@ -183,12 +181,12 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     when (message) {
       PAST -> {
         binding.shimmerPast.visibility = View.GONE
-        binding.shimmerPast.stopShimmerAnimation()
+        binding.shimmerPast.stopShimmer()
         isLastPagePast = true
       }
       ONGOING -> {
         binding.shimmerOngoing.visibility = View.GONE
-        binding.shimmerOngoing.stopShimmerAnimation()
+        binding.shimmerOngoing.stopShimmer()
         isLastPageOngoing = true
       }
       NO_CONNECTION -> {

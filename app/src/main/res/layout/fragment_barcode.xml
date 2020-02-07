@@ -8,22 +8,23 @@
         android:layout_height="match_parent"
         android:background="@color/baseWhite"
         android:clipChildren="false"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:keepScreenOn="true">
 
         <Button
             android:id="@+id/btn_generate_qr"
             style="@style/NoCaps"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="@dimen/zero_dp"
-            android:layout_marginTop="@dimen/twenty_four_dp"
-            android:layout_marginBottom="@dimen/twenty_four_dp"
+            android:layout_marginTop="@dimen/fourty_dp"
+            android:layout_marginBottom="@dimen/fourty_dp"
             android:background="@drawable/card_layout_purple_button_generate"
             android:fontFamily="sans-serif-light"
             android:padding="@dimen/twenty_dp"
             android:text="@string/generate_qr"
             android:textColor="@color/white"
             android:textSize="@dimen/h_medium"
-            app:layout_constraintBottom_toBottomOf="@id/guideline3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/layout_parking_zone" />
@@ -35,12 +36,13 @@
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@drawable/custom_progressbar"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/guideline3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/layout_parking_zone" />
 
         <TextView
+            android:id="@+id/please_be_safe"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -101,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/twelve_dp"
-                android:layout_marginRight="@dimen/twelve_dp"
+                android:layout_marginEnd="@dimen/twelve_dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_sync"
                 android:tint="@color/colorAccent"

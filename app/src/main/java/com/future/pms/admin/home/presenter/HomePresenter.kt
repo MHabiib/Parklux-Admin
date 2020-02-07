@@ -3,6 +3,7 @@ package com.future.pms.admin.home.presenter
 import com.future.pms.admin.core.base.BasePresenter
 import com.future.pms.admin.home.network.HomeApi
 import com.future.pms.admin.home.view.HomeContract
+import com.future.pms.admin.util.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -72,6 +73,7 @@ class HomePresenter @Inject constructor(private val homeApi: HomeApi) :
         Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
       view?.updateParkingLayoutSuccess(it)
     }, {
+      editModeParkingLevel(idLevel, Constants.EXIT_EDIT_MODE, accessToken)
       view?.onFailed(it.message.toString())
     }))
   }

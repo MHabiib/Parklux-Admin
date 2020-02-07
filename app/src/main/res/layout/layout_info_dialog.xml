@@ -8,7 +8,6 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <org.apmem.tools.layouts.FlowLayout
-        android:id="@+id/hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -44,7 +43,7 @@
             <ImageView
                 android:layout_width="@dimen/twenty_dp"
                 android:layout_height="@dimen/twenty_dp"
-                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/four_dp"
                 android:tint="@color/red"
                 app:srcCompat="@drawable/ic_disable" />
 
@@ -66,13 +65,13 @@
             <ImageView
                 android:layout_width="@dimen/twenty_dp"
                 android:layout_height="@dimen/twenty_dp"
-                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/four_dp"
                 app:srcCompat="@drawable/ic_blank" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blank slot"
+                android:text="@string/blank_slot"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -88,7 +87,7 @@
             <ImageView
                 android:layout_width="@dimen/twenty_dp"
                 android:layout_height="@dimen/twenty_dp"
-                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/four_dp"
                 android:tint="@color/darkGrey"
                 app:srcCompat="@drawable/ic_car" />
 
@@ -110,14 +109,14 @@
             <ImageView
                 android:layout_width="@dimen/twenty_dp"
                 android:layout_height="@dimen/twenty_dp"
-                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/four_dp"
                 android:tint="@color/darkGrey"
                 app:srcCompat="@drawable/ic_in" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Entrance"
+                android:text="@string/entrance"
                 android:textColor="@color/goldDark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -132,13 +131,13 @@
             <ImageView
                 android:layout_width="@dimen/twenty_dp"
                 android:layout_height="@dimen/twenty_dp"
-                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/four_dp"
                 app:srcCompat="@drawable/ic_out" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Exit"
+                android:text="@string/exit"
                 android:textColor="@color/red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -153,13 +152,13 @@
             <ImageView
                 android:layout_width="@dimen/twenty_dp"
                 android:layout_height="@dimen/twenty_dp"
-                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginEnd="@dimen/four_dp"
                 app:srcCompat="@drawable/ic_road" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Obstacle"
+                android:text="@string/obstacle"
                 android:textColor="@color/darkGrey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
