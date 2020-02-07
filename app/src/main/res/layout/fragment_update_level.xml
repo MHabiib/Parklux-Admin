@@ -98,7 +98,7 @@
                             android:id="@+id/rb_available"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/four_dp"
+                            android:layout_marginEnd="@dimen/four_dp"
                             android:layout_weight="1"
                             android:text="@string/available"
                             android:textColor="@color/darkGrey" />
@@ -177,7 +177,7 @@
                         android:id="@+id/txt_level_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/twenty_dp"
+                        android:layout_marginStart="@dimen/twenty_dp"
                         android:layout_marginTop="@dimen/twelve_dp"
                         android:hint="@string/level_name"
                         android:imeOptions="flagNoExtractUi"

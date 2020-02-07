@@ -3,7 +3,6 @@ package com.future.pms.admin.util
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Build
-import androidx.appcompat.app.AlertDialog
 import com.future.pms.admin.R
 import com.future.pms.admin.util.Constants.Companion.FULL_DATE_TIME_FORMAT
 import com.future.pms.admin.util.Constants.Companion.SHORT_MONTH_DATE_TIME_FORMAT

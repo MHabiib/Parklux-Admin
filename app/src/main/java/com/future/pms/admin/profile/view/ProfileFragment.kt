@@ -93,7 +93,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
 
       btnLogout.setOnClickListener {
         btnLogout.visibility = View.GONE
-        context?.let { it1 -> Authentication.delete(it1) }
+        context?.let { context -> Authentication.delete(context) }
         onLogout()
       }
 

@@ -67,14 +67,11 @@
     <string name="activity">Activity</string>
     <string name="profile">Profile</string>
     <string name="swipe_up_to_add_level">Swipe up to add level</string>
-    <string name="parking_management_system">Parking Management System</string>
-    <string name="past">Past</string>
     <string name="completed">Completed</string>
     <string name="you_don_t_have_any_ongoing_parking">You don\'t have any ongoing parking</string>
     <string name="ongoing">Ongoing</string>
     <string name="password_hint">********</string>
     <string name="something_went_wrong">Something went wrong</string>
-    <string name="you_havent_picked_image">You haven\'t picked Image</string>
     <string name="image_name">image.jpg</string>
     <string name="image_jpeg">image/jpeg</string>
     <string name="file">file</string>
@@ -88,7 +85,6 @@
     <string name="parklux">Parklux</string>
     <string name="you_don_t_have_any_ongoing_order">You don\'t have any ongoing order</string>
     <string name="you_dont_t_have_any_completed_order">You dont\'t have any completed order</string>
-    <string name="select_level">Select level</string>
     <string name="add_level">Add level</string>
     <string name="cant_delete_level_details">You can\'t delete this level when there are still ongoing parking on this level, or you can force complete the ongoing paring from the edit level menu and change the taken slot with another slot status</string>
     <string name="section_1">Section - 1</string>
@@ -114,4 +110,10 @@
     <string name="checkout_booking_failed">Checkout booking failed!</string>
     <string name="scan_qr">Scan QR</string>
     <string name="go_to_generate_qr_page">Go to generate QR page</string>
+    <string name="view_level_layout">View level layout</string>
+    <string name="set_slot_status">Set slot status</string>
+    <string name="blank_slot">Blank slot</string>
+    <string name="entrance">Entrance</string>
+    <string name="exit">Exit</string>
+    <string name="obstacle">Obstacle</string>
 </resources>

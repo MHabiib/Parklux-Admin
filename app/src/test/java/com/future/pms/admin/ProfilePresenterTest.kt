@@ -3,7 +3,6 @@ package com.future.pms.admin
 import com.future.pms.admin.base.BaseTest
 import com.future.pms.admin.profile.network.ProfileApi
 import com.future.pms.admin.profile.presenter.ProfilePresenter
-import com.future.pms.admin.profile.view.ProfileContract
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import org.junit.Test
@@ -14,7 +13,6 @@ import org.mockito.Mockito.`when`
 
 class ProfilePresenterTest : BaseTest() {
   @Mock lateinit var profileApi: ProfileApi
-  @Mock lateinit var profileContract: ProfileContract
   @InjectMocks lateinit var profilePresenter: ProfilePresenter
   private val picture: MultipartBody.Part = Mockito.mock(MultipartBody.Part::class.java)
 

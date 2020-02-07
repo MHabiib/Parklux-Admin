@@ -2,8 +2,6 @@ package com.future.pms.admin.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -91,7 +89,8 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   companion object {
     private val LETTER = ArrayList(
-        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"))
+        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+            "R", "S", "T", "U", "V", "W", "X", "Y", "Z"))
     private const val TOTAL_SLOTS_IN_ROW = 26
     const val TAG: String = HOME_FRAGMENT
   }
@@ -221,9 +220,9 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       ibInfo.setOnClickListener {
-        context?.let { it1 ->
-          AlertDialog.Builder(it1).apply {
-            setView(layoutInflater.inflate(R.layout.layout_info_dialog, null))
+        context?.let { context ->
+          AlertDialog.Builder(context).apply {
+            setView(inflate(context, R.layout.layout_info_dialog, null))
           }.show()
         }
       }
@@ -293,7 +292,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
 
     layout.addView(layoutPark)
-    for (index in 0 until slotsLayout.length) {
+    for (index in slotsLayout.indices) {
       totalSlot++
       if (index == 0 || totalSlot == 26) {
         totalSlot = 0
@@ -474,9 +473,9 @@ class HomeFragment : BaseFragment(), HomeContract {
           btnSync.setImageResource(R.drawable.ic_sync_off)
           handler.removeCallbacksAndMessages(null)
         }
-        btnSync.visibility = View.INVISIBLE
-        btnAddLevel.visibility = View.INVISIBLE
-        btnEditLevel.visibility = View.INVISIBLE
+        btnSync.visibility = INVISIBLE
+        btnAddLevel.visibility = INVISIBLE
+        btnEditLevel.visibility = INVISIBLE
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         levelName.visibility = GONE
         btnEditMode.text = getString(R.string.exit_edit_mode)
@@ -508,7 +507,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     spinnerItems.clear()
     spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "")) // First item
-    for (index in 0 until listLevel.size) {
+    for (index in listLevel.indices) {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus))
     }
@@ -525,7 +524,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>) {
-    for (index in 0 until listSectionDetails.size) {
+    for (index in listSectionDetails.indices) {
       when {
         listSectionDetails[index].sectionName == SECTION_ONE -> {
           with(bindingHome.home) {

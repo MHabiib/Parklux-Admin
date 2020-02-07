@@ -3,7 +3,6 @@ package com.future.pms.admin
 import com.future.pms.admin.base.BaseTest
 import com.future.pms.admin.login.network.LoginApi
 import com.future.pms.admin.login.presenter.LoginPresenter
-import com.future.pms.admin.login.view.LoginContract
 import com.future.pms.admin.util.Constants.Companion.GRANT_TYPE
 import io.reactivex.Observable
 import org.junit.Test
@@ -13,7 +12,6 @@ import org.mockito.Mockito.`when`
 
 class LoginPresenterTest : BaseTest() {
   @Mock lateinit var loginApi: LoginApi
-  @Mock lateinit var loginContract: LoginContract
   @InjectMocks lateinit var loginPresenter: LoginPresenter
 
   @Test fun loginSuccess() {
