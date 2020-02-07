@@ -2,6 +2,7 @@ package com.future.pms.admin.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -57,6 +58,7 @@ import com.future.pms.admin.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import timber.log.Timber
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
@@ -85,13 +87,19 @@ class HomeFragment : BaseFragment(), HomeContract {
   private lateinit var levelStatus: String
   private lateinit var levelLayout: String
   private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+  private lateinit var layoutPark: LinearLayout
+  private lateinit var parkingLayout: LinearLayout
   private var totalTakenSlot = 0
+  private var totalEmptySlot = 0
+  private var totalDisableSlot = 0
 
   companion object {
     private val LETTER = ArrayList(
         listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
-            "R", "S", "T", "U", "V", "W", "X", "Y", "Z"))
-    private const val TOTAL_SLOTS_IN_ROW = 26
+            "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "A1", "A2", "A3", "A4", "A5", "A6", "A7",
+            "A8", "A9", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "C1", "C2", "C3",
+            "C4", "C5", "C6", "C7", "C8", "C9", "D1", "D2", "D3", "D4", "D5", "D6", "D7"))
+    private const val TOTAL_SLOTS_IN_ROW = 60
     const val TAG: String = HOME_FRAGMENT
   }
 
@@ -276,12 +284,11 @@ class HomeFragment : BaseFragment(), HomeContract {
     bindingHome.home.layoutPark.refreshDrawableState()
     bindingHome.home.layoutPark.invalidate()
 
-    val layoutPark = LinearLayout(context)
     totalTakenSlot = 0
-    var parkingLayout: LinearLayout? = null
-    var totalSlot = 0
-    var totalEmptySlot = 0
-    var totalDisableSlot = 0
+    totalEmptySlot = 0
+    totalDisableSlot = 0
+
+    layoutPark = LinearLayout(context)
     val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT)
 
@@ -290,48 +297,88 @@ class HomeFragment : BaseFragment(), HomeContract {
       layoutParams = params
       setPadding(parkPadding, parkPadding, parkPadding, parkPadding)
     }
-
     layout.addView(layoutPark)
-    for (index in slotsLayout.indices) {
-      totalSlot++
-      if (index == 0 || totalSlot == 26) {
-        totalSlot = 0
-        parkingLayout = LinearLayout(context)
-        parkingLayout.orientation = LinearLayout.HORIZONTAL
-        layoutPark.addView(parkingLayout)
-      }
 
-      when {
-        slotsLayout[index] == SLOT_NULL -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_blank)
+    SetupLayoutAsyc(activity as MainActivity).execute(slotsLayout)
+
+    showProgress(false)
+  }
+
+  private class SetupLayoutAsyc internal constructor(context: MainActivity) :
+      AsyncTask<String, String, String>() {
+    private val activityReference: WeakReference<MainActivity> = WeakReference(context)
+    private val homeFragment = activityReference.get()?.supportFragmentManager?.run {
+      findFragmentByTag(TAG)
+    }
+    private val mHomeFragment = homeFragment as HomeFragment
+
+    private val handler = Handler()
+    override fun doInBackground(vararg params: String?): String? {
+      val slots = params[0]
+      if (slots != null) {
+        for (index in 0 until slots.length) {
+          handler.postDelayed({
+            publishProgress("$index${slots[index]}")
+          }, 100)
         }
-        slotsLayout[index] == SLOT_SCAN_ME || slotsLayout[index] == SLOT_TAKEN -> {
-          totalTakenSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_car)
+      }
+      return ""
+    }
+
+    override fun onProgressUpdate(vararg result: String?) {
+      if (homeFragment == null) return
+      mHomeFragment.setSlotStatus(result[0])
+
+    }
+  }
+
+  fun setSlotStatus(result: String?) {
+    if (result != "") {
+      val slotsLayout = result?.substring(result.length - 1)?.single()
+      val index = result?.substring(0, result.length - 1)?.toInt()
+
+      if (index != null) {
+        if (index == 0 || index % 60 == 0) {
+          parkingLayout = LinearLayout(context)
+          parkingLayout.orientation = LinearLayout.HORIZONTAL
+          layoutPark.addView(parkingLayout)
         }
-        slotsLayout[index] == SLOT_EMPTY -> {
-          totalEmptySlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_park)
+
+        when (slotsLayout) {
+          SLOT_NULL -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_blank)
+          }
+          SLOT_SCAN_ME, SLOT_TAKEN -> {
+            totalTakenSlot += 1
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_car)
+          }
+          SLOT_EMPTY -> {
+            totalEmptySlot += 1
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_park)
+          }
+          SLOT_DISABLE -> {
+            totalDisableSlot += 1
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_disable)
+          }
+          SLOT_ROAD, SLOT_READY -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.color.transparent)
+          }
+          SLOT_IN -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_in)
+          }
+          SLOT_OUT -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_out)
+          }
+          SLOT_BLOCK -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_road)
+          }
         }
-        slotsLayout[index] == SLOT_DISABLE -> {
-          totalDisableSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_disable)
-        }
-        slotsLayout[index] == SLOT_ROAD || slotsLayout[index] == SLOT_READY -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.color.transparent)
-        }
-        slotsLayout[index] == SLOT_IN -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_in)
-        }
-        slotsLayout[index] == SLOT_OUT -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_out)
-        }
-        slotsLayout[index] == SLOT_BLOCK -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_road)
+        if (index == TOTAL_SLOTS_IN_ROW * TOTAL_SLOTS_IN_ROW - 1) {
+          showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
+          bindingHome.home.numberingLeft.visibility = VISIBLE
         }
       }
     }
-    showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
   }
 
   private fun setupParkingView(count: Int, layout: LinearLayout?, code: Char, icon: Int): TextView {
@@ -350,15 +397,13 @@ class HomeFragment : BaseFragment(), HomeContract {
 
       if (icon == R.color.transparent) {
         setTextColor(resources.getColor(R.color.colorPrimaryDark))
-        text = ((id % 26) + 1).toString()
+        text = ((id % 60) + 1).toString()
       }
       setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
       setOnClickListener { onClick(view) }
     }
 
     layout?.addView(view)
-
-    parkViewList.add(view)
     return view
   }
 
@@ -692,8 +737,8 @@ class HomeFragment : BaseFragment(), HomeContract {
     bindingHome.addLevel.btnCreate.isEnabled = true
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
-    super.onDestroyView()
+    super.onDestroy()
   }
 }

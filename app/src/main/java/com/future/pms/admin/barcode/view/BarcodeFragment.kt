@@ -24,7 +24,6 @@ import com.future.pms.admin.util.Constants.Companion.ADMIN_MODE
 import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.BARCODE_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.COUNT_DOWN_INTERVAL
-import com.future.pms.admin.util.Constants.Companion.DISPLAY_MODE
 import com.future.pms.admin.util.Constants.Companion.MILLIS_IN_A_MINUTES
 import com.future.pms.admin.util.Constants.Companion.MILLIS_TO_SECOND
 import com.future.pms.admin.util.Constants.Companion.QR_EXPIRED
@@ -216,10 +215,10 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     }
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
     countDownTimer?.cancel()
-    super.onDestroyView()
+    super.onDestroy()
   }
 
   override fun onPause() {

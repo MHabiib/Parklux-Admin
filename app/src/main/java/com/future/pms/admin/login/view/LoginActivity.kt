@@ -33,8 +33,7 @@ class LoginActivity : BaseActivity(), LoginContract {
   }
 
   @Inject lateinit var presenter: LoginPresenter
-  @Inject
-  lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -60,8 +59,7 @@ class LoginActivity : BaseActivity(), LoginContract {
 
   override fun onSuccess(token: Token) {
     Authentication.save(this, token)
-    presenter.loadData(
-      gson.fromJson(
+    presenter.loadData(gson.fromJson(
         this.getSharedPreferences(Constants.AUTHENTICATION, Context.MODE_PRIVATE)?.getString(
             Constants.TOKEN, null), Token::class.java).accessToken)
   }
@@ -99,7 +97,8 @@ class LoginActivity : BaseActivity(), LoginContract {
   override fun onFailed(e: String) {
     loading(false)
     Authentication.delete(this)
-    if (e.contains(BAD_REQUEST_CODE) || e.contains(FORBIDDEN_CODE) || e.contains(getString(R.string.login_activity))) {
+    if (e.contains(BAD_REQUEST_CODE) || e.contains(FORBIDDEN_CODE) || e.contains(
+            getString(R.string.login_activity))) {
       Toast.makeText(this, R.string.email_password_incorrect, Toast.LENGTH_LONG).show()
     } else {
       Toast.makeText(this, e, Toast.LENGTH_LONG).show()
@@ -109,5 +108,10 @@ class LoginActivity : BaseActivity(), LoginContract {
   override fun onBackPressed() {
     super.onBackPressed()
     this.finishAffinity()
+  }
+
+  override fun onDestroy() {
+    presenter.detach()
+    super.onDestroy()
   }
 }

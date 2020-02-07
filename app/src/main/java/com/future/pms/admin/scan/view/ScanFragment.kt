@@ -80,8 +80,8 @@ class ScanFragment : Fragment(), ScanContract {
     super.onViewCreated(view, savedInstanceState)
     presenter.attach(this)
     accessToken = gson.fromJson(
-        context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)?.getString(
-            TOKEN, null), Token::class.java).accessToken
+        context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
+        Token::class.java).accessToken
     initialiseDetectorsAndSources()
   }
 
@@ -171,8 +171,8 @@ class ScanFragment : Fragment(), ScanContract {
     ft?.detach(this)?.attach(this)?.commit()
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
-    super.onDestroyView()
+    super.onDestroy()
   }
 }

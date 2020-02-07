@@ -111,4 +111,9 @@ class SplashActivity : BaseActivity(), SplashContract {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     showLogin()
   }
+
+  override fun onDestroy() {
+    presenter.detach()
+    super.onDestroy()
+  }
 }
