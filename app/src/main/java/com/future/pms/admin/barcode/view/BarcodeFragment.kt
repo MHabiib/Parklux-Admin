@@ -89,27 +89,6 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     }
     getDateNow()
 
-    binding.pleaseBeSafe.setOnClickListener {
-      val time = System.currentTimeMillis()
-      if (startMillis == 0L || (time - startMillis > 3000)) {
-        startMillis = time
-        count = 1
-      } else {
-        count++
-      }
-      if (count == 5) {
-        if (mode == DISPLAY_MODE) {
-          mode = ADMIN_MODE
-          val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
-          navigationView.visibility = View.GONE
-        } else {
-          mode = DISPLAY_MODE
-          val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
-          navigationView.visibility = View.VISIBLE
-        }
-      }
-    }
-
     binding.ivQrcode.setOnClickListener {
       val time = System.currentTimeMillis()
       if (startMillis == 0L || (time - startMillis > 3000)) {
