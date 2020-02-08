@@ -13,7 +13,7 @@ open class BasePresenter<V : BaseView> {
   }
 
   fun detach() {
-    subscriptions.dispose()
+    subscriptions.clear()
     view = null
   }
 }
