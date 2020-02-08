@@ -27,7 +27,7 @@
     <string name="cancel">Cancel</string>
     <string name="i_have_read">I have read the About Level of Parking Management System</string>
     <string name="about_level">About Level</string>
-    <string name="about_pms">- The level have 4 sections\n- Each section have 169 slots\n- Total slots on one level are 676 slots\n- The slots can be set as Parking Slot / Disable Slot / Road\n- You can activate/deactivate section on view section page\n- You can edit the slot on the section after the section is activated\n- You can\'t deactivate the section  edit the slot with ongoing parking on there</string>
+    <string name="about_pms">- The level have 4 sections\n- Each section have 900 slots\n- Total slots on one level are 3600 slots\n- The slots can be set as Parking Slot / Disable Slot / Road / etc.\n- You can activate/deactivate section on view section page\n- You can edit the slot on the section after the section is activated\n- You can\'t deactivate the section  edit the slot with ongoing parking on there</string>
     <string name="level_name">Level name</string>
     <string name="new_level">New level</string>
     <string name="create">Create</string>
