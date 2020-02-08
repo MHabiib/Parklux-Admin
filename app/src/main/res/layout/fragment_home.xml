@@ -383,7 +383,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
 
-
                 <ScrollView
                     android:id="@+id/sv_parking_slot"
                     android:layout_width="match_parent"
@@ -391,7 +390,9 @@
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:overScrollMode="never"
-                    android:scrollbars="none"
+                    android:verticalScrollbarPosition="right"
+                    android:fadeScrollbars="false"
+                    android:scrollbarStyle="outsideInset"
                     android:visibility="gone">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -451,6 +452,7 @@
                             android:paddingLeft="@dimen/twelve_dp"
                             android:paddingRight="@dimen/twelve_dp"
                             android:text="@string/save"
+                            android:enabled="false"
                             android:textColor="@color/colorAccent"
                             android:visibility="gone"
                             app:layout_constraintHorizontal_bias="0.85"
@@ -695,6 +697,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:translationZ="2dp"
                 android:visibility="gone"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

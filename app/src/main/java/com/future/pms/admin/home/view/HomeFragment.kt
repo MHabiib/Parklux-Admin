@@ -72,7 +72,6 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   @Inject lateinit var presenter: HomePresenter
   @Inject lateinit var gson: Gson
-  private var parkViewList: MutableList<TextView> = ArrayList()
   private val spinnerItems = ArrayList<SpinnerItem>()
   private lateinit var adapter: CustomAdapter
   private val handler = Handler()
@@ -92,6 +91,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   private var totalTakenSlot = 0
   private var totalEmptySlot = 0
   private var totalDisableSlot = 0
+  private lateinit var asyncTask: SetupLayoutAsyc
 
   companion object {
     private val LETTER = ArrayList(
@@ -147,6 +147,7 @@ class HomeFragment : BaseFragment(), HomeContract {
             btnViewSection.isEnabled = true
             btnViewSection.setTextColor(resources.getColor(R.color.colorAccent))
             btnEditMode.isEnabled = true
+            btnSave.isEnabled = true
             btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
             btnSync.visibility = VISIBLE
             btnEditLevel.visibility = VISIBLE
@@ -156,6 +157,7 @@ class HomeFragment : BaseFragment(), HomeContract {
             sectionLayout.refreshDrawableState()
             sectionLayout.invalidate()
             showProgress(true)
+            asyncTask.cancel(true)
             presenter.getParkingLayout(idLevel, accessToken)
             presenter.getSectionDetails(idLevel, accessToken)
 
@@ -172,6 +174,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       layout = layoutPark
 
       btnEditMode.setOnClickListener {
+        asyncTask.cancel(true)
         editMode()
       }
 
@@ -195,6 +198,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       btnEditLevel.setOnClickListener {
+        asyncTask.cancel(true)
         showProgress(true)
         presenter.getParkingLayout(idLevel, accessToken)
         val activity = activity as MainActivity?
@@ -249,7 +253,10 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       home.btnSave.setOnClickListener {
+        asyncTask.cancel(true)
         showProgress(true)
+        home.btnSave.isEnabled = false
+        home.btnEditMode.isEnabled = false
         presenter.updateLevel(idLevel, levelLayout, accessToken)
       }
 
@@ -279,6 +286,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         Token::class.java).accessToken
     presenter.attach(this)
     presenter.getLevels(accessToken)
+    asyncTask = SetupLayoutAsyc(activity as MainActivity)
   }
 
   private fun showParkingLayout(slotsLayout: String) {
@@ -301,7 +309,8 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
     layout.addView(layoutPark)
 
-    SetupLayoutAsyc(activity as MainActivity).execute(slotsLayout)
+    asyncTask = SetupLayoutAsyc(activity as MainActivity)
+    asyncTask.execute(slotsLayout)
   }
 
   private class SetupLayoutAsyc internal constructor(context: MainActivity) :
@@ -376,6 +385,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         if (index == TOTAL_SLOTS_IN_ROW * TOTAL_SLOTS_IN_ROW - 1) {
           showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
           bindingHome.home.numberingLeft.visibility = VISIBLE
+          bindingHome.home.btnSave.isEnabled = true
           showProgress(false)
         }
       }
@@ -476,6 +486,7 @@ class HomeFragment : BaseFragment(), HomeContract {
             android.R.string.yes) { _, _ ->
           showProgress(true)
           bindingHome.home.btnEditMode.isEnabled = false
+          bindingHome.home.btnSave.isEnabled = false
 
           showProgress(true)
           presenter.getParkingLayout(idLevel, accessToken)
@@ -484,6 +495,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
     } else {
       bindingHome.home.btnEditMode.isEnabled = false
+      bindingHome.home.btnSave.isEnabled = false
 
       showProgress(true)
       presenter.getParkingLayout(idLevel, accessToken)
@@ -500,7 +512,6 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun editModeParkingLevelSuccess(response: String) {
-    showProgress(false)
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
         mode = EXIT_EDIT_MODE
@@ -667,6 +678,8 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun updateParkingLayoutSuccess(response: String) {
+    bindingHome.home.btnSave.isEnabled = true
+    bindingHome.home.btnEditMode.isEnabled = true
     presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }
@@ -727,20 +740,26 @@ class HomeFragment : BaseFragment(), HomeContract {
   override fun onFailed(message: String) {
     showProgress(false)
     Timber.tag(ERROR).e(message)
-    bindingHome.home.ibRefresh.visibility = VISIBLE
-    bindingHome.home.ibRefresh.setOnClickListener {
-      presenter.getLevels(accessToken)
-      bindingHome.home.ibRefresh.visibility = GONE
+    with(bindingHome) {
+      home.ibRefresh.visibility = VISIBLE
+      home.btnSave.isEnabled = true
+      home.btnEditMode.isEnabled = true
+      home.ibRefresh.setOnClickListener {
+        presenter.getLevels(accessToken)
+        home.ibRefresh.visibility = GONE
+      }
+      if (message.contains(Constants.NO_CONNECTION)) {
+        Toast.makeText(context, getString(R.string.no_network_connection),
+            Toast.LENGTH_SHORT).show()
+      } else {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+      }
+      addLevel.btnCreate.isEnabled = true
     }
-    if (message.contains(Constants.NO_CONNECTION)) {
-      Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
-    } else {
-      Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-    }
-    bindingHome.addLevel.btnCreate.isEnabled = true
   }
 
   override fun onDestroy() {
+    asyncTask.cancel(true)
     presenter.detach()
     super.onDestroy()
   }

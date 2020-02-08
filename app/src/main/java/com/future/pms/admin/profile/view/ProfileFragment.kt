@@ -177,6 +177,13 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           requestPermission()
         }
       }
+      btnChangeImage.setOnClickListener {
+        if (checkPermission()) {
+          getImageFromGallery()
+        } else {
+          requestPermission()
+        }
+      }
       ibLocation.isEnabled = false
     }
     return binding.root
