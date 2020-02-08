@@ -3,14 +3,17 @@ package com.future.pms.admin
 import com.future.pms.admin.base.BaseTest
 import com.future.pms.admin.updatelevel.network.UpdateLevelApi
 import com.future.pms.admin.updatelevel.presenter.UpdateLevelPresenter
+import com.future.pms.admin.updatelevel.view.UpdateLevelContract
 import io.reactivex.Observable
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class UpdateLevelPresenterTest : BaseTest() {
   @Mock lateinit var updateLevelApi: UpdateLevelApi
+  @Mock lateinit var updateLevelContract: UpdateLevelContract
   @InjectMocks lateinit var updateLevelPresenter: UpdateLevelPresenter
 
   @Test fun updateParkingLevelSuccess() {
@@ -18,6 +21,10 @@ class UpdateLevelPresenterTest : BaseTest() {
         Observable.just(STR))
 
     updateLevelPresenter.updateParkingLevel(ACCESS_TOKEN, levelDetailsRequest())
+
+    verify(updateLevelContract).showProgress(true)
+    verify(updateLevelContract).showProgress(false)
+    verify(updateLevelContract).updateParkingLevelSuccess(STR)
   }
 
   @Test fun updateParkingLevelFailed() {
@@ -25,5 +32,9 @@ class UpdateLevelPresenterTest : BaseTest() {
         Observable.error(Exception(ERROR)))
 
     updateLevelPresenter.updateParkingLevel(ACCESS_TOKEN, levelDetailsRequest())
+
+    verify(updateLevelContract).showProgress(true)
+    verify(updateLevelContract).showProgress(false)
+    verify(updateLevelContract).onFailed(ERROR)
   }
 }

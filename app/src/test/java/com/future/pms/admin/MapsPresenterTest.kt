@@ -7,6 +7,7 @@ import com.google.android.gms.maps.GoogleMap
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito
 
 class MapsPresenterTest : BaseTest() {
   @Mock lateinit var mapsContract: MapsContract
@@ -19,9 +20,11 @@ class MapsPresenterTest : BaseTest() {
 
   @Test fun setMapLongClick() {
     mapsPresenter.setMapLongClick(map)
+    Mockito.verify(mapsContract).setMapLongClick(map)
   }
 
   @Test fun setMapStyle() {
     mapsPresenter.setMapStyle(map)
+    Mockito.verify(mapsContract).setMapStyle(map)
   }
 }

@@ -7,6 +7,7 @@ import com.future.pms.admin.core.model.response.SectionDetails
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Booking
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Pageable
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Sort
+import com.future.pms.admin.scan.model.CustomerBooking
 import org.junit.Before
 import org.junit.Rule
 import org.mockito.MockitoAnnotations
@@ -34,6 +35,11 @@ open class BaseTest {
     return Booking(emptyList(), empty = false, first = false, last = false, number = 0,
         numberOfElements = 0, pageable = page(), size = 0, sort = sort(), totalElements = 0,
         totalPages = 0)
+  }
+
+  protected fun customerBooking(): CustomerBooking {
+    return CustomerBooking(0L, 0L, "idBooking", "idParkingZone", "idSlot", "idUser",
+        "parkingZoneName", "address", 0.0, 0.0, "slotName", "levelName", "totalTime", "imageUrl")
   }
 
   protected fun parkingZone(): ParkingZoneResponse {
