@@ -49,7 +49,7 @@
     <string name="still_ongoing_parking">There are still ongoing parking on this level</string>
     <string name="success_high">Success !</string>
     <string name="nothing_selected">Nothing selected</string>
-    <string name="automatically_refresh_5s">Automatically refresh parking layout every 5 seconds</string>
+    <string name="automatically_refresh_20s">Automatically refresh parking layout every 20 seconds</string>
     <string name="fill_all_the_entries">Fill all the entries</string>
     <string name="activate_this_section">Activate the section first to edit this slot</string>
     <string name="success_create_level">Success create level</string>

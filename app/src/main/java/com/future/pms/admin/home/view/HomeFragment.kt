@@ -195,6 +195,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       btnEditLevel.setOnClickListener {
+        showProgress(true)
         presenter.getParkingLayout(idLevel, accessToken)
         val activity = activity as MainActivity?
         activity?.presenter?.showEditLevel(idLevel, nameLevel, levelStatus, totalTakenSlot)
@@ -210,11 +211,12 @@ class HomeFragment : BaseFragment(), HomeContract {
           btnSync.setImageResource(R.drawable.ic_sync)
           handler.postDelayed(object : Runnable {
             override fun run() {
+              showProgress(true)
               presenter.getParkingLayout(idLevel, accessToken)
-              handler.postDelayed(this, 5000)
+              handler.postDelayed(this, 20000)
             }
-          }, 5000)
-          Toast.makeText(context, getString(R.string.automatically_refresh_5s),
+          }, 20000)
+          Toast.makeText(context, getString(R.string.automatically_refresh_20s),
               Toast.LENGTH_SHORT).show()
         }
       }
@@ -300,8 +302,6 @@ class HomeFragment : BaseFragment(), HomeContract {
     layout.addView(layoutPark)
 
     SetupLayoutAsyc(activity as MainActivity).execute(slotsLayout)
-
-    showProgress(false)
   }
 
   private class SetupLayoutAsyc internal constructor(context: MainActivity) :
@@ -312,28 +312,26 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
     private val mHomeFragment = homeFragment as HomeFragment
 
-    private val handler = Handler()
     override fun doInBackground(vararg params: String?): String? {
       val slots = params[0]
       if (slots != null) {
         for (index in 0 until slots.length) {
-          handler.postDelayed({
-            publishProgress("$index${slots[index]}")
-          }, 100)
+          Thread.sleep(1)
+          publishProgress("$index${slots[index]}")
         }
       }
       return ""
     }
 
     override fun onProgressUpdate(vararg result: String?) {
-      if (homeFragment == null) return
-      mHomeFragment.setSlotStatus(result[0])
-
+      if (homeFragment != null && activityReference.get() != null) {
+        mHomeFragment.setSlotStatus(result[0])
+      }
     }
   }
 
   fun setSlotStatus(result: String?) {
-    if (result != "") {
+    if (result != "" && context != null) {
       val slotsLayout = result?.substring(result.length - 1)?.single()
       val index = result?.substring(0, result.length - 1)?.toInt()
 
@@ -376,6 +374,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         if (index == TOTAL_SLOTS_IN_ROW * TOTAL_SLOTS_IN_ROW - 1) {
           showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
           bindingHome.home.numberingLeft.visibility = VISIBLE
+          showProgress(false)
         }
       }
     }
@@ -475,12 +474,15 @@ class HomeFragment : BaseFragment(), HomeContract {
             android.R.string.yes) { _, _ ->
           showProgress(true)
           bindingHome.home.btnEditMode.isEnabled = false
+
+          showProgress(true)
           presenter.getParkingLayout(idLevel, accessToken)
           presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
         }.setNegativeButton(android.R.string.no, null).setIcon(R.drawable.ic_arrow).show()
       }
     } else {
       bindingHome.home.btnEditMode.isEnabled = false
+
       showProgress(true)
       presenter.getParkingLayout(idLevel, accessToken)
       presenter.editModeParkingLevel(idLevel, EDIT_MODE, accessToken)
@@ -544,7 +546,6 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun getLayoutSuccess(slotsLayout: String) {
-    showProgress(false)
     levelLayout = slotsLayout
     showParkingLayout(slotsLayout)
   }
