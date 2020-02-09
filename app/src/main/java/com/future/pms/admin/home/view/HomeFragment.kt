@@ -680,6 +680,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   override fun updateParkingLayoutSuccess(response: String) {
     bindingHome.home.btnSave.isEnabled = true
     bindingHome.home.btnEditMode.isEnabled = true
+    showProgress(false)
     presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }

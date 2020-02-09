@@ -91,7 +91,7 @@
     <string name="section_2">Section - 2</string>
     <string name="section_3">Section - 3</string>
     <string name="section_4">Section - 4</string>
-    <string name="select_slot">Select slot</string>
+    <string name="select_slot">Select slot on the right side</string>
     <string name="edit_profile">Edit profile</string>
     <string name="login_activity">Login Activity</string>
     <string name="click_again_exit">Please click back again to exit</string>
@@ -105,6 +105,7 @@
     <string name="exit_edit_mode_title">Exit edit mode?</string>
     <string name="exit_edit_mode_descritption">Do you want to exit edit mode?\nYour changes will be gone</string>
     <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.()-</string>
+    <string name="digits_number">0123456789</string>
     <string name="scan_the_qr">The QR code will be detected automatically once you have positioned the code within the scan.</string>
     <string name="checkout_booking_success">Checkout booking success!</string>
     <string name="checkout_booking_failed">Checkout booking failed!</string>
