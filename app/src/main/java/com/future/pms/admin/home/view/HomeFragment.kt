@@ -760,7 +760,9 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun onDestroy() {
-    asyncTask.cancel(true)
+    if (::asyncTask.isInitialized) {
+      asyncTask.cancel(true)
+    }
     presenter.detach()
     super.onDestroy()
   }

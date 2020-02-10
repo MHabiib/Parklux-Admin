@@ -3,6 +3,8 @@ package com.future.pms.admin.scan.view
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
@@ -130,7 +132,8 @@ class ScanFragment : Fragment(), ScanContract {
         val barcode = detections.detectedItems
         if (barcode.size() != 0 && barcode.valueAt(0).displayValue.startsWith("QR")) {
           binding.surfaceView.post {
-            cameraSource?.stop()
+            stopCamera()
+            vibratePhone()
             binding.cameraLayout.visibility = View.GONE
             showProgress(true)
             intentData = barcode.valueAt(0).displayValue
@@ -143,6 +146,11 @@ class ScanFragment : Fragment(), ScanContract {
         }
       }
     })
+  }
+
+  private fun stopCamera() {
+    barcodeDetector?.release()
+    cameraSource?.stop()
   }
 
   override fun bookingSuccess(customerBooking: CustomerBooking) {
@@ -169,6 +177,15 @@ class ScanFragment : Fragment(), ScanContract {
       ft?.setReorderingAllowed(false)
     }
     ft?.detach(this)?.attach(this)?.commit()
+  }
+
+  fun Fragment.vibratePhone() {
+    val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    if (Build.VERSION.SDK_INT >= 26) {
+      vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+    } else {
+      vibrator.vibrate(200)
+    }
   }
 
   override fun onDestroy() {
