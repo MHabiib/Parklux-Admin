@@ -163,10 +163,8 @@ class HomeFragment : BaseFragment(), HomeContract {
 
             if (levelStatus == LEVEL_UNAVAILABLE) {
               tvUnavailableTag.visibility = VISIBLE
-              btnEditMode.visibility = GONE
             } else {
               tvUnavailableTag.visibility = GONE
-              btnEditMode.visibility = VISIBLE
             }
           }
         }
@@ -182,8 +180,11 @@ class HomeFragment : BaseFragment(), HomeContract {
         parkingLayout.visibility = GONE
         btnEditMode.visibility = GONE
         btnViewSection.visibility = GONE
-        sectionLayout.visibility = VISIBLE
         btnViewLevel.visibility = VISIBLE
+        sectionLayout.visibility = VISIBLE
+        if (::asyncTask.isInitialized) {
+          asyncTask.cancel(true)
+        }
         presenter.getSectionDetails(idLevel, accessToken)
       }
 
@@ -194,13 +195,15 @@ class HomeFragment : BaseFragment(), HomeContract {
         }
         btnViewSection.visibility = VISIBLE
         sectionLayout.visibility = GONE
+        if (::asyncTask.isInitialized) {
+          asyncTask.cancel(true)
+        }
         btnViewLevel.visibility = GONE
+        showProgress(true)
+        presenter.getParkingLayout(idLevel, accessToken)
       }
 
       btnEditLevel.setOnClickListener {
-        asyncTask.cancel(true)
-        showProgress(true)
-        presenter.getParkingLayout(idLevel, accessToken)
         val activity = activity as MainActivity?
         activity?.presenter?.showEditLevel(idLevel, nameLevel, levelStatus, totalTakenSlot)
       }
@@ -627,6 +630,16 @@ class HomeFragment : BaseFragment(), HomeContract {
         }
       }
     }
+    with(bindingHome.home) {
+      if (btnSection1.text == getString(R.string.activate) && btnSection2.text == getString(
+              R.string.activate) && btnSection3.text == getString(
+              R.string.activate) && btnSection4.text == getString(
+              R.string.activate) || levelStatus == LEVEL_UNAVAILABLE) {
+        btnEditMode.visibility = GONE
+      } else {
+        btnEditMode.visibility = VISIBLE
+      }
+    }
   }
 
   private fun SlotDetailShortBinding.setupSectionDetails(listSectionDetails: List<SectionDetails>,
@@ -688,7 +701,6 @@ class HomeFragment : BaseFragment(), HomeContract {
   override fun updateParkingSectionSuccess(response: String) {
     showProgressSection(false)
     presenter.getSectionDetails(idLevel, accessToken)
-    presenter.getParkingLayout(idLevel, accessToken)
   }
 
   private fun slotName(slotAt: Int): String {

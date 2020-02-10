@@ -105,7 +105,7 @@
     <string name="exit_edit_mode_title">Exit edit mode?</string>
     <string name="exit_edit_mode_descritption">Do you want to exit edit mode?\nYour changes will be gone</string>
     <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.()-</string>
-    <string name="digits_number">0123456789</string>
+    <string name="digits_number">+0123456789</string>
     <string name="scan_the_qr">The QR code will be detected automatically once you have positioned the code within the scan.</string>
     <string name="checkout_booking_success">Checkout booking success!</string>
     <string name="checkout_booking_failed">Checkout booking failed!</string>

@@ -27,9 +27,13 @@
 
             <ProgressBar
                 android:id="@+id/progressBarSection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="150dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:translationZ="2dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -416,6 +420,7 @@
                             android:paddingLeft="@dimen/twelve_dp"
                             android:paddingRight="@dimen/twelve_dp"
                             android:text="@string/edit_mode"
+                            android:visibility="gone"
                             android:textColor="@color/darkGrey"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/guideline5"

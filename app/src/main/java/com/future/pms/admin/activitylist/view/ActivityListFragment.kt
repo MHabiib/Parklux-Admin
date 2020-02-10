@@ -73,6 +73,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       isLastPageOngoing = false
       presenter.findOngoingBookingParkingZone(accessToken, currentPageOngoing)
       binding.refreshOngoing.isRefreshing = false
+      binding.refreshOngoing.isEnabled = false
     }
     binding.refreshPast.setOnRefreshListener {
       binding.shimmerPast.visibility = View.VISIBLE
@@ -84,6 +85,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       isLastPagePast = false
       presenter.findPastBookingParkingZone(accessToken, currentPagePast)
       binding.refreshPast.isRefreshing = false
+      binding.refreshPast.isEnabled = false
     }
     paginationPastAdapter = PaginationPastAdapter()
     paginationOngoingAdapter = PaginationOngoingAdapter()
@@ -132,6 +134,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   override fun findPastBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerPast.visibility = View.GONE
     binding.shimmerPast.stopShimmer()
+    binding.refreshPast.isEnabled = true
     if (currentPagePast != 0) {
       if (currentPagePast <= booking.totalPages - 1) {
         paginationPastAdapter.addAll(booking.content)
@@ -156,6 +159,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerOngoing.visibility = View.GONE
     binding.shimmerOngoing.stopShimmer()
+    binding.refreshOngoing.isEnabled = true
     if (currentPageOngoing != 0) {
       if (currentPageOngoing <= booking.totalPages - 1) {
         paginationOngoingAdapter.addAll(booking.content)
@@ -183,11 +187,13 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
         binding.shimmerPast.visibility = View.GONE
         binding.shimmerPast.stopShimmer()
         isLastPagePast = true
+        binding.refreshPast.isEnabled = true
       }
       ONGOING -> {
         binding.shimmerOngoing.visibility = View.GONE
         binding.shimmerOngoing.stopShimmer()
         isLastPageOngoing = true
+        binding.refreshOngoing.isEnabled = true
       }
       NO_CONNECTION -> {
         Toast.makeText(context, getString(R.string.no_network_connection),
