@@ -736,6 +736,11 @@
                     </ScrollView>
 
                     <include
+                        android:id="@+id/numbering_left_one_row"
+                        layout="@layout/numbering_left_one_row"
+                        android:visibility="gone" />
+
+                    <include
                         android:id="@+id/numbering_left"
                         layout="@layout/numbering_left"
                         android:visibility="gone" />

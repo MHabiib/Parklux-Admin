@@ -91,6 +91,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   private var totalTakenSlot = 0
   private var totalEmptySlot = 0
   private var totalDisableSlot = 0
+  private var totalRow = 0
   private lateinit var asyncTask: SetupLayoutAsyc
 
   companion object {
@@ -289,6 +290,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         Token::class.java).accessToken
     presenter.attach(this)
     presenter.getLevels(accessToken)
+    totalRow = 0
     asyncTask = SetupLayoutAsyc(activity as MainActivity)
   }
 
@@ -312,6 +314,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     }
     layout.addView(layoutPark)
 
+    totalRow = 0
     asyncTask = SetupLayoutAsyc(activity as MainActivity)
     asyncTask.execute(slotsLayout)
   }
@@ -327,11 +330,19 @@ class HomeFragment : BaseFragment(), HomeContract {
     override fun doInBackground(vararg params: String?): String? {
       val slots = params[0]
       if (slots != null) {
-        for (index in 0 until slots.length) {
+        var index = 0
+        while (index in 0 until slots.length) {
+          if (index == 1800 && slots[1800] == '_' && slots[1830] == '_') {
+            index = slots.length - 1
+          }
+          if (index % 30 == 0 && slots[index] == '_' && index != 0 && index % 60 != 0) {
+            index += 29
+          }
           if (index % 60 == 0) {
             Thread.sleep(100)
           }
           publishProgress("$index${slots[index]}")
+          index++
         }
       }
       return ""
@@ -354,6 +365,7 @@ class HomeFragment : BaseFragment(), HomeContract {
           parkingLayout = LinearLayout(context)
           parkingLayout.orientation = LinearLayout.HORIZONTAL
           layoutPark.addView(parkingLayout)
+          totalRow++
         }
 
         when (slotsLayout) {
@@ -385,9 +397,22 @@ class HomeFragment : BaseFragment(), HomeContract {
             setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_road)
           }
         }
-        if (index == TOTAL_SLOTS_IN_ROW * TOTAL_SLOTS_IN_ROW - 1) {
+
+        if (totalRow == 30) {
           showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
+          bindingHome.home.numberingLeftOneRow.visibility = VISIBLE
+          bindingHome.home.numberingLeft.visibility = GONE
+          bindingHome.home.btnSave.isEnabled = true
+          showProgress(false)
+        }
+        if (totalRow == 31) {
+          bindingHome.home.numberingLeftOneRow.visibility = GONE
           bindingHome.home.numberingLeft.visibility = VISIBLE
+          bindingHome.home.btnSave.isEnabled = false
+          showProgress(true)
+        }
+        if (totalRow == 60) {
+          showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
           bindingHome.home.btnSave.isEnabled = true
           showProgress(false)
         }
@@ -751,6 +776,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun onFailed(message: String) {
+    asyncTask.cancel(true)
     showProgress(false)
     Timber.tag(ERROR).e(message)
     with(bindingHome) {
