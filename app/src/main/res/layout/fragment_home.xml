@@ -25,13 +25,27 @@
                 android:background="@color/lightGrey"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
+            <ProgressBar
+                android:id="@+id/progressBarSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="150dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:translationZ="2dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="@dimen/zero_dp"
-                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginStart="@dimen/twelve_dp"
                 android:layout_marginTop="@dimen/eight_dp"
-                android:layout_marginRight="@dimen/six_dp"
+                android:layout_marginEnd="@dimen/six_dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="@id/guideline8"
@@ -42,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Section - 1"
+                    android:text="@string/section_1"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/h_medium2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -83,9 +97,9 @@
                 android:id="@+id/constraintLayout2"
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="@dimen/zero_dp"
-                android:layout_marginLeft="@dimen/six_dp"
+                android:layout_marginStart="@dimen/six_dp"
                 android:layout_marginTop="@dimen/eight_dp"
-                android:layout_marginRight="@dimen/twelve_dp"
+                android:layout_marginEnd="@dimen/twelve_dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline9"
                 app:layout_constraintLeft_toRightOf="@id/guideline8"
                 app:layout_constraintRight_toRightOf="parent"
@@ -96,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Section - 2"
+                    android:text="@string/section_2"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/h_medium2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -137,9 +151,9 @@
                 android:id="@+id/constraintLayout3"
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="@dimen/zero_dp"
-                android:layout_marginLeft="@dimen/twelve_dp"
+                android:layout_marginStart="@dimen/twelve_dp"
                 android:layout_marginTop="@dimen/six_dp"
-                android:layout_marginRight="@dimen/six_dp"
+                android:layout_marginEnd="@dimen/six_dp"
                 android:layout_marginBottom="@dimen/twenty_eight_dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -151,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Section - 3"
+                    android:text="@string/section_3"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/h_medium2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -191,9 +205,9 @@
                 android:id="@+id/constraintLayout4"
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="@dimen/zero_dp"
-                android:layout_marginLeft="@dimen/six_dp"
+                android:layout_marginStart="@dimen/six_dp"
                 android:layout_marginTop="@dimen/six_dp"
-                android:layout_marginRight="@dimen/twelve_dp"
+                android:layout_marginEnd="@dimen/twelve_dp"
                 android:layout_marginBottom="@dimen/twenty_eight_dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/guideline8"
@@ -205,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Section - 4"
+                    android:text="@string/section_4"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/h_medium2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -268,8 +282,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:background="@drawable/card_layout_white_right_bottom_radius"
-                android:paddingLeft="@dimen/twelve_dp"
-                android:paddingRight="@dimen/eight_dp"
+                android:paddingStart="@dimen/twelve_dp"
+                android:paddingEnd="@dimen/eight_dp"
                 android:src="@drawable/ic_add"
                 android:tint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="@id/level_name"
@@ -309,12 +323,12 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/thirty_six"
                 android:layout_marginLeft="@dimen/twelve_dp"
-                android:layout_marginRight="@dimen/twelve_dp"
                 android:layout_marginTop="@dimen/twelve_dp"
-                android:textSize="@dimen/h_medium"
-                android:theme="@style/spinnerTheme"
+                android:layout_marginRight="@dimen/twelve_dp"
                 android:background="@drawable/card_layout_white_accent"
                 android:popupBackground="@drawable/card_layout_white"
+                android:textSize="@dimen/h_medium"
+                android:theme="@style/spinnerTheme"
                 app:layout_constraintLeft_toRightOf="@id/btn_add_level"
                 app:layout_constraintRight_toLeftOf="@id/btn_edit_level"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -363,7 +377,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/twelve_dp"
-                    android:layout_marginRight="@dimen/twelve_dp"
+                    android:layout_marginEnd="@dimen/twelve_dp"
                     android:layout_marginBottom="@dimen/twenty_four_dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_sync"
@@ -373,21 +387,22 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
 
-
                 <ScrollView
                     android:id="@+id/sv_parking_slot"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:visibility="gone"
                     android:overScrollMode="never"
-                    android:scrollbars="none">
+                    android:verticalScrollbarPosition="right"
+                    android:fadeScrollbars="false"
+                    android:scrollbarStyle="outsideInset"
+                    android:visibility="gone">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/twelve_dp"
+                        android:layout_marginStart="@dimen/twelve_dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:paddingBottom="@dimen/fourty_eight_dp">
@@ -398,13 +413,14 @@
                             android:layout_width="@dimen/zero_dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/twelve_dp"
-                            android:layout_marginRight="@dimen/six_dp"
+                            android:layout_marginEnd="@dimen/six_dp"
                             android:background="@drawable/card_layout_white"
                             android:enabled="false"
                             android:fontFamily="sans-serif-light"
                             android:paddingLeft="@dimen/twelve_dp"
                             android:paddingRight="@dimen/twelve_dp"
                             android:text="@string/edit_mode"
+                            android:visibility="gone"
                             android:textColor="@color/darkGrey"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/guideline5"
@@ -415,7 +431,7 @@
                             style="@style/NoCaps"
                             android:layout_width="@dimen/zero_dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginStart="@dimen/six_dp"
                             android:layout_marginTop="@dimen/twelve_dp"
                             android:background="@drawable/card_layout_white"
                             android:enabled="false"
@@ -434,13 +450,14 @@
                             style="@style/NoCaps"
                             android:layout_width="@dimen/zero_dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginStart="@dimen/six_dp"
                             android:layout_marginTop="@dimen/twelve_dp"
                             android:background="@drawable/card_layout_white"
                             android:fontFamily="sans-serif-light"
                             android:paddingLeft="@dimen/twelve_dp"
                             android:paddingRight="@dimen/twelve_dp"
                             android:text="@string/save"
+                            android:enabled="false"
                             android:textColor="@color/colorAccent"
                             android:visibility="gone"
                             app:layout_constraintHorizontal_bias="0.85"
@@ -454,13 +471,13 @@
                             style="@style/NoCaps"
                             android:layout_width="@dimen/zero_dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_marginStart="@dimen/six_dp"
                             android:layout_marginTop="@dimen/twelve_dp"
                             android:background="@drawable/card_layout_white"
                             android:fontFamily="sans-serif-light"
                             android:paddingLeft="@dimen/twelve_dp"
                             android:paddingRight="@dimen/twelve_dp"
-                            android:text="View level layout"
+                            android:text="@string/view_level_layout"
                             android:textColor="@color/colorSecondary"
                             android:visibility="gone"
                             app:layout_constraintHorizontal_bias="0.85"
@@ -487,7 +504,7 @@
                                     android:id="@+id/status_road"
                                     android:layout_width="@dimen/zero_dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginStart="@dimen/six_dp"
                                     android:layout_marginTop="@dimen/twelve_dp"
                                     android:background="@drawable/card_layout_purple"
                                     android:padding="@dimen/four_dp"
@@ -517,7 +534,7 @@
                                     android:layout_width="@dimen/zero_dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/twelve_dp"
-                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:layout_marginEnd="@dimen/six_dp"
                                     android:background="@drawable/card_layout_purple"
                                     android:padding="@dimen/four_dp"
                                     android:src="@drawable/ic_park"
@@ -531,7 +548,7 @@
                                     android:layout_width="@dimen/zero_dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/twelve_dp"
-                                    android:layout_marginRight="@dimen/six_dp"
+                                    android:layout_marginEnd="@dimen/six_dp"
                                     android:background="@drawable/card_layout_purple"
                                     android:padding="@dimen/four_dp"
                                     android:src="@drawable/ic_in"
@@ -559,7 +576,7 @@
                                     android:id="@+id/status_out"
                                     android:layout_width="@dimen/zero_dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/six_dp"
+                                    android:layout_marginStart="@dimen/six_dp"
                                     android:layout_marginTop="@dimen/twelve_dp"
                                     android:background="@drawable/card_layout_purple"
                                     android:padding="@dimen/four_dp"
@@ -594,7 +611,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/twelve_dp"
                                     android:gravity="center"
-                                    android:text="Set slot status"
+                                    android:text="@string/set_slot_status"
                                     android:textColor="@color/colorPrimary"
                                     app:layout_constraintTop_toBottomOf="@id/slot_name" />
 
@@ -608,9 +625,9 @@
                                     android:inputType="textEmailAddress"
                                     android:maxLines="1"
                                     android:singleLine="true"
-                                    android:text="LG - 1"
                                     android:textColor="@color/darkGrey"
-                                    android:textSize="@dimen/h2"
+                                    android:textSize="@dimen/h_medium"
+                                    android:textStyle="bold"
                                     app:layout_constraintTop_toBottomOf="@id/slot_name_tag" />
 
                                 <androidx.constraintlayout.widget.Guideline
@@ -685,6 +702,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminateDrawable="@drawable/custom_progressbar"
+                android:translationZ="2dp"
                 android:visibility="gone"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -705,10 +723,8 @@
                         android:id="@+id/scroll_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/sixteen_dp"
-                        android:overScrollMode="never"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginStart="@dimen/sixteen_dp"
+                        android:scrollbars="vertical"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <HorizontalScrollView
@@ -717,7 +733,16 @@
                             android:layout_height="wrap_content" />
                     </ScrollView>
 
-                    <include layout="@layout/numbering_left" />
+                    <LinearLayout
+                        android:id="@+id/numbering_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/scroll_view"
+                        app:layout_constraintBottom_toBottomOf="@+id/scroll_view"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>

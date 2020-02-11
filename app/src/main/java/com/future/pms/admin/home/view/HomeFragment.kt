@@ -2,12 +2,14 @@ package com.future.pms.admin.home.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.ScrollingMovementMethod
 import android.util.TypedValue
 import android.view.*
+import android.view.View.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -55,9 +57,8 @@ import com.future.pms.admin.util.SpinnerItem
 import com.future.pms.admin.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_add_level.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
@@ -70,9 +71,7 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   @Inject lateinit var presenter: HomePresenter
-    @Inject
-    lateinit var gson: Gson
-  private var parkViewList: MutableList<TextView> = ArrayList()
+  @Inject lateinit var gson: Gson
   private val spinnerItems = ArrayList<SpinnerItem>()
   private lateinit var adapter: CustomAdapter
   private val handler = Handler()
@@ -87,20 +86,29 @@ class HomeFragment : BaseFragment(), HomeContract {
   private lateinit var levelStatus: String
   private lateinit var levelLayout: String
   private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+  private lateinit var layoutPark: LinearLayout
+  private lateinit var parkingLayout: LinearLayout
   private var totalTakenSlot = 0
+  private var totalEmptySlot = 0
+  private var totalDisableSlot = 0
+  private var totalRow = 0
+  private lateinit var asyncTask: SetupLayoutAsyc
 
   companion object {
     private val LETTER = ArrayList(
-        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"))
-    private const val TOTAL_SLOTS_IN_ROW = 16
+        listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+            "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "A1", "A2", "A3", "A4", "A5", "A6", "A7",
+            "A8", "A9", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "C1", "C2", "C3",
+            "C4", "C5", "C6", "C7", "C8", "C9", "D1", "D2", "D3", "D4", "D5", "D6", "D7"))
+    private const val TOTAL_SLOTS_IN_ROW = 60
     const val TAG: String = HOME_FRAGMENT
   }
 
-    fun newInstance(): HomeFragment = HomeFragment()
+  fun newInstance(): HomeFragment = HomeFragment()
 
   override fun onPause() {
     if (mode == EDIT_MODE) {
-      editMode()
+      presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     }
     super.onPause()
   }
@@ -132,32 +140,32 @@ class HomeFragment : BaseFragment(), HomeContract {
           levelStatus = level.itemStatus
 
           if (p2 != 0) {
-            tvAppName.visibility = View.GONE
-            tvAddLevel.visibility = View.GONE
-            ivAddLevel.visibility = View.GONE
-            ivSelectLevelLeft.visibility = View.GONE
-            svParkingSlot.visibility = View.VISIBLE
+            tvAppName.visibility = GONE
+            tvAddLevel.visibility = GONE
+            ivAddLevel.visibility = GONE
+            ivSelectLevelLeft.visibility = GONE
+            svParkingSlot.visibility = VISIBLE
             btnViewSection.isEnabled = true
             btnViewSection.setTextColor(resources.getColor(R.color.colorAccent))
             btnEditMode.isEnabled = true
+            btnSave.isEnabled = true
             btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
-            btnSync.visibility = View.VISIBLE
-            btnEditLevel.visibility = View.VISIBLE
+            btnSync.visibility = VISIBLE
+            btnEditLevel.visibility = VISIBLE
             layoutPark.removeAllViews()
             layoutPark.refreshDrawableState()
             layoutPark.invalidate()
             sectionLayout.refreshDrawableState()
             sectionLayout.invalidate()
-
+            showProgress(true)
+            asyncTask.cancel(true)
             presenter.getParkingLayout(idLevel, accessToken)
             presenter.getSectionDetails(idLevel, accessToken)
 
             if (levelStatus == LEVEL_UNAVAILABLE) {
-              tvUnavailableTag.visibility = View.VISIBLE
-              btnEditMode.visibility = View.GONE
+              tvUnavailableTag.visibility = VISIBLE
             } else {
-              tvUnavailableTag.visibility = View.GONE
-              btnEditMode.visibility = View.VISIBLE
+              tvUnavailableTag.visibility = GONE
             }
           }
         }
@@ -165,31 +173,38 @@ class HomeFragment : BaseFragment(), HomeContract {
       layout = layoutPark
 
       btnEditMode.setOnClickListener {
-        btnEditMode.isEnabled = false
+        asyncTask.cancel(true)
         editMode()
       }
 
       btnViewSection.setOnClickListener {
-        parkingLayout.visibility = View.GONE
-        btnEditMode.visibility = View.GONE
-        btnViewSection.visibility = View.GONE
-        sectionLayout.visibility = View.VISIBLE
-        btnViewLevel.visibility = View.VISIBLE
+        parkingLayout.visibility = GONE
+        btnEditMode.visibility = GONE
+        btnViewSection.visibility = GONE
+        btnViewLevel.visibility = VISIBLE
+        sectionLayout.visibility = VISIBLE
+        if (::asyncTask.isInitialized) {
+          asyncTask.cancel(true)
+        }
         presenter.getSectionDetails(idLevel, accessToken)
       }
 
       btnViewLevel.setOnClickListener {
-        parkingLayout.visibility = View.VISIBLE
+        parkingLayout.visibility = VISIBLE
         if (levelStatus != LEVEL_UNAVAILABLE) {
-          btnEditMode.visibility = View.VISIBLE
+          btnEditMode.visibility = VISIBLE
         }
-        btnViewSection.visibility = View.VISIBLE
-        sectionLayout.visibility = View.GONE
-        btnViewLevel.visibility = View.GONE
+        btnViewSection.visibility = VISIBLE
+        sectionLayout.visibility = GONE
+        if (::asyncTask.isInitialized) {
+          asyncTask.cancel(true)
+        }
+        btnViewLevel.visibility = GONE
+        showProgress(true)
+        presenter.getParkingLayout(idLevel, accessToken)
       }
 
       btnEditLevel.setOnClickListener {
-        presenter.getParkingLayout(idLevel, accessToken)
         val activity = activity as MainActivity?
         activity?.presenter?.showEditLevel(idLevel, nameLevel, levelStatus, totalTakenSlot)
       }
@@ -204,11 +219,12 @@ class HomeFragment : BaseFragment(), HomeContract {
           btnSync.setImageResource(R.drawable.ic_sync)
           handler.postDelayed(object : Runnable {
             override fun run() {
+              showProgress(true)
               presenter.getParkingLayout(idLevel, accessToken)
-              handler.postDelayed(this, 5000)
+              handler.postDelayed(this, 20000)
             }
-          }, 5000)
-          Toast.makeText(context, getString(R.string.automatically_refresh_5s),
+          }, 20000)
+          Toast.makeText(context, getString(R.string.automatically_refresh_20s),
               Toast.LENGTH_SHORT).show()
         }
       }
@@ -222,14 +238,9 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       ibInfo.setOnClickListener {
-        context?.let { it1 ->
-          AlertDialog.Builder(it1).apply {
-            setView(
-              layoutInflater.inflate(
-                R.layout.layout_info_dialog,
-                null
-              )
-            )
+        context?.let { context ->
+          AlertDialog.Builder(context).apply {
+            setView(inflate(context, R.layout.layout_info_dialog, null))
           }.show()
         }
       }
@@ -246,6 +257,10 @@ class HomeFragment : BaseFragment(), HomeContract {
       }
 
       home.btnSave.setOnClickListener {
+        asyncTask.cancel(true)
+        showProgress(true)
+        home.btnSave.isEnabled = false
+        home.btnEditMode.isEnabled = false
         presenter.updateLevel(idLevel, levelLayout, accessToken)
       }
 
@@ -259,7 +274,7 @@ class HomeFragment : BaseFragment(), HomeContract {
         }
       }
     }
-      return bindingHome.root
+    return bindingHome.root
   }
 
   private fun isValid(): Boolean {
@@ -270,11 +285,13 @@ class HomeFragment : BaseFragment(), HomeContract {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-      accessToken = gson.fromJson(
+    accessToken = gson.fromJson(
         context?.getSharedPreferences(AUTHENTICATION, Context.MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
     presenter.getLevels(accessToken)
+    totalRow = 0
+    asyncTask = SetupLayoutAsyc(activity as MainActivity)
   }
 
   private fun showParkingLayout(slotsLayout: String) {
@@ -282,12 +299,11 @@ class HomeFragment : BaseFragment(), HomeContract {
     bindingHome.home.layoutPark.refreshDrawableState()
     bindingHome.home.layoutPark.invalidate()
 
-    val layoutPark = LinearLayout(context)
     totalTakenSlot = 0
-    var parkingLayout: LinearLayout? = null
-    var totalSlot = 0
-    var totalEmptySlot = 0
-    var totalDisableSlot = 0
+    totalEmptySlot = 0
+    totalDisableSlot = 0
+
+    layoutPark = LinearLayout(context)
     val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT)
 
@@ -296,48 +312,120 @@ class HomeFragment : BaseFragment(), HomeContract {
       layoutParams = params
       setPadding(parkPadding, parkPadding, parkPadding, parkPadding)
     }
-
     layout.addView(layoutPark)
-    for (index in 0 until slotsLayout.length) {
-      totalSlot++
-      if (index == 0 || totalSlot == 16) {
-        totalSlot = 0
-        parkingLayout = LinearLayout(context)
-        parkingLayout.orientation = LinearLayout.HORIZONTAL
-        layoutPark.addView(parkingLayout)
-      }
 
-      when {
-        slotsLayout[index] == SLOT_NULL -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_blank)
+    totalRow = 0
+    bindingHome.home.numberingLeft.removeAllViews()
+    asyncTask = SetupLayoutAsyc(activity as MainActivity)
+    asyncTask.execute(slotsLayout)
+  }
+
+  private class SetupLayoutAsyc internal constructor(context: MainActivity) :
+      AsyncTask<String, String, String>() {
+    private val activityReference: WeakReference<MainActivity> = WeakReference(context)
+    private val homeFragment = activityReference.get()?.supportFragmentManager?.run {
+      findFragmentByTag(TAG)
+    }
+    private val mHomeFragment = homeFragment as HomeFragment
+
+    override fun doInBackground(vararg params: String?): String? {
+      val slots = params[0]
+      if (slots != null) {
+        var index = 0
+        while (index in 0 until slots.length) {
+          if (index == 1800 && slots[1800] == '_' && slots[1830] == '_') {
+            index = slots.length - 1
+          }
+          if (index % 30 == 0 && slots[index] == '_' && index != 0 && index % 60 != 0) {
+            index += 29
+          }
+          if (index % 60 == 0) {
+            Thread.sleep(100)
+          }
+          publishProgress("$index${slots[index]}")
+          index++
         }
-        slotsLayout[index] == SLOT_SCAN_ME || slotsLayout[index] == SLOT_TAKEN -> {
-          totalTakenSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_car)
+      }
+      return ""
+    }
+
+    override fun onProgressUpdate(vararg result: String?) {
+      if (homeFragment != null && activityReference.get() != null) {
+        mHomeFragment.setSlotStatus(result[0])
+      }
+    }
+  }
+
+  fun setSlotStatus(result: String?) {
+    if (result != "" && context != null) {
+      val slotsLayout = result?.substring(result.length - 1)?.single()
+      val index = result?.substring(0, result.length - 1)?.toInt()
+      val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+          LinearLayout.LayoutParams.WRAP_CONTENT)
+      val numberingLeft = bindingHome.home.numberingLeft as LinearLayout
+
+      if (index != null) {
+
+        if (index == 0 || index % 60 == 0) {
+          parkingLayout = LinearLayout(context)
+          parkingLayout.orientation = LinearLayout.HORIZONTAL
+          layoutPark.addView(parkingLayout)
+          totalRow++
+
+          val valueTV = TextView(context)
+          valueTV.text = LETTER[totalRow - 1]
+          params.weight = 1f
+          valueTV.layoutParams = params
+          valueTV.gravity = Gravity.CENTER
+          valueTV.setTextColor(resources.getColor(R.color.colorAccent))
+          numberingLeft.addView(valueTV)
         }
-        slotsLayout[index] == SLOT_EMPTY -> {
-          totalEmptySlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_park)
+
+        when (slotsLayout) {
+          SLOT_NULL -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_blank)
+          }
+          SLOT_SCAN_ME, SLOT_TAKEN -> {
+            totalTakenSlot += 1
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_car)
+          }
+          SLOT_EMPTY -> {
+            totalEmptySlot += 1
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_park)
+          }
+          SLOT_DISABLE -> {
+            totalDisableSlot += 1
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_disable)
+          }
+          SLOT_ROAD, SLOT_READY -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.color.transparent)
+          }
+          SLOT_IN -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_in)
+          }
+          SLOT_OUT -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_out)
+          }
+          SLOT_BLOCK -> {
+            setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_road)
+          }
         }
-        slotsLayout[index] == SLOT_DISABLE -> {
-          totalDisableSlot += 1
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_disable)
+        showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
+
+        if (totalRow == 30) {
+          bindingHome.home.btnSave.isEnabled = true
+          showProgress(false)
         }
-        slotsLayout[index] == SLOT_ROAD || slotsLayout[index] == SLOT_READY -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.color.transparent)
+        if (totalRow == 31) {
+          bindingHome.home.btnSave.isEnabled = false
+          showProgress(true)
         }
-        slotsLayout[index] == SLOT_IN -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_in)
-        }
-        slotsLayout[index] == SLOT_OUT -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_out)
-        }
-        slotsLayout[index] == SLOT_BLOCK -> {
-          setupParkingView(index, parkingLayout, slotsLayout[index], R.drawable.ic_road)
+        if (totalRow == 60) {
+          bindingHome.home.btnSave.isEnabled = true
+          showProgress(false)
         }
       }
     }
-    showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
   }
 
   private fun setupParkingView(count: Int, layout: LinearLayout?, code: Char, icon: Int): TextView {
@@ -356,15 +444,13 @@ class HomeFragment : BaseFragment(), HomeContract {
 
       if (icon == R.color.transparent) {
         setTextColor(resources.getColor(R.color.colorPrimaryDark))
-        text = ((id % 16) + 1).toString()
+        text = ((id % 60) + 1).toString()
       }
       setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
       setOnClickListener { onClick(view) }
     }
 
     layout?.addView(view)
-
-    parkViewList.add(view)
     return view
   }
 
@@ -429,11 +515,27 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   private fun editMode() {
-    presenter.getParkingLayout(idLevel, accessToken)
-    if (bindingHome.home.btnEditMode.text != getString(R.string.exit_edit_mode)) {
-      presenter.editModeParkingLevel(idLevel, EDIT_MODE, accessToken)
+    if (bindingHome.home.btnEditMode.text != "Edit mode") {
+      context?.let {
+        AlertDialog.Builder(it).setTitle(getString(R.string.exit_edit_mode_title)).setMessage(
+            getString(R.string.exit_edit_mode_descritption)).setPositiveButton(
+            android.R.string.yes) { _, _ ->
+          showProgress(true)
+          bindingHome.home.btnEditMode.isEnabled = false
+          bindingHome.home.btnSave.isEnabled = false
+
+          showProgress(true)
+          presenter.getParkingLayout(idLevel, accessToken)
+          presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
+        }.setNegativeButton(android.R.string.no, null).setIcon(R.drawable.ic_arrow).show()
+      }
     } else {
-      presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
+      bindingHome.home.btnEditMode.isEnabled = false
+      bindingHome.home.btnSave.isEnabled = false
+
+      showProgress(true)
+      presenter.getParkingLayout(idLevel, accessToken)
+      presenter.editModeParkingLevel(idLevel, EDIT_MODE, accessToken)
     }
   }
 
@@ -449,17 +551,17 @@ class HomeFragment : BaseFragment(), HomeContract {
     with(bindingHome.home) {
       if (mode == EDIT_MODE) {
         mode = EXIT_EDIT_MODE
-        btnSync.visibility = View.VISIBLE
-        btnAddLevel.visibility = View.VISIBLE
+        btnSync.visibility = VISIBLE
+        btnAddLevel.visibility = VISIBLE
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        btnEditLevel.visibility = View.VISIBLE
-        levelName.visibility = View.VISIBLE
+        btnEditLevel.visibility = VISIBLE
+        levelName.visibility = VISIBLE
         btnEditMode.text = getString(R.string.edit_mode)
-        btnSave.visibility = View.GONE
-        btnViewSection.visibility = View.VISIBLE
+        btnSave.visibility = GONE
+        btnViewSection.visibility = VISIBLE
         btnEditMode.setTextColor(resources.getColor(R.color.colorPrimary))
-        editMode.visibility = View.GONE
-        btnEditMode.visibility = View.VISIBLE
+        editMode.visibility = GONE
+        btnEditMode.visibility = VISIBLE
       } else {
         mode = EDIT_MODE
         if (isSyncOn) {
@@ -467,16 +569,16 @@ class HomeFragment : BaseFragment(), HomeContract {
           btnSync.setImageResource(R.drawable.ic_sync_off)
           handler.removeCallbacksAndMessages(null)
         }
-        btnSync.visibility = View.INVISIBLE
-        btnAddLevel.visibility = View.INVISIBLE
-        btnEditLevel.visibility = View.INVISIBLE
+        btnSync.visibility = INVISIBLE
+        btnAddLevel.visibility = INVISIBLE
+        btnEditLevel.visibility = INVISIBLE
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        levelName.visibility = View.GONE
+        levelName.visibility = GONE
         btnEditMode.text = getString(R.string.exit_edit_mode)
-        btnViewSection.visibility = View.GONE
+        btnViewSection.visibility = GONE
         btnEditMode.setTextColor(resources.getColor(R.color.red))
-        editMode.visibility = View.VISIBLE
-        btnSave.visibility = View.VISIBLE
+        editMode.visibility = VISIBLE
+        btnSave.visibility = VISIBLE
         slotName.text = getString(R.string.select_slot)
       }
       btnEditMode.isEnabled = true
@@ -500,24 +602,24 @@ class HomeFragment : BaseFragment(), HomeContract {
   override fun getLevelsSuccess(listLevel: List<ListLevel>) {
     spinnerItems.clear()
     spinnerItems.add(SpinnerItem("0", SELECT_LEVEL, "")) // First item
-    for (index in 0 until listLevel.size) {
+    for (index in listLevel.indices) {
       spinnerItems.add(index + 1, SpinnerItem(listLevel[index].idLevel, listLevel[index].levelName,
           listLevel[index].levelStatus))
     }
     with(bindingHome.home) {
-      svParkingSlot.visibility = View.GONE
+      svParkingSlot.visibility = GONE
       if (listLevel.isEmpty()) {
-        tvAddLevel.visibility = View.VISIBLE
-        ivAddLevel.visibility = View.VISIBLE
+        tvAddLevel.visibility = VISIBLE
+        ivAddLevel.visibility = VISIBLE
       } else {
-        ivSelectLevelLeft.visibility = View.VISIBLE
+        ivSelectLevelLeft.visibility = VISIBLE
       }
-      tvAppName.visibility = View.VISIBLE
+      tvAppName.visibility = VISIBLE
     }
   }
 
   override fun getSectionDetailsSuccess(listSectionDetails: List<SectionDetails>) {
-    for (index in 0 until listSectionDetails.size) {
+    for (index in listSectionDetails.indices) {
       when {
         listSectionDetails[index].sectionName == SECTION_ONE -> {
           with(bindingHome.home) {
@@ -561,6 +663,16 @@ class HomeFragment : BaseFragment(), HomeContract {
         }
       }
     }
+    with(bindingHome.home) {
+      if (btnSection1.text == getString(R.string.activate) && btnSection2.text == getString(
+              R.string.activate) && btnSection3.text == getString(
+              R.string.activate) && btnSection4.text == getString(
+              R.string.activate) || levelStatus == LEVEL_UNAVAILABLE) {
+        btnEditMode.visibility = GONE
+      } else {
+        btnEditMode.visibility = VISIBLE
+      }
+    }
   }
 
   private fun SlotDetailShortBinding.setupSectionDetails(listSectionDetails: List<SectionDetails>,
@@ -586,6 +698,7 @@ class HomeFragment : BaseFragment(), HomeContract {
           showConfirmationDialog(listSectionDetails, index)
         }
       } else {
+        showProgressSection(true)
         presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
       }
     }
@@ -596,6 +709,7 @@ class HomeFragment : BaseFragment(), HomeContract {
       AlertDialog.Builder(it).setTitle(getString(R.string.deactivate_section)).setMessage(
           getString(R.string.deactivate_section_confirmation)).setPositiveButton(
           android.R.string.yes) { _, _ ->
+        showProgressSection(true)
         presenter.updateParkingSection(listSectionDetails[index].idSection, accessToken)
       }.setNegativeButton(android.R.string.no, null).setIcon(R.drawable.ic_arrow).show()
     }
@@ -610,13 +724,16 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun updateParkingLayoutSuccess(response: String) {
-    editMode()
+    bindingHome.home.btnSave.isEnabled = true
+    bindingHome.home.btnEditMode.isEnabled = true
+    showProgress(false)
+    presenter.editModeParkingLevel(idLevel, EXIT_EDIT_MODE, accessToken)
     Toast.makeText(context, response, Toast.LENGTH_LONG).show()
   }
 
   override fun updateParkingSectionSuccess(response: String) {
+    showProgressSection(false)
     presenter.getSectionDetails(idLevel, accessToken)
-    presenter.getParkingLayout(idLevel, accessToken)
   }
 
   private fun slotName(slotAt: Int): String {
@@ -639,42 +756,60 @@ class HomeFragment : BaseFragment(), HomeContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
+    if (show) {
+      bindingHome.home.progressBar.visibility = VISIBLE
+    } else {
+      bindingHome.home.progressBar.visibility = GONE
+    }
+  }
+
+  private fun showProgressSection(show: Boolean) {
+    if (show) {
+      bindingHome.home.progressBarSection.visibility = VISIBLE
+    } else {
+      bindingHome.home.progressBarSection.visibility = GONE
     }
   }
 
   override fun showProgressAddLevel(show: Boolean) {
-    if (null != progressBarAddLevel) {
+    with(bindingHome.addLevel) {
       if (show) {
-        bindingHome.addLevel.btnCreate.isEnabled = false
-        progressBarAddLevel.visibility = View.VISIBLE
+        btnCreate.isEnabled = false
+        progressBarAddLevel.visibility = VISIBLE
       } else {
-        bindingHome.addLevel.btnCreate.isEnabled = false
-        progressBarAddLevel.visibility = View.GONE
+        btnCreate.isEnabled = false
+        progressBarAddLevel.visibility = GONE
       }
     }
   }
 
   override fun onFailed(message: String) {
+    asyncTask.cancel(true)
+    showProgress(false)
     Timber.tag(ERROR).e(message)
-    bindingHome.home.ibRefresh.visibility = View.VISIBLE
-    bindingHome.home.ibRefresh.setOnClickListener {
-      presenter.getLevels(accessToken)
-      bindingHome.home.ibRefresh.visibility = View.GONE
+    with(bindingHome) {
+      home.ibRefresh.visibility = VISIBLE
+      home.btnSave.isEnabled = true
+      home.btnEditMode.isEnabled = true
+      home.ibRefresh.setOnClickListener {
+        presenter.getLevels(accessToken)
+        home.ibRefresh.visibility = GONE
+      }
+      if (message.contains(Constants.NO_CONNECTION)) {
+        Toast.makeText(context, getString(R.string.no_network_connection),
+            Toast.LENGTH_SHORT).show()
+      } else {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+      }
+      addLevel.btnCreate.isEnabled = true
     }
-    if (message.contains(Constants.NO_CONNECTION)) {
-      Toast.makeText(context, getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
-    }
-    bindingHome.addLevel.btnCreate.isEnabled = true
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
+    if (::asyncTask.isInitialized) {
+      asyncTask.cancel(true)
+    }
     presenter.detach()
-    super.onDestroyView()
+    super.onDestroy()
   }
 }

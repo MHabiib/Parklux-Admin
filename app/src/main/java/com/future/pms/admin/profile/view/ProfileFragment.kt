@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -24,9 +25,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.signature.ObjectKey
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
 import com.future.pms.admin.barcode.view.BarcodeFragment
@@ -36,17 +37,20 @@ import com.future.pms.admin.core.model.response.ParkingZoneResponse
 import com.future.pms.admin.core.network.Authentication
 import com.future.pms.admin.databinding.FragmentProfileBinding
 import com.future.pms.admin.login.view.LoginActivity
+import com.future.pms.admin.maps.view.MapsActivity
 import com.future.pms.admin.profile.injection.DaggerProfileComponent
 import com.future.pms.admin.profile.injection.ProfileComponent
 import com.future.pms.admin.profile.presenter.ProfilePresenter
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.BAD_REQUEST_CODE
+import com.future.pms.admin.util.Constants.Companion.LATITUDE
+import com.future.pms.admin.util.Constants.Companion.LONGITUDE
 import com.future.pms.admin.util.Constants.Companion.NOT_FOUND_CODE
 import com.future.pms.admin.util.Constants.Companion.NO_CONNECTION
 import com.future.pms.admin.util.Constants.Companion.PROFILE_FRAGMENT
+import com.future.pms.admin.util.Constants.Companion.RESULT_LOCATION
 import com.future.pms.admin.util.Utils
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -57,6 +61,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment(), ProfileContract {
@@ -68,10 +73,11 @@ class ProfileFragment : BaseFragment(), ProfileContract {
   }
 
   @Inject lateinit var presenter: ProfilePresenter
-  @Inject
-  lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private lateinit var binding: FragmentProfileBinding
   private lateinit var accessToken: String
+  private var latitude = 0.0
+  private var longitude = 0.0
 
   companion object {
     const val PERMISSION_REQUEST_CODE = 707
@@ -87,7 +93,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
 
       btnLogout.setOnClickListener {
         btnLogout.visibility = View.GONE
-        context?.let { it1 -> Authentication.delete(it1) }
+        context?.let { context -> Authentication.delete(context) }
         onLogout()
       }
 
@@ -120,6 +126,8 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           price.isEnabled = true
           openHour.isEnabled = true
           openHour2.isEnabled = true
+          ibLocation.isEnabled = true
+          ibLocation.visibility = View.VISIBLE
           address.isEnabled = true
           password.isEnabled = true
         } else {
@@ -144,25 +152,24 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           } else {
             price.toDouble()
           }
-          val parkingZone = ParkingZoneResponse(
-            binding.address.text.toString(),
-            binding.profileEmail.text.toString(), binding.profileName.text.toString(),
-            String.format(getString(R.string.range2), binding.openHour.text.toString(),
-              binding.openHour2.text.toString()
-            ), binding.password.text.toString(),
-            binding.profilePhoneNumber.text.toString(), priceInDouble, "")
+          val parkingZone = ParkingZoneResponse(binding.address.text.toString(),
+              binding.profileEmail.text.toString(), binding.profileName.text.toString(),
+              String.format(getString(R.string.range2), binding.openHour.text.toString(),
+                  binding.openHour2.text.toString()), binding.password.text.toString(),
+              binding.profilePhoneNumber.text.toString(), priceInDouble, "", latitude, longitude)
           presenter.update(accessToken, parkingZone)
-        } else {
-          Toast.makeText(
-            context, getString(R.string.fill_all_entried),
-            Toast.LENGTH_LONG
-          ).show()
         }
       }
 
       openHour.setOnClickListener { context?.let { context -> getDate(openHour, context) } }
       openHour2.setOnClickListener { context?.let { context -> getDate(openHour2, context) } }
 
+      ibLocation.setOnClickListener {
+        val intent = Intent(activity, MapsActivity::class.java)
+        intent.putExtra(LATITUDE, latitude)
+        intent.putExtra(LONGITUDE, longitude)
+        startActivityForResult(intent, 1)
+      }
       ivParkingZoneImage.setOnClickListener {
         if (checkPermission()) {
           getImageFromGallery()
@@ -170,6 +177,14 @@ class ProfileFragment : BaseFragment(), ProfileContract {
           requestPermission()
         }
       }
+      btnChangeImage.setOnClickListener {
+        if (checkPermission()) {
+          getImageFromGallery()
+        } else {
+          requestPermission()
+        }
+      }
+      ibLocation.isEnabled = false
     }
     return binding.root
   }
@@ -208,8 +223,16 @@ class ProfileFragment : BaseFragment(), ProfileContract {
         e.printStackTrace()
         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
       }
-    } else {
-      Toast.makeText(context, getString(R.string.you_havent_picked_image), Toast.LENGTH_LONG).show()
+    } else if (resultCode == RESULT_LOCATION) {
+      if (data?.getDoubleExtra(LONGITUDE, 0.0) != null) {
+        binding.address.isEnabled = true
+        longitude = data.getDoubleExtra(LONGITUDE, 0.0)
+        latitude = data.getDoubleExtra(LATITUDE, 0.0)
+        val geocoder = Geocoder(context, Locale.getDefault())
+        val address = geocoder.getFromLocation(latitude, longitude, 1)
+        binding.address.setText(String.format("%s", address[0].getAddressLine(0)))
+        Toast.makeText(context, getString(R.string.success_add_location), Toast.LENGTH_LONG).show()
+      }
     }
   }
 
@@ -232,8 +255,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     val view = activity?.currentFocus
     view?.let {
       val mInputMethodManager = activity?.getSystemService(
-        Activity.INPUT_METHOD_SERVICE
-      ) as InputMethodManager
+          Activity.INPUT_METHOD_SERVICE) as InputMethodManager
       mInputMethodManager.toggleSoftInput(SHOW_FORCED, 0)
     }
   }
@@ -250,11 +272,16 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     openHour2.isEnabled = false
     address.isEnabled = false
     password.isEnabled = false
+    ibLocation.isEnabled = false
+    ibLocation.visibility = View.INVISIBLE
   }
 
   override fun onSuccess() {
-    val barcodeFragment = fragmentManager?.findFragmentByTag(BarcodeFragment.TAG) as BarcodeFragment
-    barcodeFragment.presenter.loadData(accessToken)
+    val barcodeFragment = fragmentManager?.findFragmentByTag(BarcodeFragment.TAG)
+    if (barcodeFragment != null) {
+      barcodeFragment as BarcodeFragment
+      barcodeFragment.presenter.loadData(accessToken)
+    }
     Toast.makeText(context, getString(R.string.updated), Toast.LENGTH_SHORT).show()
     presenter.loadData(accessToken)
   }
@@ -264,8 +291,7 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       message.contains(NO_CONNECTION) -> Toast.makeText(context,
           getString(R.string.no_network_connection), Toast.LENGTH_SHORT).show()
       message.contains(BAD_REQUEST_CODE) -> Toast.makeText(context,
-        getString(R.string.email_already_used), Toast.LENGTH_SHORT
-      ).show()
+          getString(R.string.email_already_used), Toast.LENGTH_SHORT).show()
       message.contains(NOT_FOUND_CODE) -> {
         context?.let { Authentication.delete(it) }
         onLogout()
@@ -280,16 +306,14 @@ class ProfileFragment : BaseFragment(), ProfileContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
+    if (show) {
+      binding.progressBar.visibility = View.VISIBLE
+    } else {
+      binding.progressBar.visibility = View.GONE
     }
   }
 
-  override fun loadCustomerDetailSuccess(parkingZone: ParkingZoneResponse) {
+  override fun loadParkingZoneDetailSuccess(parkingZone: ParkingZoneResponse) {
     with(binding) {
       profileNameDisplay.text = parkingZone.name
       profileName.setText(parkingZone.name)
@@ -299,32 +323,62 @@ class ProfileFragment : BaseFragment(), ProfileContract {
       price.hint = (String.format(getString(R.string.idr_price),
           Utils.thousandSeparator(parkingZone.price.toInt())))
       openHour.text = parkingZone.openHour.substring(0, 5)
+      openHour.text = parkingZone.openHour.substring(0, 5)
       openHour2.text = parkingZone.openHour.substring(8, 13)
       address.setText(parkingZone.address)
       password.hint = getString(R.string.password_hint)
+      latitude = parkingZone.latitude
+      longitude = parkingZone.longitude
 
       Glide.with(binding.root).load(parkingZone.imageUrl).transform(CenterCrop(),
-          RoundedCorners(80)).signature(ObjectKey(parkingZone.imageUrl)).placeholder(
-          R.drawable.ic_parking_zone_default).error(
+          RoundedCorners(80)).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(
+          true).placeholder(R.drawable.ic_parking_zone_default).error(
           R.drawable.ic_parking_zone_default).fallback(R.drawable.ic_parking_zone_default).into(
           binding.ivParkingZoneImage)
+
+      btnEditProfile.isEnabled = true
     }
   }
 
   private fun isValid(): Boolean {
     with(binding) {
-      if (profileName?.text.toString().isEmpty()) return false
-      if (!profileEmail?.text.toString().isEmailValid()) return false
-      if (profilePhoneNumber?.text.toString().isEmpty()) return false
-      if (openHour?.text.toString().isEmpty()) return false
-      if (openHour2?.text.toString().isEmpty()) return false
-      if (address?.text.toString().isEmpty()) return false
+      if (profileName.text.toString().isEmpty() && profileName.text.toString().isNameValid()) {
+        Toast.makeText(context, getString(R.string.fill_all_entried), Toast.LENGTH_LONG).show()
+        return false
+      }
+      if (!profileEmail.text.toString().isEmailValid()) {
+        Toast.makeText(context, getString(R.string.fill_all_entried), Toast.LENGTH_LONG).show()
+        return false
+      }
+      if (profilePhoneNumber.text.toString().isEmpty()) {
+        Toast.makeText(context, getString(R.string.fill_all_entried), Toast.LENGTH_LONG).show()
+        return false
+      }
+      if (openHour.text.toString().isEmpty()) {
+        Toast.makeText(context, getString(R.string.fill_all_entried), Toast.LENGTH_LONG).show()
+        return false
+      }
+      if (openHour2.text.toString().isEmpty()) {
+        Toast.makeText(context, getString(R.string.fill_all_entried), Toast.LENGTH_LONG).show()
+        return false
+      }
+      if (address.text.toString().isEmpty()) {
+        Toast.makeText(context, getString(R.string.fill_all_entried), Toast.LENGTH_LONG).show()
+        return false
+      }
+      if (latitude == 0.0) {
+        Toast.makeText(context, getString(R.string.fill_drop_point), Toast.LENGTH_LONG).show()
+        return false
+      }
     }
     return true
   }
 
-  private fun String.isEmailValid(): Boolean =
-    !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+  private fun String.isEmailValid(): Boolean = !TextUtils.isEmpty(
+      this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+  private fun String.isNameValid(): Boolean = !TextUtils.isEmpty(this) && Pattern.compile(
+      "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}+").matcher(this).matches()
 
   @SuppressLint("SimpleDateFormat") private fun getDate(textView: TextView, context: Context) {
     val cal = Calendar.getInstance()
@@ -372,8 +426,8 @@ class ProfileFragment : BaseFragment(), ProfileContract {
     activity?.finish()
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
-    super.onDestroyView()
+    super.onDestroy()
   }
 }

@@ -9,8 +9,8 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
-class ProfilePresenter @Inject constructor() : BasePresenter<ProfileContract>() {
-  @Inject lateinit var profileApi: ProfileApi
+class ProfilePresenter @Inject constructor(private val profileApi: ProfileApi) :
+    BasePresenter<ProfileContract>() {
 
   fun loadData(accessToken: String) {
     view?.apply {
@@ -19,7 +19,7 @@ class ProfilePresenter @Inject constructor() : BasePresenter<ProfileContract>() 
           profileApi.getParkingZoneDetail(accessToken).subscribeOn(Schedulers.io()).observeOn(
               AndroidSchedulers.mainThread()).subscribe({ parkingZone: ParkingZoneResponse ->
             showProgress(false)
-            loadCustomerDetailSuccess(parkingZone)
+            loadParkingZoneDetailSuccess(parkingZone)
           }, { error ->
             showProgress(false)
             onFailed(error.toString())

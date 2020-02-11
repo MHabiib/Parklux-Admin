@@ -10,6 +10,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class LoginPresenterTest : BaseTest() {
   @Mock lateinit var loginApi: LoginApi
@@ -20,6 +21,8 @@ class LoginPresenterTest : BaseTest() {
     `when`(loginApi.auth(USERNAME, PASSWORD, GRANT_TYPE)).thenReturn(Observable.just(token()))
 
     loginPresenter.login(USERNAME, PASSWORD)
+
+    verify(loginContract).onSuccess(token())
   }
 
   @Test fun loginFailed() {
@@ -27,12 +30,16 @@ class LoginPresenterTest : BaseTest() {
         Observable.error(Exception(ERROR)))
 
     loginPresenter.login(USERNAME, PASSWORD)
+
+    verify(loginContract).onFailed("java.lang.Exception: error")
   }
 
   @Test fun loadDataSuccess() {
     `when`(loginApi.getParkingZoneDetail(ACCESS_TOKEN)).thenReturn(Observable.just(parkingZone()))
 
     loginPresenter.loadData(ACCESS_TOKEN)
+
+    verify(loginContract).onAuthorized()
   }
 
   @Test fun loadDataFailed() {
@@ -40,6 +47,8 @@ class LoginPresenterTest : BaseTest() {
         Observable.error(Exception(ERROR)))
 
     loginPresenter.loadData(ACCESS_TOKEN)
+
+    verify(loginContract).onFailed("java.lang.Exception: error")
   }
 
 }

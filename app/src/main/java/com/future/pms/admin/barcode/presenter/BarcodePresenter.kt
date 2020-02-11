@@ -8,8 +8,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class BarcodePresenter @Inject constructor() : BasePresenter<BarcodeContract>() {
-  @Inject lateinit var barcodeApi: BarcodeApi
+class BarcodePresenter @Inject constructor(private val barcodeApi: BarcodeApi) :
+    BasePresenter<BarcodeContract>() {
 
   fun loadData(accessToken: String) {
     view?.apply {

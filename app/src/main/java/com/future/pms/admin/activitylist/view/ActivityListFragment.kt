@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.future.pms.admin.BaseApp
 import com.future.pms.admin.R
-import com.future.pms.admin.activitylist.adapter.PaginationAdapterOngoing
-import com.future.pms.admin.activitylist.adapter.PaginationAdapterPast
+import com.future.pms.admin.activitylist.adapter.PaginationOngoingAdapter
+import com.future.pms.admin.activitylist.adapter.PaginationPastAdapter
 import com.future.pms.admin.activitylist.injection.ActivityListComponent
 import com.future.pms.admin.activitylist.injection.DaggerActivityListComponent
 import com.future.pms.admin.activitylist.presenter.ActivityListPresenter
@@ -38,11 +38,10 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   }
 
   @Inject lateinit var presenter: ActivityListPresenter
-  @Inject
-  lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private lateinit var binding: FragmentActivityListBinding
-  private lateinit var paginationAdapterPast: PaginationAdapterPast
-  private lateinit var paginationAdapterOngoing: PaginationAdapterOngoing
+  private lateinit var paginationPastAdapter: PaginationPastAdapter
+  private lateinit var paginationOngoingAdapter: PaginationOngoingAdapter
   private lateinit var accessToken: String
   private var currentPagePast = 0
   private var currentPageOngoing = 0
@@ -59,38 +58,40 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false)
-    binding.shimmerOngoing.startShimmerAnimation()
-    binding.shimmerPast.startShimmerAnimation()
+    binding.shimmerOngoing.startShimmer()
+    binding.shimmerPast.startShimmer()
     val linearLayoutManagerPast = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     val linearLayoutManagerOngoing = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,
         false)
     binding.refreshOngoing.setOnRefreshListener {
       binding.shimmerOngoing.visibility = View.VISIBLE
-      binding.shimmerOngoing.startShimmerAnimation()
+      binding.shimmerOngoing.startShimmer()
       binding.noOrder.visibility = View.GONE
-      paginationAdapterOngoing.clear()
-      paginationAdapterOngoing.notifyDataSetChanged()
+      paginationOngoingAdapter.clear()
+      paginationOngoingAdapter.notifyDataSetChanged()
       currentPageOngoing = 0
       isLastPageOngoing = false
       presenter.findOngoingBookingParkingZone(accessToken, currentPageOngoing)
       binding.refreshOngoing.isRefreshing = false
+      binding.refreshOngoing.isEnabled = false
     }
     binding.refreshPast.setOnRefreshListener {
       binding.shimmerPast.visibility = View.VISIBLE
-      binding.shimmerPast.startShimmerAnimation()
+      binding.shimmerPast.startShimmer()
       binding.noPast.visibility = View.GONE
-      paginationAdapterPast.clear()
-      paginationAdapterPast.notifyDataSetChanged()
+      paginationPastAdapter.clear()
+      paginationPastAdapter.notifyDataSetChanged()
       currentPagePast = 0
       isLastPagePast = false
       presenter.findPastBookingParkingZone(accessToken, currentPagePast)
       binding.refreshPast.isRefreshing = false
+      binding.refreshPast.isEnabled = false
     }
-    paginationAdapterPast = PaginationAdapterPast()
-    paginationAdapterOngoing = PaginationAdapterOngoing()
+    paginationPastAdapter = PaginationPastAdapter()
+    paginationOngoingAdapter = PaginationOngoingAdapter()
 
     binding.rvPast.layoutManager = linearLayoutManagerPast
-    binding.rvPast.adapter = this.paginationAdapterPast
+    binding.rvPast.adapter = this.paginationPastAdapter
     binding.rvPast.addOnScrollListener(object :
         PaginationScrollListener(linearLayoutManagerPast, isLastPagePast) {
       override fun loadMoreItems() {
@@ -101,7 +102,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       }
     })
     binding.rvOngoing.layoutManager = linearLayoutManagerOngoing
-    binding.rvOngoing.adapter = this.paginationAdapterOngoing
+    binding.rvOngoing.adapter = this.paginationOngoingAdapter
     binding.rvOngoing.addOnScrollListener(object :
         PaginationScrollListener(linearLayoutManagerOngoing, isLastPageOngoing) {
       override fun loadMoreItems() {
@@ -118,25 +119,25 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     super.onViewCreated(view, savedInstanceState)
     presenter.attach(this)
     accessToken = gson.fromJson(
-      context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
-      Token::class.java
-    ).accessToken
+        context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
+        Token::class.java).accessToken
     presenter.findPastBookingParkingZone(accessToken, currentPagePast)
     presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
   }
 
-  private fun loadOngoingNextPage() =
-    presenter.findOngoingBookingParkingZone(accessToken, currentPagePast)
+  private fun loadOngoingNextPage() = presenter.findOngoingBookingParkingZone(accessToken,
+      currentPagePast)
 
-  private fun loadPastNextPage() =
-    presenter.findPastBookingParkingZone(accessToken, currentPagePast)
+  private fun loadPastNextPage() = presenter.findPastBookingParkingZone(accessToken,
+      currentPagePast)
 
   override fun findPastBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerPast.visibility = View.GONE
-    binding.shimmerPast.stopShimmerAnimation()
+    binding.shimmerPast.stopShimmer()
+    binding.refreshPast.isEnabled = true
     if (currentPagePast != 0) {
       if (currentPagePast <= booking.totalPages - 1) {
-        paginationAdapterPast.addAll(booking.content)
+        paginationPastAdapter.addAll(booking.content)
         currentPagePast += 1
       } else {
         isLastPagePast = true
@@ -145,7 +146,7 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
       if (booking.content.isEmpty()) {
         binding.noPast.visibility = View.VISIBLE
       }
-      paginationAdapterPast.addAll(booking.content)
+      paginationPastAdapter.addAll(booking.content)
       if (currentPagePast >= booking.totalPages - 1) {
         isLastPagePast = true
       } else {
@@ -157,16 +158,17 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
 
   override fun findOngoingBookingParkingZoneSuccess(booking: Booking) {
     binding.shimmerOngoing.visibility = View.GONE
-    binding.shimmerOngoing.stopShimmerAnimation()
+    binding.shimmerOngoing.stopShimmer()
+    binding.refreshOngoing.isEnabled = true
     if (currentPageOngoing != 0) {
       if (currentPageOngoing <= booking.totalPages - 1) {
-        paginationAdapterOngoing.addAll(booking.content)
+        paginationOngoingAdapter.addAll(booking.content)
         currentPageOngoing += 1
       } else {
         isLastPageOngoing = true
       }
     } else {
-      paginationAdapterOngoing.addAll(booking.content)
+      paginationOngoingAdapter.addAll(booking.content)
       if (booking.content.isEmpty()) {
         binding.noOrder.visibility = View.VISIBLE
       }
@@ -183,13 +185,15 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     when (message) {
       PAST -> {
         binding.shimmerPast.visibility = View.GONE
-        binding.shimmerPast.stopShimmerAnimation()
+        binding.shimmerPast.stopShimmer()
         isLastPagePast = true
+        binding.refreshPast.isEnabled = true
       }
       ONGOING -> {
         binding.shimmerOngoing.visibility = View.GONE
-        binding.shimmerOngoing.stopShimmerAnimation()
+        binding.shimmerOngoing.stopShimmer()
         isLastPageOngoing = true
+        binding.refreshOngoing.isEnabled = true
       }
       NO_CONNECTION -> {
         Toast.makeText(context, getString(R.string.no_network_connection),
@@ -198,8 +202,8 @@ class ActivityListFragment : BaseFragment(), ActivityListContract {
     }
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
-    super.onDestroyView()
+    super.onDestroy()
   }
 }

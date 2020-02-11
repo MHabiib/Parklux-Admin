@@ -34,7 +34,6 @@ import com.future.pms.admin.util.Constants.Companion.TOTAL_TAKEN_SLOT
 import com.future.pms.admin.util.Constants.Companion.UPDATE_LEVEL_FRAGMENT
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
 class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
@@ -46,8 +45,7 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
   }
 
   @Inject lateinit var presenter: UpdateLevelPresenter
-    @Inject
-    lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private lateinit var binding: FragmentUpdateLevelBinding
   private lateinit var idLevel: String
   private lateinit var levelName: String
@@ -80,7 +78,7 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-      val accessToken = gson.fromJson(
+    val accessToken = gson.fromJson(
         context?.getSharedPreferences(AUTHENTICATION, MODE_PRIVATE)?.getString(TOKEN, null),
         Token::class.java).accessToken
     presenter.attach(this)
@@ -145,29 +143,27 @@ class UpdateLevelFragment : BaseFragment(), UpdateLevelContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      with(binding) {
-        if (show) {
-          ibBack.isEnabled = false
-          btnUpdate.isEnabled = false
-          btnDelete.isEnabled = false
-          btnUpdate.setTextColor(resources.getColor(R.color.darkGrey))
-          btnDelete.setTextColor(resources.getColor(R.color.darkGrey))
-          progressBar.visibility = View.VISIBLE
-        } else {
-          ibBack.isEnabled = true
-          btnUpdate.isEnabled = true
-          btnDelete.isEnabled = true
-          btnUpdate.setTextColor(resources.getColor(R.color.colorAccent))
-          btnDelete.setTextColor(resources.getColor(R.color.red))
-          progressBar.visibility = View.GONE
-        }
+    with(binding) {
+      if (show) {
+        ibBack.isEnabled = false
+        btnUpdate.isEnabled = false
+        btnDelete.isEnabled = false
+        btnUpdate.setTextColor(resources.getColor(R.color.darkGrey))
+        btnDelete.setTextColor(resources.getColor(R.color.darkGrey))
+        progressBar.visibility = View.VISIBLE
+      } else {
+        ibBack.isEnabled = true
+        btnUpdate.isEnabled = true
+        btnDelete.isEnabled = true
+        btnUpdate.setTextColor(resources.getColor(R.color.colorAccent))
+        btnDelete.setTextColor(resources.getColor(R.color.red))
+        progressBar.visibility = View.GONE
       }
     }
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
-    super.onDestroyView()
+    super.onDestroy()
   }
 }

@@ -9,6 +9,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class UpdateLevelPresenterTest : BaseTest() {
   @Mock lateinit var updateLevelApi: UpdateLevelApi
@@ -20,6 +21,10 @@ class UpdateLevelPresenterTest : BaseTest() {
         Observable.just(STR))
 
     updateLevelPresenter.updateParkingLevel(ACCESS_TOKEN, levelDetailsRequest())
+
+    verify(updateLevelContract).showProgress(true)
+    verify(updateLevelContract).showProgress(false)
+    verify(updateLevelContract).updateParkingLevelSuccess(STR)
   }
 
   @Test fun updateParkingLevelFailed() {
@@ -27,5 +32,9 @@ class UpdateLevelPresenterTest : BaseTest() {
         Observable.error(Exception(ERROR)))
 
     updateLevelPresenter.updateParkingLevel(ACCESS_TOKEN, levelDetailsRequest())
+
+    verify(updateLevelContract).showProgress(true)
+    verify(updateLevelContract).showProgress(false)
+    verify(updateLevelContract).onFailed(ERROR)
   }
 }

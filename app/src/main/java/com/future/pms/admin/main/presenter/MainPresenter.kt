@@ -18,6 +18,10 @@ class MainPresenter @Inject constructor() {
     view.showBarcodeFragment()
   }
 
+  fun onScanIconClick() {
+    view.showScanFragment()
+  }
+
   fun onActivityListIconClick() {
     view.showActivityListFragment()
   }

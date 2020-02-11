@@ -18,12 +18,12 @@ import com.future.pms.admin.core.base.BaseFragment
 import com.future.pms.admin.core.model.Token
 import com.future.pms.admin.core.model.response.ParkingZoneResponse
 import com.future.pms.admin.databinding.FragmentBarcodeBinding
+import com.future.pms.admin.main.view.MainActivity
 import com.future.pms.admin.util.Constants
 import com.future.pms.admin.util.Constants.Companion.ADMIN_MODE
 import com.future.pms.admin.util.Constants.Companion.AUTHENTICATION
 import com.future.pms.admin.util.Constants.Companion.BARCODE_FRAGMENT
 import com.future.pms.admin.util.Constants.Companion.COUNT_DOWN_INTERVAL
-import com.future.pms.admin.util.Constants.Companion.DISPLAY_MODE
 import com.future.pms.admin.util.Constants.Companion.MILLIS_IN_A_MINUTES
 import com.future.pms.admin.util.Constants.Companion.MILLIS_TO_SECOND
 import com.future.pms.admin.util.Constants.Companion.QR_EXPIRED
@@ -33,7 +33,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_barcode.*
 import timber.log.Timber
 import java.text.DateFormat
 import java.time.LocalDate
@@ -51,14 +50,14 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   }
 
   @Inject lateinit var presenter: BarcodePresenter
-  @Inject
-  lateinit var gson: Gson
+  @Inject lateinit var gson: Gson
   private lateinit var binding: FragmentBarcodeBinding
   private lateinit var accessToken: String
   private var count = 0
   private var startMillis: Long = 0
   private var mode: String = ""
   private lateinit var fcmToken: String
+  private var countDownTimer: CountDownTimer? = null
 
   companion object {
     const val TAG: String = BARCODE_FRAGMENT
@@ -89,7 +88,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     }
     getDateNow()
 
-    binding.dateNow.setOnClickListener {
+    binding.ivQrcode.setOnClickListener {
       val time = System.currentTimeMillis()
       if (startMillis == 0L || (time - startMillis > 3000)) {
         startMillis = time
@@ -98,21 +97,14 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
         count++
       }
       if (count == 5) {
-        if (mode == DISPLAY_MODE) {
-          mode = ADMIN_MODE
-          val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
-          navigationView.visibility = View.GONE
-        } else {
-          mode = DISPLAY_MODE
-          val navigationView = activity?.findViewById(R.id.nav_view) as BottomNavigationView
-          navigationView.visibility = View.VISIBLE
-        }
+        val activity = activity as MainActivity?
+        activity?.presenter?.onScanIconClick()
       }
     }
 
     FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
       if (task.isSuccessful) {
-        fcmToken = task.result?.token.toString()
+        fcmToken = task.result?.token.toString() //asyc
       }
     }
   }
@@ -160,13 +152,12 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     Glide.with(binding.root).load(imageName).transform(CenterCrop()).placeholder(
         R.drawable.generate_qr).error(R.drawable.generate_qr).fallback(R.drawable.generate_qr).into(
         binding.ivQrcode)
-    val countDownTimer = object : CountDownTimer(QR_EXPIRED, COUNT_DOWN_INTERVAL) {
+    countDownTimer = object : CountDownTimer(QR_EXPIRED, COUNT_DOWN_INTERVAL) {
       override fun onTick(millisUntilFinished: Long) {
         val countdown = ((millisUntilFinished % MILLIS_IN_A_MINUTES) / MILLIS_TO_SECOND).toInt()
         binding.btnGenerateQr.text = String.format(getString(R.string.expires_in),
-          String.format("%02d", millisUntilFinished / MILLIS_IN_A_MINUTES),
-          String.format("%02d", countdown)
-        )
+            String.format("%02d", millisUntilFinished / MILLIS_IN_A_MINUTES),
+            String.format("%02d", countdown))
       }
 
       override fun onFinish() {
@@ -174,7 +165,7 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
         binding.btnGenerateQr.isEnabled = true
       }
     }
-    countDownTimer.start()
+    (countDownTimer as CountDownTimer).start()
     Handler().postDelayed({
       with(binding) {
         btnGenerateQr.refreshDrawableState()
@@ -188,22 +179,18 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
   }
 
   override fun showProgress(show: Boolean) {
-    if (null != progressBar) {
-      if (show) {
-        progressBar.visibility = View.VISIBLE
-      } else {
-        progressBar.visibility = View.GONE
-      }
+    if (show) {
+      binding.progressBar.visibility = View.VISIBLE
+    } else {
+      binding.progressBar.visibility = View.GONE
     }
   }
 
   override fun showProgressTop(show: Boolean) {
-    if (null != progressBarTop) {
-      if (show) {
-        progressBarTop.visibility = View.VISIBLE
-      } else {
-        progressBarTop.visibility = View.GONE
-      }
+    if (show) {
+      binding.progressBarTop.visibility = View.VISIBLE
+    } else {
+      binding.progressBarTop.visibility = View.GONE
     }
   }
 
@@ -228,8 +215,15 @@ class BarcodeFragment : BaseFragment(), BarcodeContract {
     }
   }
 
-  override fun onDestroyView() {
+  override fun onDestroy() {
     presenter.detach()
-    super.onDestroyView()
+    countDownTimer?.cancel()
+    super.onDestroy()
+  }
+
+  override fun onPause() {
+    binding.btnGenerateQr.text = getString(R.string.generate_qr)
+    binding.btnGenerateQr.isEnabled = true
+    super.onPause()
   }
 }

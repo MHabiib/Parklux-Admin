@@ -11,7 +11,7 @@ class BaseApp : Application() {
   lateinit var baseComponent: BaseComponent
 
   companion object {
-    lateinit var instance: BaseApp private set
+    lateinit var instance: BaseApp
   }
 
   override fun onCreate() {

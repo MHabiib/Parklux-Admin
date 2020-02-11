@@ -4,11 +4,13 @@ import com.future.pms.admin.activitylist.network.ActivityListApi
 import com.future.pms.admin.activitylist.presenter.ActivityListPresenter
 import com.future.pms.admin.activitylist.view.ActivityListContract
 import com.future.pms.admin.base.BaseTest
+import com.future.pms.admin.util.Constants
 import io.reactivex.Observable
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class ActivityListPresenterTest : BaseTest() {
   @Mock lateinit var activityListApi: ActivityListApi
@@ -20,6 +22,8 @@ class ActivityListPresenterTest : BaseTest() {
         Observable.just(booking()))
 
     activityListPresenter.findPastBookingParkingZone(ACCESS_TOKEN, PAGE)
+
+    verify(activityListContract).findPastBookingParkingZoneSuccess(booking())
   }
 
   @Test fun findPastBookingParkingZoneFailed() {
@@ -27,6 +31,8 @@ class ActivityListPresenterTest : BaseTest() {
         Observable.error(Exception(ERROR)))
 
     activityListPresenter.findPastBookingParkingZone(ACCESS_TOKEN, PAGE)
+
+    verify(activityListContract).onFailed(Constants.PAST)
   }
 
   @Test fun findOngoingBookingParkingZoneSuccess() {
@@ -34,6 +40,8 @@ class ActivityListPresenterTest : BaseTest() {
         Observable.just(booking()))
 
     activityListPresenter.findOngoingBookingParkingZone(ACCESS_TOKEN, PAGE)
+
+    verify(activityListContract).findOngoingBookingParkingZoneSuccess(booking())
   }
 
   @Test fun findOngoingBookingParkingZoneFailed() {
@@ -41,5 +49,7 @@ class ActivityListPresenterTest : BaseTest() {
         Observable.error(Exception(ERROR)))
 
     activityListPresenter.findOngoingBookingParkingZone(ACCESS_TOKEN, PAGE)
+
+    verify(activityListContract).onFailed(Constants.ONGOING)
   }
 }

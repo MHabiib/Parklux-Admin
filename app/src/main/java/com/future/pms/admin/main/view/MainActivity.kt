@@ -1,14 +1,18 @@
 package com.future.pms.admin.main.view
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.speech.tts.TextToSpeech
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.future.pms.admin.BaseApp
@@ -22,6 +26,7 @@ import com.future.pms.admin.main.injection.DaggerMainComponent
 import com.future.pms.admin.main.injection.MainComponent
 import com.future.pms.admin.main.presenter.MainPresenter
 import com.future.pms.admin.profile.view.ProfileFragment
+import com.future.pms.admin.scan.view.ScanFragment
 import com.future.pms.admin.updatelevel.view.UpdateLevelFragment
 import com.future.pms.admin.util.Constants.Companion.FCM_CUSTOMER_NAME
 import com.future.pms.admin.util.Constants.Companion.FCM_LEVEL_NAME
@@ -30,6 +35,7 @@ import com.future.pms.admin.util.Constants.Companion.ID_LEVEL
 import com.future.pms.admin.util.Constants.Companion.LEVEL_NAME
 import com.future.pms.admin.util.Constants.Companion.LEVEL_STATUS
 import com.future.pms.admin.util.Constants.Companion.MY_FIREBASE_MESSAGING
+import com.future.pms.admin.util.Constants.Companion.REQUEST_CAMERA_PERMISSION
 import com.future.pms.admin.util.Constants.Companion.TOTAL_TAKEN_SLOT
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
@@ -64,7 +70,7 @@ class MainActivity : BaseActivity(), MainContract {
           presenter.onHomeIconClick()
         }
         R.id.navigation_scan -> {
-          presenter.onBarcodeIconClick()
+          presenter.onScanIconClick()
         }
         R.id.navigation_profile -> {
           presenter.onProfileIconClick()
@@ -83,6 +89,7 @@ class MainActivity : BaseActivity(), MainContract {
   }
 
   override fun showHomeFragment() {
+    binding.navView.visibility = View.VISIBLE
     binding.navView.menu.findItem(R.id.navigation_home).isChecked = true
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) == null) {
       supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
@@ -116,7 +123,7 @@ class MainActivity : BaseActivity(), MainContract {
       supportFragmentManager.run {
         findFragmentByTag(BarcodeFragment.TAG)
       }?.let {
-        supportFragmentManager.beginTransaction().hide(it).commit()
+        supportFragmentManager.beginTransaction().remove(it).commit()
       }
     }
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) != null) {
@@ -124,9 +131,15 @@ class MainActivity : BaseActivity(), MainContract {
         supportFragmentManager.beginTransaction().hide(it).commit()
       }
     }
+    if (supportFragmentManager.findFragmentByTag(ScanFragment.TAG) != null) {
+      supportFragmentManager.run { findFragmentByTag(ScanFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().remove(it).commit()
+      }
+    }
   }
 
   override fun showBarcodeFragment() {
+    binding.navView.visibility = View.GONE
     if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) == null) {
       supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
           R.animator.fade_out).add(R.id.frame, BarcodeFragment().newInstance(),
@@ -163,9 +176,45 @@ class MainActivity : BaseActivity(), MainContract {
         supportFragmentManager.beginTransaction().hide(it).commit()
       }
     }
+    if (supportFragmentManager.findFragmentByTag(ScanFragment.TAG) != null) {
+      supportFragmentManager.run { findFragmentByTag(ScanFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().remove(it).commit()
+      }
+    }
+  }
+
+  override fun showScanFragment() {
+    binding.navView.visibility = View.VISIBLE
+    when (this.let {
+      ActivityCompat.checkSelfPermission(it, Manifest.permission.CAMERA)
+    } != PackageManager.PERMISSION_GRANTED) {
+      true -> {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
+            REQUEST_CAMERA_PERMISSION)
+      }
+      else -> {
+        if (supportFragmentManager.findFragmentByTag(ScanFragment.TAG) == null) {
+          supportFragmentManager.beginTransaction().add(R.id.frame, ScanFragment().newInstance(),
+              ScanFragment.TAG).commit()
+        } else {
+          supportFragmentManager.run { findFragmentByTag(ScanFragment.TAG) }?.let {
+            supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
+                R.animator.fade_out).show(it).commit()
+          }
+        }
+        if (supportFragmentManager.findFragmentByTag(BarcodeFragment.TAG) != null) {
+          supportFragmentManager.run {
+            findFragmentByTag(BarcodeFragment.TAG)
+          }?.let {
+            supportFragmentManager.beginTransaction().remove(it).commit()
+          }
+        }
+      }
+    }
   }
 
   override fun showActivityListFragment() {
+    binding.navView.visibility = View.VISIBLE
     if (supportFragmentManager.findFragmentByTag(ActivityListFragment.TAG) == null) {
       supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
           R.animator.fade_out).add(R.id.frame, ActivityListFragment().newInstance(),
@@ -180,7 +229,7 @@ class MainActivity : BaseActivity(), MainContract {
       supportFragmentManager.run {
         findFragmentByTag(BarcodeFragment.TAG)
       }?.let {
-        supportFragmentManager.beginTransaction().hide(it).commit()
+        supportFragmentManager.beginTransaction().remove(it).commit()
       }
     }
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
@@ -202,9 +251,15 @@ class MainActivity : BaseActivity(), MainContract {
         supportFragmentManager.beginTransaction().hide(it).commit()
       }
     }
+    if (supportFragmentManager.findFragmentByTag(ScanFragment.TAG) != null) {
+      supportFragmentManager.run { findFragmentByTag(ScanFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().remove(it).commit()
+      }
+    }
   }
 
   override fun showProfileFragment() {
+    binding.navView.visibility = View.VISIBLE
     if (supportFragmentManager.findFragmentByTag(ProfileFragment.TAG) == null) {
       supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.fade_in,
           R.animator.fade_out).add(R.id.frame, ProfileFragment().newInstance(),
@@ -221,7 +276,7 @@ class MainActivity : BaseActivity(), MainContract {
       supportFragmentManager.run {
         findFragmentByTag(BarcodeFragment.TAG)
       }?.let {
-        supportFragmentManager.beginTransaction().hide(it).commit()
+        supportFragmentManager.beginTransaction().remove(it).commit()
       }
     }
     if (supportFragmentManager.findFragmentByTag(HomeFragment.TAG) != null) {
@@ -239,6 +294,26 @@ class MainActivity : BaseActivity(), MainContract {
         findFragmentByTag(UpdateLevelFragment.TAG)
       }?.let {
         supportFragmentManager.beginTransaction().hide(it).commit()
+      }
+    }
+    if (supportFragmentManager.findFragmentByTag(ScanFragment.TAG) != null) {
+      supportFragmentManager.run { findFragmentByTag(ScanFragment.TAG) }?.let {
+        supportFragmentManager.beginTransaction().remove(it).commit()
+      }
+    }
+  }
+
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+      grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == REQUEST_CAMERA_PERMISSION) {
+      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (supportFragmentManager.findFragmentByTag(ScanFragment.TAG) == null) {
+          supportFragmentManager.beginTransaction().add(R.id.frame, ScanFragment().newInstance(),
+              ScanFragment.TAG).commit()
+        }
+      } else {
+        presenter.onHomeIconClick()
       }
     }
   }

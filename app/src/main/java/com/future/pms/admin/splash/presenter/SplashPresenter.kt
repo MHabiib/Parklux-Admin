@@ -9,8 +9,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SplashPresenter @Inject constructor() : BasePresenter<SplashContract>() {
-  @Inject lateinit var splashApi: SplashApi
+class SplashPresenter @Inject constructor(private val splashApi: SplashApi) :
+    BasePresenter<SplashContract>() {
 
   fun refreshToken(refreshToken: String) {
     subscriptions.add(splashApi.refresh(Constants.GRANT_TYPE_REFRESH, refreshToken).subscribeOn(

@@ -7,6 +7,7 @@ import com.future.pms.admin.core.model.response.SectionDetails
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Booking
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Pageable
 import com.future.pms.admin.core.model.response.ongoingpastbooking.Sort
+import com.future.pms.admin.scan.model.CustomerBooking
 import org.junit.Before
 import org.junit.Rule
 import org.mockito.MockitoAnnotations
@@ -21,20 +22,13 @@ open class BaseTest {
   protected val ACCESS_TOKEN = "accessToken"
   protected val REFRESH_TOKEN = "refreshToken"
   protected val FCM_TOKEN = "fcmToken"
-  protected val SUCCESS = "success"
   protected val ERROR = "error"
   protected val ID = "id"
-  protected val PARKING_LAYOUT = "parkingLayout"
   protected val USERNAME = "username"
-  protected val EMAIL = "email"
   protected val PASSWORD = "password"
   protected val NAME = "name"
-  protected val PHONE_NUMBER = "phoneNumber"
-  protected val ROLE = "role"
   protected val LEVEL_NAME = "levelName"
-  protected val LAYOUT = "layout"
   protected val PAGE = 0
-  protected val FILTER = "filter"
   protected val STR = "empty"
 
   protected fun booking(): Booking {
@@ -43,9 +37,14 @@ open class BaseTest {
         totalPages = 0)
   }
 
+  protected fun customerBooking(): CustomerBooking {
+    return CustomerBooking(0L, 0L, "idBooking", "idParkingZone", "idSlot", "idUser",
+        "parkingZoneName", "address", 0.0, 0.0, "slotName", "levelName", "totalTime", "imageUrl")
+  }
+
   protected fun parkingZone(): ParkingZoneResponse {
     return ParkingZoneResponse("address", "emailAdmin", "name", "openHour", "password",
-        "phoneNumber", 0.0, "imageUrl")
+        "phoneNumber", 0.0, "imageUrl", 0.0, 0.0)
   }
 
   protected fun levelDetailsRequest(): LevelDetailsRequest {
