@@ -315,6 +315,7 @@ class HomeFragment : BaseFragment(), HomeContract {
     layout.addView(layoutPark)
 
     totalRow = 0
+    bindingHome.home.numberingLeft.removeAllViews()
     asyncTask = SetupLayoutAsyc(activity as MainActivity)
     asyncTask.execute(slotsLayout)
   }
@@ -359,13 +360,25 @@ class HomeFragment : BaseFragment(), HomeContract {
     if (result != "" && context != null) {
       val slotsLayout = result?.substring(result.length - 1)?.single()
       val index = result?.substring(0, result.length - 1)?.toInt()
+      val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+          LinearLayout.LayoutParams.WRAP_CONTENT)
+      val numberingLeft = bindingHome.home.numberingLeft as LinearLayout
 
       if (index != null) {
+
         if (index == 0 || index % 60 == 0) {
           parkingLayout = LinearLayout(context)
           parkingLayout.orientation = LinearLayout.HORIZONTAL
           layoutPark.addView(parkingLayout)
           totalRow++
+
+          val valueTV = TextView(context)
+          valueTV.text = LETTER[totalRow - 1]
+          params.weight = 1f
+          valueTV.layoutParams = params
+          valueTV.gravity = Gravity.CENTER
+          valueTV.setTextColor(resources.getColor(R.color.colorAccent))
+          numberingLeft.addView(valueTV)
         }
 
         when (slotsLayout) {
@@ -397,22 +410,17 @@ class HomeFragment : BaseFragment(), HomeContract {
             setupParkingView(index, parkingLayout, slotsLayout, R.drawable.ic_road)
           }
         }
+        showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
 
         if (totalRow == 30) {
-          showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
-          bindingHome.home.numberingLeftOneRow.visibility = VISIBLE
-          bindingHome.home.numberingLeft.visibility = GONE
           bindingHome.home.btnSave.isEnabled = true
           showProgress(false)
         }
         if (totalRow == 31) {
-          bindingHome.home.numberingLeftOneRow.visibility = GONE
-          bindingHome.home.numberingLeft.visibility = VISIBLE
           bindingHome.home.btnSave.isEnabled = false
           showProgress(true)
         }
         if (totalRow == 60) {
-          showTotalSlotDetail(totalDisableSlot, totalEmptySlot, totalTakenSlot)
           bindingHome.home.btnSave.isEnabled = true
           showProgress(false)
         }
